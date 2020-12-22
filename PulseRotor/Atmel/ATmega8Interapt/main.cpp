@@ -193,132 +193,15 @@ void ReadInputs(){
 	ButtonDown.Scan();
 };
 
-void StartControll(){
-	if (ButtonStart.PressRead()&&!Rotor.Started&&!Protect.Read()&&PowerReady.Read()){
-		Rotor.Starting = true;
-	}
-}
-
-void StopControll(){
-	if (ButtonStop.PressRead()&&!Protect.Read()&&PowerReady.Read()){
-		Rotor.Stoping = true;
-	}
-}
-
-void ReverseControll(){
-	if(ButtonReverse.PressRead()){
-		Rotor.Reversing = true;
-	}
-}
-
-void SpeedControll(){
-	if(ButtonUp.PressRead()){
-		Rotor.FrequncyUp();
-	}
-		
-	if(ButtonDown.PressRead()){
-		Rotor.FrequencyDown();
-			
-	}	
-}
-
-void ModeStartTime(){
-	if (Rotor.RotorStopped()){
-		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStart.getpressed)||Mode){
-			Mode = true;
-			BlueLed.On();
-			RedLed.Off();
-			GreenLed.Off();
+#include "RotorControll.h"
+#include "ModeControll.h"
+#include "ProtectControll.h"
+#include "LedControll.h"
 
 
-			ButtonUp.Scan();
-			if(ButtonUp.PressRead()){
-				Rotor.StartimeUp(100);
-				BlueLed.Off();
-				_delay_ms(500);
-			}
-					
-			ButtonDown.Scan();
-			if(ButtonDown.PressRead()){
-				Rotor.StartimeDown(100);
-				BlueLed.Off();
-				_delay_ms(500);
-			}				
-					
-			ButtonStart.Scan();
-			ButtonStart.PressRead();
-					
-			if (!ButtonUp.getpressed&&!ButtonStart.getpressed){
-				Mode = false;
-			}
-		}
-	}
-}
-
-void ModeStopTime(){
-	if (Rotor.RotorStopped()){
-		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStop.getpressed)||Mode){
-			Mode = true;
-			BlueLed.On();
-			RedLed.Off();
-			GreenLed.Off();
 
 
-			ButtonUp.Scan();
-			if(ButtonUp.PressRead()){
-				Rotor.StoptimeUp(100);
-				BlueLed.Off();
-				_delay_ms(500);
-			}
-			
-			ButtonDown.Scan();
-			if(ButtonDown.PressRead()){
-				Rotor.StoptimeDown(100);
-				BlueLed.Off();
-				_delay_ms(500);
-			}
-			
-			ButtonStop.Scan();
-			ButtonStop.PressRead();
-			
-			if (!ButtonUp.getpressed&&!ButtonStop.getpressed){
-				Mode = false;
-			}
-		}
-	}
-}
 
-void ProtectControll(){
-	if(Protect.Read()||!PowerReady.Read()){
-		Rotor.Starting = false;
-		Rotor.Stoping = false;
-		Rotor.Started=0;
-	}
-	
-	if (Protect.Read()){
-		Power.Off();
-		}else{
-		Power.On();
-	}
-}
-
-void LedControll(){
-	if (Rotor.Starting||Rotor.Stoping){
-		BlueLed.On();
-		RedLed.Off();
-		GreenLed.Off();
-		}else{
-		BlueLed.Off();
-	}
-	
-	if (Rotor.Started){
-		if (!Rotor.Starting&&!Rotor.Stoping){GreenLed.On();}
-		RedLed.Off();
-		}else{
-		GreenLed.Off();
-		if (!Rotor.Starting&&!Rotor.Stoping){RedLed.On();}
-	}
-}
 
 int main (void) { //главная цикл программы
 	Init();
@@ -337,9 +220,7 @@ int main (void) { //главная цикл программы
 		ProtectControll();
 		
 		Rotor.Activity();
-		
-		
-		
+
 		LedControll();
 		
 

@@ -653,32 +653,32 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x2356
+.debug_info     0x00000000     0x2350
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x48c c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr4/crtatmega8.o
  .debug_info    0x0000048c      0x255 Button.o
  .debug_info    0x000006e1      0x166 Input.o
- .debug_info    0x00000847     0x1324 main.o
- .debug_info    0x00001b6b      0x1bb Output.o
- .debug_info    0x00001d26      0x630 Rotor.o
+ .debug_info    0x00000847     0x131e main.o
+ .debug_info    0x00001b65      0x1bb Output.o
+ .debug_info    0x00001d20      0x630 Rotor.o
 
-.debug_abbrev   0x00000000      0xc05
+.debug_abbrev   0x00000000      0xbbe
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x44e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr4/crtatmega8.o
  .debug_abbrev  0x0000044e      0x12f Button.o
  .debug_abbrev  0x0000057d       0xfe Input.o
- .debug_abbrev  0x0000067b      0x2b0 main.o
- .debug_abbrev  0x0000092b      0x112 Output.o
- .debug_abbrev  0x00000a3d      0x1c8 Rotor.o
+ .debug_abbrev  0x0000067b      0x269 main.o
+ .debug_abbrev  0x000008e4      0x112 Output.o
+ .debug_abbrev  0x000009f6      0x1c8 Rotor.o
 
-.debug_line     0x00000000      0xdac
+.debug_line     0x00000000      0xdff
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr4/crtatmega8.o
  .debug_line    0x0000001a      0x133 Button.o
  .debug_line    0x0000014d       0xa5 Input.o
- .debug_line    0x000001f2      0x6f6 main.o
- .debug_line    0x000008e8      0x135 Output.o
- .debug_line    0x00000a1d      0x38f Rotor.o
+ .debug_line    0x000001f2      0x749 main.o
+ .debug_line    0x0000093b      0x135 Output.o
+ .debug_line    0x00000a70      0x38f Rotor.o
 
 .debug_frame    0x00000000      0x3d0
  *(.debug_frame)

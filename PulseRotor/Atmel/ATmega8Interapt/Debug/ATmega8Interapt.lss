@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000001a8  00000000  00000000  000010c0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00002356  00000000  00000000  00001268  2**0
+  6 .debug_info   00002350  00000000  00000000  00001268  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000c05  00000000  00000000  000035be  2**0
+  7 .debug_abbrev 00000bbe  00000000  00000000  000035b8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000dac  00000000  00000000  000041c3  2**0
+  8 .debug_line   00000dff  00000000  00000000  00004176  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000003d0  00000000  00000000  00004f70  2**2
+  9 .debug_frame  000003d0  00000000  00000000  00004f78  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000096d  00000000  00000000  00005340  2**0
+ 10 .debug_str    0000096d  00000000  00000000  00005348  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000ce4  00000000  00000000  00005cad  2**0
+ 11 .debug_loc    00000ce4  00000000  00000000  00005cb5  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000158  00000000  00000000  00006991  2**0
+ 12 .debug_ranges 00000158  00000000  00000000  00006999  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -842,7 +842,9 @@ void ReadInputs(){
  49c:	08 95       	ret
 
 0000049e <_Z13StartControllv>:
-};
+#ifndef ROTORCONTROLL_H_
+#define ROTORCONTROLL_H_
+
 
 void StartControll(){
 	if (ButtonStart.PressRead()&&!Rotor.Started&&!Protect.Read()&&PowerReady.Read()){
@@ -927,7 +929,7 @@ void SpeedControll(){
  510:	90 e0       	ldi	r25, 0x00	; 0
  512:	27 d4       	rcall	.+2126   	; 0xd62 <_ZN5Rotor10FrequncyUpEv>
 	}
-		
+	
 	if(ButtonDown.PressRead()){
  514:	89 e9       	ldi	r24, 0x99	; 153
  516:	90 e0       	ldi	r25, 0x00	; 0
@@ -941,9 +943,10 @@ void SpeedControll(){
  524:	08 95       	ret
 
 00000526 <_Z13ModeStartTimev>:
-			
-	}	
-}
+
+#ifndef MODECONTROLL_H_
+#define MODECONTROLL_H_
+
 
 void ModeStartTime(){
  526:	df 92       	push	r13
@@ -974,8 +977,8 @@ void ModeStartTime(){
 			Mode = true;
  554:	dd 24       	eor	r13, r13
  556:	d3 94       	inc	r13
-	}	
-}
+#define MODECONTROLL_H_
+
 
 void ModeStartTime(){
 	if (Rotor.RotorStopped()){
@@ -1043,7 +1046,7 @@ void ModeStartTime(){
  5c0:	00 00       	nop
 				_delay_ms(500);
 			}
-					
+			
 			ButtonDown.Scan();
  5c2:	c7 01       	movw	r24, r14
  5c4:	c2 dd       	rcall	.-1148   	; 0x14a <_ZN6Button4ScanEv>
@@ -1072,15 +1075,15 @@ void ModeStartTime(){
  5ec:	00 c0       	rjmp	.+0      	; 0x5ee <_Z13ModeStartTimev+0xc8>
  5ee:	00 00       	nop
 				_delay_ms(500);
-			}				
-					
+			}
+			
 			ButtonStart.Scan();
  5f0:	c8 01       	movw	r24, r16
  5f2:	ab dd       	rcall	.-1194   	; 0x14a <_ZN6Button4ScanEv>
 			ButtonStart.PressRead();
  5f4:	c8 01       	movw	r24, r16
  5f6:	71 dd       	rcall	.-1310   	; 0xda <_ZN6Button9PressReadEv>
-					
+			
 			if (!ButtonUp.getpressed&&!ButtonStart.getpressed){
  5f8:	89 85       	ldd	r24, Y+9	; 0x09
  5fa:	9a 85       	ldd	r25, Y+10	; 0x0a
@@ -1276,6 +1279,9 @@ void ModeStopTime(){
  720:	08 95       	ret
 
 00000722 <_Z15ProtectControllv>:
+#ifndef PROTECTCONTROLL_H_
+#define PROTECTCONTROLL_H_
+
 
 void ProtectControll(){
 	if(Protect.Read()||!PowerReady.Read()){
@@ -1318,8 +1324,9 @@ void ProtectControll(){
  758:	08 95       	ret
 
 0000075a <_Z11LedControllv>:
-	}
-}
+
+#ifndef LEDCONTROLL_H_
+#define LEDCONTROLL_H_
 
 void LedControll(){
 	if (Rotor.Starting||Rotor.Stoping){
@@ -1386,8 +1393,9 @@ void LedControll(){
  7c6:	08 95       	ret
 
 000007c8 <main>:
-	}
-}
+
+
+
 
 int main (void) { //главная цикл программы
 	Init();
@@ -1418,9 +1426,7 @@ int main (void) { //главная цикл программы
  7da:	80 e6       	ldi	r24, 0x60	; 96
  7dc:	90 e0       	ldi	r25, 0x00	; 0
  7de:	8a d1       	rcall	.+788    	; 0xaf4 <_ZN5Rotor8ActivityEv>
-		
-		
-		
+
 		LedControll();
  7e0:	bc df       	rcall	.-136    	; 0x75a <_Z11LedControllv>
  7e2:	f3 cf       	rjmp	.-26     	; 0x7ca <main+0x2>

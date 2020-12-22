@@ -181,7 +181,13 @@
     <Compile Include="Input.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="LedControll.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ModeControll.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Output.cpp">
@@ -190,10 +196,16 @@
     <Compile Include="Output.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ProtectControll.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Rotor.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Rotor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="RotorControll.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
