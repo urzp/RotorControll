@@ -27,6 +27,13 @@ const int VT4 = PB3;
 const int VT5 = PB4;
 const int VT6 = PB5;
 
+const int CLK = PC3;
+const int DataSPI = PC4;
+const int LOAD = PC5;
+
+const int timeCTRIN = 1;
+const int timeCTR = 6;
+char dg = 8;
 
 volatile int Phasa;
 int TimePhasa = 1680;
@@ -60,43 +67,86 @@ Output BlueLed;
 Rotor Rotor;
 
 
-
-
-void phasa_1(){
-	PORTB &= ~(1<<VT5);
-	PORTB |=(1<<VT3);
-	PORTB |=(1<<VT2);
-	PORTD |= (1<<PD7);
+void SPI_init(void)
+{
+	DDRC |= ((1<<CLK)|(1<<DataSPI)|(1<<LOAD)); //ножки SPI на выход
+	PORTC &= ~((1<<CLK )|(1<<DataSPI)|(1<<LOAD)); //низкий уровень
+	
 }
 
-void phasa_2(){
-	PORTB &= ~(1<<VT2);
-	PORTB |=(1<<VT6);
-	PORTD &= ~(1<<PD7);
+void SPI_SendByte (char byte)
+{
+	PORTC |= (1<<DataSPI);
+	
+	PORTC &= ~(1<<CLK);
+	if ((byte & (1<<7)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
+	_delay_us(timeCTRIN);
+	PORTC |= (1<<CLK);
+	_delay_us(timeCTR);
+	
+	PORTC &= ~(1<<CLK);
+	if ((byte & (1<<6)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
+	_delay_us(timeCTRIN);
+	PORTC |= (1<<CLK);
+	_delay_us(timeCTR);
+	
+	PORTC &= ~(1<<CLK);
+	if ((byte & (1<<5)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
+	_delay_us(timeCTRIN);
+	PORTC |= (1<<CLK);
+	_delay_us(timeCTR);
+	
+	PORTC &= ~(1<<CLK);
+	if ((byte & (1<<4)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
+	_delay_us(timeCTRIN);
+	PORTC |= (1<<CLK);
+	_delay_us(timeCTR);
+	
+	PORTC &= ~(1<<CLK);
+	if ((byte & (1<<3)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
+	_delay_us(timeCTRIN);
+	PORTC |= (1<<CLK);
+	_delay_us(timeCTR);
+	
+	PORTC &= ~(1<<CLK);
+	if ((byte & (1<<2)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
+	_delay_us(timeCTRIN);
+	PORTC |= (1<<CLK);
+	_delay_us(timeCTR);
+	
+	PORTC &= ~(1<<CLK);
+	if ((byte & (1<<1)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
+	_delay_us(timeCTRIN);
+	PORTC |= (1<<CLK);
+	_delay_us(timeCTR);
+	
+	PORTC &= ~(1<<CLK);
+	if ((byte & (1<<0)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
+	_delay_us(timeCTRIN);
+	PORTC |= (1<<CLK);
+	_delay_us(timeCTR);
+
+	PORTC &= ~(1<<CLK);
+	PORTC |= (1<<DataSPI);
+	
 }
 
-void phasa_3(){
-	PORTB &= ~(1<<VT3);
-	PORTB |=(1<<VT1);
-	PORTD |= (1<<PD7);	
+void Send_SPI(char rg, char dt)
+{
+	PORTC &= ~(1<<LOAD);
+	SPI_SendByte(rg);
+	SPI_SendByte(dt);
+	PORTC |= (1<<LOAD);
 }
 
-void phasa_4(){
-	PORTB &= ~(1<<VT6);
-	PORTB |=(1<<VT4);
-	PORTD &= ~(1<<PD7);	
-}
-
-void phasa_5(){
-	PORTB &= ~(1<<VT1);
-	PORTB |= (1<<VT5);
-	PORTD |= (1<<PD7);	
-}
-
-void phasa_6(){
-	PORTB &= ~ (1<<VT4);
-	PORTB |= (1<<VT2);
-	PORTD &= ~(1<<PD7);	
+void Clear_Display(void)
+{
+	char i = dg;
+	// Loop until 0, but don't run for zero
+	do {
+		// Set each display in use to blank
+		Send_SPI(i, 0xF); //CHAR BLANK
+	} while (--i);
 }
 
 
@@ -153,8 +203,20 @@ void initTimer(){
 	sei();
 }
 
+void LED_Display_Init(){
+    Send_SPI(0x09, 0xFF); //включим режим декодировани€
+    Send_SPI(0x0B, dg - 5); //сколько разр€дов используем
+    Send_SPI(0x0A, 0x05); //€ркость
+    Send_SPI(0x0C, 1); //включим индикатор
+    Clear_Display();	
+	Send_SPI(0x01, 0);
+	Send_SPI(0x02, 0);
+	Send_SPI(0x03, 0);
+	Send_SPI(0x04, 0);
+}
 
 void Init(){
+
 	
 	Protect.Init('C', 0);
 	PowerReady.Init('C',1);
@@ -180,6 +242,10 @@ void Init(){
 	DDRB |= (1<<(PB5));
 	
 	DDRD |= (1<<(PD7));
+	
+	SPI_init();
+	LED_Display_Init();
+	
 	initTimer();
 	_delay_ms(100);
 	Power.On();
