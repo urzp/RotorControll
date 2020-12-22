@@ -31,11 +31,14 @@ void ReverseControll(){
 void SpeedControll(){
 	if(ButtonUp.PressRead()){
 		Rotor.FrequncyUp();
+		ModeFeq = true;
+		ModeFeqCount = 0;
 	}
 	
 	if(ButtonDown.PressRead()){
 		Rotor.FrequencyDown();
-		
+		ModeFeq = true;		
+		ModeFeqCount = 0;
 	}
 }
 

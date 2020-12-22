@@ -19,9 +19,9 @@ void Rotor::Init(){
 	maxfrequency = 200;
 	minStartStopTime = 100;
 	maxStartStopTime = 30000;
-	SetFrequency(minfrequency);
-	StaringTime =200;
-	StopingTime =200;
+	SetFrequency(workfrequency);
+	StaringTime =1000;
+	StopingTime =1000;
 	StaringTiming = 1;
 }
 

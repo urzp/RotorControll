@@ -44,7 +44,8 @@ int debounse;
 
 int IntConter=1;
 bool MovingPulse[51];
-bool Mode;
+bool Mode, ModeFeq;
+int  ModeFeqCount;
 
 int countpulse;
 int TruePulse;
@@ -70,7 +71,18 @@ Rotor Rotor;
 #include  "SPI.h"
 #include  "Display.h"
 
-
+void SendInfDisplay(){
+	if(!Rotor.RotorStopped()) {
+		LED_DisplaySend(Rotor.frequency);
+		}else{
+		if(ModeFeq){
+			LED_DisplaySend(Rotor.frequency);
+			}else{
+			LED_DisplaySend(0);
+		}
+			
+	}
+}
 
 
 ISR (TIMER1_COMPA_vect)
@@ -113,7 +125,7 @@ ISR (TIMER1_COMPA_vect)
 		Phasa=1;
 	}
 	Rotor.SetFrequency(Rotor.frequency);
-	LED_DisplaySend(Rotor.frequency);
+	SendInfDisplay();
 }
 
 
@@ -204,7 +216,10 @@ int main (void) { //главная цикл программы
 
 		LedControll();
 		
+		DidplayFeqSet();
 
+		
+		
 	}
 			
 }

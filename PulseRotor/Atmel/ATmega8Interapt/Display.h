@@ -70,5 +70,15 @@ void LED_DisplayNumberFull(volatile long n)
 	}
 }
 
+void DidplayFeqSet(){
+	if(ModeFeq){
+		ModeFeqCount++;
+		if(ModeFeqCount>10000){
+			ModeFeq=false;
+			ModeFeqCount = 0;
+		}
+	}
+}
+
 
 #endif /* DISPLAY_H_ */
