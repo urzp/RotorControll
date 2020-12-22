@@ -37,7 +37,7 @@ void LED_Display_Init(){
 }
 
 
-void LED_DisplaySend(volatile long n)
+void LED_DisplaySend(volatile long n, int point)
 {
 	char ng = 0; //переменная для минуса
 	if (n < 0)
@@ -52,7 +52,7 @@ void LED_DisplaySend(volatile long n)
 	}
 	char i = 0;
 	do {
-		Send_SPI(++i, n%10);
+		if(i==point&&i>0){Send_SPI(++i, n%10+0x080);}else{Send_SPI(++i, n%10);}
 		n /= 10;
 	} while (n);
 	if (ng) {
@@ -60,14 +60,9 @@ void LED_DisplaySend(volatile long n)
 	}
 }
 
-void LED_DisplayNumberFull(volatile long n)
+void LED_DisplayTime_ms(volatile long n)
 {
-	int i;
-	//Clear_7219();
-	for(i=0;i<dg;i++)
-	{
-		Send_SPI(i+1,(n/((long)pow(10,i)))%10);
-	}
+	LED_DisplaySend(n/100, 1);
 }
 
 void DidplayFeqSet(){

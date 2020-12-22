@@ -72,15 +72,17 @@ Rotor Rotor;
 #include  "Display.h"
 
 void SendInfDisplay(){
-	if(!Rotor.RotorStopped()) {
-		LED_DisplaySend(Rotor.frequency);
-		}else{
-		if(ModeFeq){
-			LED_DisplaySend(Rotor.frequency);
+	if (!Mode){
+		if(!Rotor.RotorStopped()) {
+			LED_DisplaySend(Rotor.frequency, 0);
 			}else{
-			LED_DisplaySend(0);
-		}
+			if(ModeFeq){
+				LED_DisplaySend(Rotor.frequency, 0);
+				}else{
+				LED_DisplaySend(0, 0);
+			}
 			
+		}
 	}
 }
 

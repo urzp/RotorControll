@@ -33,6 +33,9 @@ void ModeStartTime(){
 				_delay_ms(500);
 			}
 			
+			LED_DisplayTime_ms(Rotor.StaringTime);
+			
+			
 			ButtonStart.Scan();
 			ButtonStart.PressRead();
 			
@@ -65,6 +68,8 @@ void ModeStopTime(){
 				BlueLed.Off();
 				_delay_ms(500);
 			}
+			
+			LED_DisplayTime_ms(Rotor.StopingTime);
 			
 			ButtonStop.Scan();
 			ButtonStop.PressRead();
