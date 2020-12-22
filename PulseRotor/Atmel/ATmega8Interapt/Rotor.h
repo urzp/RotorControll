@@ -14,7 +14,7 @@ class Rotor
 {
 //variables
 public:
-	unsigned long frequency, workfrequency, minfrequency, maxfrequency;
+	unsigned long frequency, workfrequency, minfrequency, maxfrequency, minStartStopTime, maxStartStopTime;
 	bool Starting, Stoping, Reversing;
 	bool Started, Reverse;
 	unsigned long StaringTime,StaringTiming, StopingTime;
@@ -28,6 +28,11 @@ public:
 	void Activity();
 	void FrequncyUp();
 	void FrequencyDown();
+	void StartimeUp(int TimeUp);
+	void StartimeDown(int TimeDown);
+	void StoptimeUp(int TimeUp);
+	void StoptimeDown(int TimeDown);
+	bool RotorStopped();
 protected:
 private:
 

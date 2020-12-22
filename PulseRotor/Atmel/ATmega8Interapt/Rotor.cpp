@@ -17,6 +17,8 @@ void Rotor::Init(){
 	workfrequency = 50;
 	minfrequency = 40;
 	maxfrequency = 200;
+	minStartStopTime = 100;
+	maxStartStopTime = 30000;
 	SetFrequency(minfrequency);
 	StaringTime =200;
 	StopingTime =200;
@@ -93,3 +95,33 @@ void Rotor::FrequencyDown(){
 	if(workfrequency>maxfrequency){workfrequency=maxfrequency;}
 	frequency=workfrequency;
 };
+
+void Rotor::StartimeUp(int TimeUp){
+	StaringTime = StaringTime + TimeUp;
+	if (StaringTime > maxStartStopTime){ StaringTime = maxStartStopTime;}
+}
+
+void Rotor::StartimeDown(int TimeDown){
+	StaringTime = StaringTime - TimeDown;
+	if (StaringTime ==  0){ StaringTime = minStartStopTime;}
+}
+
+
+void Rotor::StoptimeUp(int TimeUp){
+	StopingTime = StopingTime + TimeUp;
+	if (StopingTime > maxStartStopTime){ StopingTime = maxStartStopTime;}
+}
+
+void Rotor::StoptimeDown(int TimeDown){
+	StopingTime = StopingTime - TimeDown;
+	if (StopingTime ==  0){ StopingTime = minStartStopTime;}
+}
+
+
+bool Rotor::RotorStopped(){
+	if(Started||Starting||Stoping){
+		return false;
+	}else{
+		return true;
+	}
+}
