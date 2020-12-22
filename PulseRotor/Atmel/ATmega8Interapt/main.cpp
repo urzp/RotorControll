@@ -67,87 +67,10 @@ Output BlueLed;
 Rotor Rotor;
 
 
-void SPI_init(void)
-{
-	DDRC |= ((1<<CLK)|(1<<DataSPI)|(1<<LOAD)); //ножки SPI на выход
-	PORTC &= ~((1<<CLK )|(1<<DataSPI)|(1<<LOAD)); //низкий уровень
-	
-}
+#include  "SPI.h"
+#include  "Display.h"
 
-void SPI_SendByte (char byte)
-{
-	PORTC |= (1<<DataSPI);
-	
-	PORTC &= ~(1<<CLK);
-	if ((byte & (1<<7)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
-	if ((byte & (1<<6)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
-	if ((byte & (1<<5)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
-	if ((byte & (1<<4)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
-	if ((byte & (1<<3)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
-	if ((byte & (1<<2)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
-	if ((byte & (1<<1)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
-	if ((byte & (1<<0)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
-	_delay_us(timeCTR);
 
-	PORTC &= ~(1<<CLK);
-	PORTC |= (1<<DataSPI);
-	
-}
-
-void Send_SPI(char rg, char dt)
-{
-	PORTC &= ~(1<<LOAD);
-	SPI_SendByte(rg);
-	SPI_SendByte(dt);
-	PORTC |= (1<<LOAD);
-}
-
-void Clear_Display(void)
-{
-	char i = dg;
-	// Loop until 0, but don't run for zero
-	do {
-		// Set each display in use to blank
-		Send_SPI(i, 0xF); //CHAR BLANK
-	} while (--i);
-}
 
 
 ISR (TIMER1_COMPA_vect)
@@ -190,6 +113,7 @@ ISR (TIMER1_COMPA_vect)
 		Phasa=1;
 	}
 	Rotor.SetFrequency(Rotor.frequency);
+	LED_DisplaySend(Rotor.frequency);
 }
 
 
@@ -203,17 +127,7 @@ void initTimer(){
 	sei();
 }
 
-void LED_Display_Init(){
-    Send_SPI(0x09, 0xFF); //включим режим декодировани€
-    Send_SPI(0x0B, dg - 5); //сколько разр€дов используем
-    Send_SPI(0x0A, 0x05); //€ркость
-    Send_SPI(0x0C, 1); //включим индикатор
-    Clear_Display();	
-	Send_SPI(0x01, 0);
-	Send_SPI(0x02, 0);
-	Send_SPI(0x03, 0);
-	Send_SPI(0x04, 0);
-}
+
 
 void Init(){
 
@@ -272,6 +186,7 @@ void ReadInputs(){
 int main (void) { //главна€ цикл программы
 	Init();
 
+	
 	while(1) {
 		ReadInputs();
 		

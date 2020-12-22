@@ -14,9 +14,9 @@ main.d main.o: .././main.cpp \
  .././delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
- .././Input.h .././Button.h .././Output.h .././Rotor.h \
- .././RotorControll.h .././ModeControll.h .././ProtectControll.h \
- .././LedControll.h
+ .././Input.h .././Button.h .././Output.h .././Rotor.h .././SPI.h \
+ .././Display.h .././RotorControll.h .././ModeControll.h \
+ .././ProtectControll.h .././LedControll.h
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -55,6 +55,10 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././Output.h:
 
 .././Rotor.h:
+
+.././SPI.h:
+
+.././Display.h:
 
 .././RotorControll.h:
 

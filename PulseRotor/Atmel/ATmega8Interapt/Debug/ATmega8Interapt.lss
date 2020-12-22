@@ -3,31 +3,31 @@ ATmega8Interapt.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00001136  00000000  00000000  00000094  2**1
+  0 .text         00001264  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000002  00800060  00001136  000011ca  2**0
+  1 .data         00000002  00800060  00001264  000012f8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000079  00800062  00800062  000011cc  2**0
+  2 .bss          00000079  00800062  00800062  000012fa  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000011cc  2**0
+  3 .comment      00000030  00000000  00000000  000012fa  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000011fc  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000132c  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000001a0  00000000  00000000  00001238  2**0
+  5 .debug_aranges 000001b0  00000000  00000000  00001368  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000028b7  00000000  00000000  000013d8  2**0
+  6 .debug_info   000029d6  00000000  00000000  00001518  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000c09  00000000  00000000  00003c8f  2**0
+  7 .debug_abbrev 00000c36  00000000  00000000  00003eee  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00001014  00000000  00000000  00004898  2**0
+  8 .debug_line   000010e2  00000000  00000000  00004b24  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000003d0  00000000  00000000  000058ac  2**2
+  9 .debug_frame  00000474  00000000  00000000  00005c08  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000009a8  00000000  00000000  00005c7c  2**0
+ 10 .debug_str    00000a04  00000000  00000000  0000607c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000011f1  00000000  00000000  00006624  2**0
+ 11 .debug_loc    000014fb  00000000  00000000  00006a80  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000150  00000000  00000000  00007815  2**0
+ 12 .debug_ranges 00000160  00000000  00000000  00007f7b  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -39,7 +39,7 @@ Disassembly of section .text:
        6:	2a c0       	rjmp	.+84     	; 0x5c <__bad_interrupt>
        8:	29 c0       	rjmp	.+82     	; 0x5c <__bad_interrupt>
        a:	28 c0       	rjmp	.+80     	; 0x5c <__bad_interrupt>
-       c:	b9 c1       	rjmp	.+882    	; 0x380 <__vector_6>
+       c:	48 c2       	rjmp	.+1168   	; 0x49e <__vector_6>
        e:	26 c0       	rjmp	.+76     	; 0x5c <__bad_interrupt>
       10:	25 c0       	rjmp	.+74     	; 0x5c <__bad_interrupt>
       12:	24 c0       	rjmp	.+72     	; 0x5c <__bad_interrupt>
@@ -65,8 +65,8 @@ Disassembly of section .text:
       32:	10 e0       	ldi	r17, 0x00	; 0
       34:	a0 e6       	ldi	r26, 0x60	; 96
       36:	b0 e0       	ldi	r27, 0x00	; 0
-      38:	e6 e3       	ldi	r30, 0x36	; 54
-      3a:	f1 e1       	ldi	r31, 0x11	; 17
+      38:	e4 e6       	ldi	r30, 0x64	; 100
+      3a:	f2 e1       	ldi	r31, 0x12	; 18
       3c:	02 c0       	rjmp	.+4      	; 0x42 <__SREG__+0x3>
       3e:	05 90       	lpm	r0, Z+
       40:	0d 92       	st	X+, r0
@@ -87,8 +87,8 @@ Disassembly of section .text:
       52:	ab 3d       	cpi	r26, 0xDB	; 219
       54:	b2 07       	cpc	r27, r18
       56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
-      58:	63 d4       	rcall	.+2246   	; 0x920 <main>
-      5a:	6b c8       	rjmp	.-3882   	; 0xfffff132 <__eeprom_end+0xff7ef132>
+      58:	de d4       	rcall	.+2492   	; 0xa16 <main>
+      5a:	02 c9       	rjmp	.-3580   	; 0xfffff260 <__eeprom_end+0xff7ef260>
 
 0000005c <__bad_interrupt>:
       5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
@@ -468,59 +468,37 @@ bool Input::Read(){
      262:	08 95       	ret
 
 00000264 <_Z8SPI_initv>:
-Rotor Rotor;
-
-
-void SPI_init(void)
-{
-	DDRC |= ((1<<CLK)|(1<<DataSPI)|(1<<LOAD)); //ножки SPI на выход
+	//Clear_7219();
+	for(i=0;i<dg;i++)
+	{
+		Send_SPI(i+1,(n/((long)pow(10,i)))%10);
+	}
+}
      264:	84 b3       	in	r24, 0x14	; 20
      266:	88 63       	ori	r24, 0x38	; 56
      268:	84 bb       	out	0x14, r24	; 20
-	PORTC &= ~((1<<CLK )|(1<<DataSPI)|(1<<LOAD)); //низкий уровень
      26a:	85 b3       	in	r24, 0x15	; 21
      26c:	87 7c       	andi	r24, 0xC7	; 199
      26e:	85 bb       	out	0x15, r24	; 21
      270:	08 95       	ret
 
 00000272 <_Z12SPI_SendBytec>:
-	
-}
-
-void SPI_SendByte (char byte)
-{
-	PORTC |= (1<<DataSPI);
      272:	ac 9a       	sbi	0x15, 4	; 21
-	
-	PORTC &= ~(1<<CLK);
      274:	ab 98       	cbi	0x15, 3	; 21
-	if ((byte & (1<<7)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
      276:	88 23       	and	r24, r24
      278:	14 f4       	brge	.+4      	; 0x27e <_Z12SPI_SendBytec+0xc>
      27a:	ac 9a       	sbi	0x15, 4	; 21
      27c:	01 c0       	rjmp	.+2      	; 0x280 <_Z12SPI_SendBytec+0xe>
      27e:	ac 98       	cbi	0x15, 4	; 21
-	#else
-		//round up by default
-		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
-	#endif
-
-	__builtin_avr_delay_cycles(__ticks_dc);
      280:	92 e0       	ldi	r25, 0x02	; 2
      282:	9a 95       	dec	r25
      284:	f1 f7       	brne	.-4      	; 0x282 <_Z12SPI_SendBytec+0x10>
      286:	00 c0       	rjmp	.+0      	; 0x288 <_Z12SPI_SendBytec+0x16>
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
      288:	ab 9a       	sbi	0x15, 3	; 21
      28a:	90 e1       	ldi	r25, 0x10	; 16
      28c:	9a 95       	dec	r25
      28e:	f1 f7       	brne	.-4      	; 0x28c <_Z12SPI_SendBytec+0x1a>
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
      290:	ab 98       	cbi	0x15, 3	; 21
-	if ((byte & (1<<6)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
      292:	86 ff       	sbrs	r24, 6
      294:	02 c0       	rjmp	.+4      	; 0x29a <_Z12SPI_SendBytec+0x28>
      296:	ac 9a       	sbi	0x15, 4	; 21
@@ -530,17 +508,11 @@ void SPI_SendByte (char byte)
      29e:	9a 95       	dec	r25
      2a0:	f1 f7       	brne	.-4      	; 0x29e <_Z12SPI_SendBytec+0x2c>
      2a2:	00 c0       	rjmp	.+0      	; 0x2a4 <_Z12SPI_SendBytec+0x32>
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
      2a4:	ab 9a       	sbi	0x15, 3	; 21
      2a6:	90 e1       	ldi	r25, 0x10	; 16
      2a8:	9a 95       	dec	r25
      2aa:	f1 f7       	brne	.-4      	; 0x2a8 <_Z12SPI_SendBytec+0x36>
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
      2ac:	ab 98       	cbi	0x15, 3	; 21
-	if ((byte & (1<<5)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
      2ae:	85 ff       	sbrs	r24, 5
      2b0:	02 c0       	rjmp	.+4      	; 0x2b6 <_Z12SPI_SendBytec+0x44>
      2b2:	ac 9a       	sbi	0x15, 4	; 21
@@ -550,17 +522,11 @@ void SPI_SendByte (char byte)
      2ba:	9a 95       	dec	r25
      2bc:	f1 f7       	brne	.-4      	; 0x2ba <_Z12SPI_SendBytec+0x48>
      2be:	00 c0       	rjmp	.+0      	; 0x2c0 <_Z12SPI_SendBytec+0x4e>
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
      2c0:	ab 9a       	sbi	0x15, 3	; 21
      2c2:	90 e1       	ldi	r25, 0x10	; 16
      2c4:	9a 95       	dec	r25
      2c6:	f1 f7       	brne	.-4      	; 0x2c4 <_Z12SPI_SendBytec+0x52>
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
      2c8:	ab 98       	cbi	0x15, 3	; 21
-	if ((byte & (1<<4)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
      2ca:	84 ff       	sbrs	r24, 4
      2cc:	02 c0       	rjmp	.+4      	; 0x2d2 <_Z12SPI_SendBytec+0x60>
      2ce:	ac 9a       	sbi	0x15, 4	; 21
@@ -570,17 +536,11 @@ void SPI_SendByte (char byte)
      2d6:	9a 95       	dec	r25
      2d8:	f1 f7       	brne	.-4      	; 0x2d6 <_Z12SPI_SendBytec+0x64>
      2da:	00 c0       	rjmp	.+0      	; 0x2dc <_Z12SPI_SendBytec+0x6a>
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
      2dc:	ab 9a       	sbi	0x15, 3	; 21
      2de:	90 e1       	ldi	r25, 0x10	; 16
      2e0:	9a 95       	dec	r25
      2e2:	f1 f7       	brne	.-4      	; 0x2e0 <_Z12SPI_SendBytec+0x6e>
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
      2e4:	ab 98       	cbi	0x15, 3	; 21
-	if ((byte & (1<<3)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
      2e6:	83 ff       	sbrs	r24, 3
      2e8:	02 c0       	rjmp	.+4      	; 0x2ee <_Z12SPI_SendBytec+0x7c>
      2ea:	ac 9a       	sbi	0x15, 4	; 21
@@ -590,17 +550,11 @@ void SPI_SendByte (char byte)
      2f2:	9a 95       	dec	r25
      2f4:	f1 f7       	brne	.-4      	; 0x2f2 <_Z12SPI_SendBytec+0x80>
      2f6:	00 c0       	rjmp	.+0      	; 0x2f8 <_Z12SPI_SendBytec+0x86>
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
      2f8:	ab 9a       	sbi	0x15, 3	; 21
      2fa:	90 e1       	ldi	r25, 0x10	; 16
      2fc:	9a 95       	dec	r25
      2fe:	f1 f7       	brne	.-4      	; 0x2fc <_Z12SPI_SendBytec+0x8a>
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
      300:	ab 98       	cbi	0x15, 3	; 21
-	if ((byte & (1<<2)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
      302:	82 ff       	sbrs	r24, 2
      304:	02 c0       	rjmp	.+4      	; 0x30a <_Z12SPI_SendBytec+0x98>
      306:	ac 9a       	sbi	0x15, 4	; 21
@@ -610,17 +564,11 @@ void SPI_SendByte (char byte)
      30e:	9a 95       	dec	r25
      310:	f1 f7       	brne	.-4      	; 0x30e <_Z12SPI_SendBytec+0x9c>
      312:	00 c0       	rjmp	.+0      	; 0x314 <_Z12SPI_SendBytec+0xa2>
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
      314:	ab 9a       	sbi	0x15, 3	; 21
      316:	90 e1       	ldi	r25, 0x10	; 16
      318:	9a 95       	dec	r25
      31a:	f1 f7       	brne	.-4      	; 0x318 <_Z12SPI_SendBytec+0xa6>
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
      31c:	ab 98       	cbi	0x15, 3	; 21
-	if ((byte & (1<<1)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
      31e:	81 ff       	sbrs	r24, 1
      320:	02 c0       	rjmp	.+4      	; 0x326 <_Z12SPI_SendBytec+0xb4>
      322:	ac 9a       	sbi	0x15, 4	; 21
@@ -630,17 +578,11 @@ void SPI_SendByte (char byte)
      32a:	9a 95       	dec	r25
      32c:	f1 f7       	brne	.-4      	; 0x32a <_Z12SPI_SendBytec+0xb8>
      32e:	00 c0       	rjmp	.+0      	; 0x330 <_Z12SPI_SendBytec+0xbe>
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
      330:	ab 9a       	sbi	0x15, 3	; 21
      332:	90 e1       	ldi	r25, 0x10	; 16
      334:	9a 95       	dec	r25
      336:	f1 f7       	brne	.-4      	; 0x334 <_Z12SPI_SendBytec+0xc2>
-	_delay_us(timeCTR);
-	
-	PORTC &= ~(1<<CLK);
      338:	ab 98       	cbi	0x15, 3	; 21
-	if ((byte & (1<<0)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
      33a:	80 ff       	sbrs	r24, 0
      33c:	02 c0       	rjmp	.+4      	; 0x342 <_Z12SPI_SendBytec+0xd0>
      33e:	ac 9a       	sbi	0x15, 4	; 21
@@ -650,2364 +592,2485 @@ void SPI_SendByte (char byte)
      346:	8a 95       	dec	r24
      348:	f1 f7       	brne	.-4      	; 0x346 <_Z12SPI_SendBytec+0xd4>
      34a:	00 c0       	rjmp	.+0      	; 0x34c <_Z12SPI_SendBytec+0xda>
-	_delay_us(timeCTRIN);
-	PORTC |= (1<<CLK);
      34c:	ab 9a       	sbi	0x15, 3	; 21
      34e:	90 e1       	ldi	r25, 0x10	; 16
      350:	9a 95       	dec	r25
      352:	f1 f7       	brne	.-4      	; 0x350 <_Z12SPI_SendBytec+0xde>
-	_delay_us(timeCTR);
-
-	PORTC &= ~(1<<CLK);
      354:	ab 98       	cbi	0x15, 3	; 21
-	PORTC |= (1<<DataSPI);
      356:	ac 9a       	sbi	0x15, 4	; 21
      358:	08 95       	ret
 
 0000035a <_Z8Send_SPIcc>:
-	
-}
-
-void Send_SPI(char rg, char dt)
-{
      35a:	cf 93       	push	r28
      35c:	c6 2f       	mov	r28, r22
-	PORTC &= ~(1<<LOAD);
      35e:	ad 98       	cbi	0x15, 5	; 21
-	SPI_SendByte(rg);
      360:	88 df       	rcall	.-240    	; 0x272 <_Z12SPI_SendBytec>
-	SPI_SendByte(dt);
      362:	8c 2f       	mov	r24, r28
      364:	86 df       	rcall	.-244    	; 0x272 <_Z12SPI_SendBytec>
-	PORTC |= (1<<LOAD);
      366:	ad 9a       	sbi	0x15, 5	; 21
-}
      368:	cf 91       	pop	r28
      36a:	08 95       	ret
 
 0000036c <_Z13Clear_Displayv>:
-
-void Clear_Display(void)
-{
      36c:	cf 93       	push	r28
-	char i = dg;
      36e:	c0 91 60 00 	lds	r28, 0x0060	; 0x800060 <__data_start>
-	// Loop until 0, but don't run for zero
-	do {
-		// Set each display in use to blank
-		Send_SPI(i, 0xF); //CHAR BLANK
      372:	6f e0       	ldi	r22, 0x0F	; 15
      374:	8c 2f       	mov	r24, r28
      376:	f1 df       	rcall	.-30     	; 0x35a <_Z8Send_SPIcc>
-
-void Clear_Display(void)
-{
-	char i = dg;
-	// Loop until 0, but don't run for zero
-	do {
      378:	c1 50       	subi	r28, 0x01	; 1
      37a:	d9 f7       	brne	.-10     	; 0x372 <_Z13Clear_Displayv+0x6>
-		// Set each display in use to blank
-		Send_SPI(i, 0xF); //CHAR BLANK
-	} while (--i);
-}
      37c:	cf 91       	pop	r28
      37e:	08 95       	ret
 
-00000380 <__vector_6>:
+00000380 <_Z16LED_Display_Initv>:
+     380:	6f ef       	ldi	r22, 0xFF	; 255
+     382:	89 e0       	ldi	r24, 0x09	; 9
+     384:	ea df       	rcall	.-44     	; 0x35a <_Z8Send_SPIcc>
+     386:	60 91 60 00 	lds	r22, 0x0060	; 0x800060 <__data_start>
+     38a:	65 50       	subi	r22, 0x05	; 5
+     38c:	8b e0       	ldi	r24, 0x0B	; 11
+     38e:	e5 df       	rcall	.-54     	; 0x35a <_Z8Send_SPIcc>
+     390:	65 e0       	ldi	r22, 0x05	; 5
+     392:	8a e0       	ldi	r24, 0x0A	; 10
+     394:	e2 df       	rcall	.-60     	; 0x35a <_Z8Send_SPIcc>
+     396:	61 e0       	ldi	r22, 0x01	; 1
+     398:	8c e0       	ldi	r24, 0x0C	; 12
+     39a:	df df       	rcall	.-66     	; 0x35a <_Z8Send_SPIcc>
+     39c:	e7 df       	rcall	.-50     	; 0x36c <_Z13Clear_Displayv>
+     39e:	60 e0       	ldi	r22, 0x00	; 0
+     3a0:	81 e0       	ldi	r24, 0x01	; 1
+     3a2:	db df       	rcall	.-74     	; 0x35a <_Z8Send_SPIcc>
+     3a4:	60 e0       	ldi	r22, 0x00	; 0
+     3a6:	82 e0       	ldi	r24, 0x02	; 2
+     3a8:	d8 df       	rcall	.-80     	; 0x35a <_Z8Send_SPIcc>
+     3aa:	60 e0       	ldi	r22, 0x00	; 0
+     3ac:	83 e0       	ldi	r24, 0x03	; 3
+     3ae:	d5 df       	rcall	.-86     	; 0x35a <_Z8Send_SPIcc>
+     3b0:	60 e0       	ldi	r22, 0x00	; 0
+     3b2:	84 e0       	ldi	r24, 0x04	; 4
+     3b4:	d2 df       	rcall	.-92     	; 0x35a <_Z8Send_SPIcc>
+     3b6:	08 95       	ret
+
+000003b8 <_Z15LED_DisplaySendl>:
+     3b8:	bf 92       	push	r11
+     3ba:	cf 92       	push	r12
+     3bc:	df 92       	push	r13
+     3be:	ef 92       	push	r14
+     3c0:	ff 92       	push	r15
+     3c2:	0f 93       	push	r16
+     3c4:	1f 93       	push	r17
+     3c6:	cf 93       	push	r28
+     3c8:	df 93       	push	r29
+     3ca:	00 d0       	rcall	.+0      	; 0x3cc <_Z15LED_DisplaySendl+0x14>
+     3cc:	00 d0       	rcall	.+0      	; 0x3ce <_Z15LED_DisplaySendl+0x16>
+     3ce:	cd b7       	in	r28, 0x3d	; 61
+     3d0:	de b7       	in	r29, 0x3e	; 62
+     3d2:	69 83       	std	Y+1, r22	; 0x01
+     3d4:	7a 83       	std	Y+2, r23	; 0x02
+     3d6:	8b 83       	std	Y+3, r24	; 0x03
+     3d8:	9c 83       	std	Y+4, r25	; 0x04
+     3da:	89 81       	ldd	r24, Y+1	; 0x01
+     3dc:	9a 81       	ldd	r25, Y+2	; 0x02
+     3de:	ab 81       	ldd	r26, Y+3	; 0x03
+     3e0:	bc 81       	ldd	r27, Y+4	; 0x04
+     3e2:	bb 23       	and	r27, r27
+     3e4:	94 f4       	brge	.+36     	; 0x40a <__LOCK_REGION_LENGTH__+0xa>
+     3e6:	89 81       	ldd	r24, Y+1	; 0x01
+     3e8:	9a 81       	ldd	r25, Y+2	; 0x02
+     3ea:	ab 81       	ldd	r26, Y+3	; 0x03
+     3ec:	bc 81       	ldd	r27, Y+4	; 0x04
+     3ee:	b0 95       	com	r27
+     3f0:	a0 95       	com	r26
+     3f2:	90 95       	com	r25
+     3f4:	81 95       	neg	r24
+     3f6:	9f 4f       	sbci	r25, 0xFF	; 255
+     3f8:	af 4f       	sbci	r26, 0xFF	; 255
+     3fa:	bf 4f       	sbci	r27, 0xFF	; 255
+     3fc:	89 83       	std	Y+1, r24	; 0x01
+     3fe:	9a 83       	std	Y+2, r25	; 0x02
+     400:	ab 83       	std	Y+3, r26	; 0x03
+     402:	bc 83       	std	Y+4, r27	; 0x04
+     404:	bb 24       	eor	r11, r11
+     406:	b3 94       	inc	r11
+     408:	01 c0       	rjmp	.+2      	; 0x40c <__LOCK_REGION_LENGTH__+0xc>
+     40a:	b1 2c       	mov	r11, r1
+     40c:	af df       	rcall	.-162    	; 0x36c <_Z13Clear_Displayv>
+     40e:	89 81       	ldd	r24, Y+1	; 0x01
+     410:	9a 81       	ldd	r25, Y+2	; 0x02
+     412:	ab 81       	ldd	r26, Y+3	; 0x03
+     414:	bc 81       	ldd	r27, Y+4	; 0x04
+     416:	89 2b       	or	r24, r25
+     418:	8a 2b       	or	r24, r26
+     41a:	8b 2b       	or	r24, r27
+     41c:	21 f4       	brne	.+8      	; 0x426 <__LOCK_REGION_LENGTH__+0x26>
+     41e:	60 e0       	ldi	r22, 0x00	; 0
+     420:	81 e0       	ldi	r24, 0x01	; 1
+     422:	9b df       	rcall	.-202    	; 0x35a <_Z8Send_SPIcc>
+     424:	2e c0       	rjmp	.+92     	; 0x482 <__stack+0x23>
+     426:	00 e0       	ldi	r16, 0x00	; 0
+     428:	0f 2e       	mov	r0, r31
+     42a:	fa e0       	ldi	r31, 0x0A	; 10
+     42c:	cf 2e       	mov	r12, r31
+     42e:	d1 2c       	mov	r13, r1
+     430:	e1 2c       	mov	r14, r1
+     432:	f1 2c       	mov	r15, r1
+     434:	f0 2d       	mov	r31, r0
+     436:	01 c0       	rjmp	.+2      	; 0x43a <__LOCK_REGION_LENGTH__+0x3a>
+     438:	01 2f       	mov	r16, r17
+     43a:	69 81       	ldd	r22, Y+1	; 0x01
+     43c:	7a 81       	ldd	r23, Y+2	; 0x02
+     43e:	8b 81       	ldd	r24, Y+3	; 0x03
+     440:	9c 81       	ldd	r25, Y+4	; 0x04
+     442:	11 e0       	ldi	r17, 0x01	; 1
+     444:	10 0f       	add	r17, r16
+     446:	a7 01       	movw	r20, r14
+     448:	96 01       	movw	r18, r12
+     44a:	d8 d6       	rcall	.+3504   	; 0x11fc <__divmodsi4>
+     44c:	81 2f       	mov	r24, r17
+     44e:	85 df       	rcall	.-246    	; 0x35a <_Z8Send_SPIcc>
+     450:	69 81       	ldd	r22, Y+1	; 0x01
+     452:	7a 81       	ldd	r23, Y+2	; 0x02
+     454:	8b 81       	ldd	r24, Y+3	; 0x03
+     456:	9c 81       	ldd	r25, Y+4	; 0x04
+     458:	a7 01       	movw	r20, r14
+     45a:	96 01       	movw	r18, r12
+     45c:	cf d6       	rcall	.+3486   	; 0x11fc <__divmodsi4>
+     45e:	29 83       	std	Y+1, r18	; 0x01
+     460:	3a 83       	std	Y+2, r19	; 0x02
+     462:	4b 83       	std	Y+3, r20	; 0x03
+     464:	5c 83       	std	Y+4, r21	; 0x04
+     466:	89 81       	ldd	r24, Y+1	; 0x01
+     468:	9a 81       	ldd	r25, Y+2	; 0x02
+     46a:	ab 81       	ldd	r26, Y+3	; 0x03
+     46c:	bc 81       	ldd	r27, Y+4	; 0x04
+     46e:	89 2b       	or	r24, r25
+     470:	8a 2b       	or	r24, r26
+     472:	8b 2b       	or	r24, r27
+     474:	09 f7       	brne	.-62     	; 0x438 <__LOCK_REGION_LENGTH__+0x38>
+     476:	bb 20       	and	r11, r11
+     478:	21 f0       	breq	.+8      	; 0x482 <__stack+0x23>
+     47a:	6a e0       	ldi	r22, 0x0A	; 10
+     47c:	82 e0       	ldi	r24, 0x02	; 2
+     47e:	80 0f       	add	r24, r16
+     480:	6c df       	rcall	.-296    	; 0x35a <_Z8Send_SPIcc>
+     482:	0f 90       	pop	r0
+     484:	0f 90       	pop	r0
+     486:	0f 90       	pop	r0
+     488:	0f 90       	pop	r0
+     48a:	df 91       	pop	r29
+     48c:	cf 91       	pop	r28
+     48e:	1f 91       	pop	r17
+     490:	0f 91       	pop	r16
+     492:	ff 90       	pop	r15
+     494:	ef 90       	pop	r14
+     496:	df 90       	pop	r13
+     498:	cf 90       	pop	r12
+     49a:	bf 90       	pop	r11
+     49c:	08 95       	ret
+
+0000049e <__vector_6>:
+
+
 
 
 ISR (TIMER1_COMPA_vect)
 {
-     380:	1f 92       	push	r1
-     382:	0f 92       	push	r0
-     384:	0f b6       	in	r0, 0x3f	; 63
-     386:	0f 92       	push	r0
-     388:	11 24       	eor	r1, r1
-     38a:	2f 93       	push	r18
-     38c:	3f 93       	push	r19
-     38e:	4f 93       	push	r20
-     390:	5f 93       	push	r21
-     392:	6f 93       	push	r22
-     394:	7f 93       	push	r23
-     396:	8f 93       	push	r24
-     398:	9f 93       	push	r25
-     39a:	af 93       	push	r26
-     39c:	bf 93       	push	r27
-     39e:	ef 93       	push	r30
-     3a0:	ff 93       	push	r31
+     49e:	1f 92       	push	r1
+     4a0:	0f 92       	push	r0
+     4a2:	0f b6       	in	r0, 0x3f	; 63
+     4a4:	0f 92       	push	r0
+     4a6:	11 24       	eor	r1, r1
+     4a8:	2f 93       	push	r18
+     4aa:	3f 93       	push	r19
+     4ac:	4f 93       	push	r20
+     4ae:	5f 93       	push	r21
+     4b0:	6f 93       	push	r22
+     4b2:	7f 93       	push	r23
+     4b4:	8f 93       	push	r24
+     4b6:	9f 93       	push	r25
+     4b8:	af 93       	push	r26
+     4ba:	bf 93       	push	r27
+     4bc:	cf 93       	push	r28
+     4be:	df 93       	push	r29
+     4c0:	ef 93       	push	r30
+     4c2:	ff 93       	push	r31
 	if (Rotor.Started||Rotor.Starting){
-     3a2:	80 91 7d 00 	lds	r24, 0x007D	; 0x80007d <__data_end+0x1b>
-     3a6:	81 11       	cpse	r24, r1
-     3a8:	05 c0       	rjmp	.+10     	; 0x3b4 <__vector_6+0x34>
-     3aa:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__data_end+0x18>
-     3ae:	88 23       	and	r24, r24
-     3b0:	09 f4       	brne	.+2      	; 0x3b4 <__vector_6+0x34>
-     3b2:	66 c0       	rjmp	.+204    	; 0x480 <__stack+0x21>
+     4c4:	80 91 7d 00 	lds	r24, 0x007D	; 0x80007d <__data_end+0x1b>
+     4c8:	81 11       	cpse	r24, r1
+     4ca:	05 c0       	rjmp	.+10     	; 0x4d6 <__vector_6+0x38>
+     4cc:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__data_end+0x18>
+     4d0:	88 23       	and	r24, r24
+     4d2:	09 f4       	brne	.+2      	; 0x4d6 <__vector_6+0x38>
+     4d4:	66 c0       	rjmp	.+204    	; 0x5a2 <__vector_6+0x104>
 		
 		if (!Rotor.Reverse){
-     3b4:	80 91 7e 00 	lds	r24, 0x007E	; 0x80007e <__data_end+0x1c>
-     3b8:	81 11       	cpse	r24, r1
-     3ba:	27 c0       	rjmp	.+78     	; 0x40a <__LOCK_REGION_LENGTH__+0xa>
+     4d6:	80 91 7e 00 	lds	r24, 0x007E	; 0x80007e <__data_end+0x1c>
+     4da:	81 11       	cpse	r24, r1
+     4dc:	27 c0       	rjmp	.+78     	; 0x52c <__vector_6+0x8e>
 			switch (Phasa){
-     3bc:	80 91 d9 00 	lds	r24, 0x00D9	; 0x8000d9 <Phasa>
-     3c0:	90 91 da 00 	lds	r25, 0x00DA	; 0x8000da <Phasa+0x1>
-     3c4:	83 30       	cpi	r24, 0x03	; 3
-     3c6:	91 05       	cpc	r25, r1
-     3c8:	a1 f0       	breq	.+40     	; 0x3f2 <__vector_6+0x72>
-     3ca:	34 f4       	brge	.+12     	; 0x3d8 <__vector_6+0x58>
-     3cc:	81 30       	cpi	r24, 0x01	; 1
-     3ce:	91 05       	cpc	r25, r1
-     3d0:	51 f0       	breq	.+20     	; 0x3e6 <__vector_6+0x66>
-     3d2:	02 97       	sbiw	r24, 0x02	; 2
-     3d4:	59 f0       	breq	.+22     	; 0x3ec <__vector_6+0x6c>
-     3d6:	3e c0       	rjmp	.+124    	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
-     3d8:	85 30       	cpi	r24, 0x05	; 5
-     3da:	91 05       	cpc	r25, r1
-     3dc:	81 f0       	breq	.+32     	; 0x3fe <__vector_6+0x7e>
-     3de:	64 f0       	brlt	.+24     	; 0x3f8 <__vector_6+0x78>
-     3e0:	06 97       	sbiw	r24, 0x06	; 6
-     3e2:	81 f0       	breq	.+32     	; 0x404 <__LOCK_REGION_LENGTH__+0x4>
-     3e4:	37 c0       	rjmp	.+110    	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     4de:	80 91 d9 00 	lds	r24, 0x00D9	; 0x8000d9 <Phasa>
+     4e2:	90 91 da 00 	lds	r25, 0x00DA	; 0x8000da <Phasa+0x1>
+     4e6:	83 30       	cpi	r24, 0x03	; 3
+     4e8:	91 05       	cpc	r25, r1
+     4ea:	a1 f0       	breq	.+40     	; 0x514 <__vector_6+0x76>
+     4ec:	34 f4       	brge	.+12     	; 0x4fa <__vector_6+0x5c>
+     4ee:	81 30       	cpi	r24, 0x01	; 1
+     4f0:	91 05       	cpc	r25, r1
+     4f2:	51 f0       	breq	.+20     	; 0x508 <__vector_6+0x6a>
+     4f4:	02 97       	sbiw	r24, 0x02	; 2
+     4f6:	59 f0       	breq	.+22     	; 0x50e <__vector_6+0x70>
+     4f8:	3e c0       	rjmp	.+124    	; 0x576 <__vector_6+0xd8>
+     4fa:	85 30       	cpi	r24, 0x05	; 5
+     4fc:	91 05       	cpc	r25, r1
+     4fe:	81 f0       	breq	.+32     	; 0x520 <__vector_6+0x82>
+     500:	64 f0       	brlt	.+24     	; 0x51a <__vector_6+0x7c>
+     502:	06 97       	sbiw	r24, 0x06	; 6
+     504:	81 f0       	breq	.+32     	; 0x526 <__vector_6+0x88>
+     506:	37 c0       	rjmp	.+110    	; 0x576 <__vector_6+0xd8>
 				case 1: PORTB &= ~(1<<VT5);PORTB |=(1<<VT3);break;
-     3e6:	c4 98       	cbi	0x18, 4	; 24
-     3e8:	c2 9a       	sbi	0x18, 2	; 24
-     3ea:	34 c0       	rjmp	.+104    	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     508:	c4 98       	cbi	0x18, 4	; 24
+     50a:	c2 9a       	sbi	0x18, 2	; 24
+     50c:	34 c0       	rjmp	.+104    	; 0x576 <__vector_6+0xd8>
 				case 2: PORTB &= ~(1<<VT2);PORTB |=(1<<VT6);break;
-     3ec:	c1 98       	cbi	0x18, 1	; 24
-     3ee:	c5 9a       	sbi	0x18, 5	; 24
-     3f0:	31 c0       	rjmp	.+98     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     50e:	c1 98       	cbi	0x18, 1	; 24
+     510:	c5 9a       	sbi	0x18, 5	; 24
+     512:	31 c0       	rjmp	.+98     	; 0x576 <__vector_6+0xd8>
 				case 3: PORTB &= ~(1<<VT3);PORTB |=(1<<VT1);break;
-     3f2:	c2 98       	cbi	0x18, 2	; 24
-     3f4:	c0 9a       	sbi	0x18, 0	; 24
-     3f6:	2e c0       	rjmp	.+92     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     514:	c2 98       	cbi	0x18, 2	; 24
+     516:	c0 9a       	sbi	0x18, 0	; 24
+     518:	2e c0       	rjmp	.+92     	; 0x576 <__vector_6+0xd8>
 				case 4: PORTB &= ~(1<<VT6);PORTB |=(1<<VT4);break;
-     3f8:	c5 98       	cbi	0x18, 5	; 24
-     3fa:	c3 9a       	sbi	0x18, 3	; 24
-     3fc:	2b c0       	rjmp	.+86     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     51a:	c5 98       	cbi	0x18, 5	; 24
+     51c:	c3 9a       	sbi	0x18, 3	; 24
+     51e:	2b c0       	rjmp	.+86     	; 0x576 <__vector_6+0xd8>
 				case 5: PORTB &= ~(1<<VT1);PORTB |= (1<<VT5);break;
-     3fe:	c0 98       	cbi	0x18, 0	; 24
-     400:	c4 9a       	sbi	0x18, 4	; 24
-     402:	28 c0       	rjmp	.+80     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     520:	c0 98       	cbi	0x18, 0	; 24
+     522:	c4 9a       	sbi	0x18, 4	; 24
+     524:	28 c0       	rjmp	.+80     	; 0x576 <__vector_6+0xd8>
 				case 6: PORTB &= ~(1<<VT4);PORTB |= (1<<VT2);break;
-     404:	c3 98       	cbi	0x18, 3	; 24
-     406:	c1 9a       	sbi	0x18, 1	; 24
-     408:	25 c0       	rjmp	.+74     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     526:	c3 98       	cbi	0x18, 3	; 24
+     528:	c1 9a       	sbi	0x18, 1	; 24
+     52a:	25 c0       	rjmp	.+74     	; 0x576 <__vector_6+0xd8>
 			}
 		}else{
 			switch (Phasa){
-     40a:	80 91 d9 00 	lds	r24, 0x00D9	; 0x8000d9 <Phasa>
-     40e:	90 91 da 00 	lds	r25, 0x00DA	; 0x8000da <Phasa+0x1>
-     412:	83 30       	cpi	r24, 0x03	; 3
-     414:	91 05       	cpc	r25, r1
-     416:	b1 f0       	breq	.+44     	; 0x444 <__LOCK_REGION_LENGTH__+0x44>
-     418:	34 f4       	brge	.+12     	; 0x426 <__LOCK_REGION_LENGTH__+0x26>
-     41a:	81 30       	cpi	r24, 0x01	; 1
-     41c:	91 05       	cpc	r25, r1
-     41e:	c1 f0       	breq	.+48     	; 0x450 <__LOCK_REGION_LENGTH__+0x50>
-     420:	02 97       	sbiw	r24, 0x02	; 2
-     422:	99 f0       	breq	.+38     	; 0x44a <__LOCK_REGION_LENGTH__+0x4a>
-     424:	17 c0       	rjmp	.+46     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
-     426:	85 30       	cpi	r24, 0x05	; 5
-     428:	91 05       	cpc	r25, r1
-     42a:	31 f0       	breq	.+12     	; 0x438 <__LOCK_REGION_LENGTH__+0x38>
-     42c:	44 f0       	brlt	.+16     	; 0x43e <__LOCK_REGION_LENGTH__+0x3e>
-     42e:	06 97       	sbiw	r24, 0x06	; 6
-     430:	89 f4       	brne	.+34     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     52c:	80 91 d9 00 	lds	r24, 0x00D9	; 0x8000d9 <Phasa>
+     530:	90 91 da 00 	lds	r25, 0x00DA	; 0x8000da <Phasa+0x1>
+     534:	83 30       	cpi	r24, 0x03	; 3
+     536:	91 05       	cpc	r25, r1
+     538:	b1 f0       	breq	.+44     	; 0x566 <__vector_6+0xc8>
+     53a:	34 f4       	brge	.+12     	; 0x548 <__vector_6+0xaa>
+     53c:	81 30       	cpi	r24, 0x01	; 1
+     53e:	91 05       	cpc	r25, r1
+     540:	c1 f0       	breq	.+48     	; 0x572 <__vector_6+0xd4>
+     542:	02 97       	sbiw	r24, 0x02	; 2
+     544:	99 f0       	breq	.+38     	; 0x56c <__vector_6+0xce>
+     546:	17 c0       	rjmp	.+46     	; 0x576 <__vector_6+0xd8>
+     548:	85 30       	cpi	r24, 0x05	; 5
+     54a:	91 05       	cpc	r25, r1
+     54c:	31 f0       	breq	.+12     	; 0x55a <__vector_6+0xbc>
+     54e:	44 f0       	brlt	.+16     	; 0x560 <__vector_6+0xc2>
+     550:	06 97       	sbiw	r24, 0x06	; 6
+     552:	89 f4       	brne	.+34     	; 0x576 <__vector_6+0xd8>
 				case 6: PORTB |=(1<<VT5);PORTB &= ~(1<<VT3);break;
-     432:	c4 9a       	sbi	0x18, 4	; 24
-     434:	c2 98       	cbi	0x18, 2	; 24
-     436:	0e c0       	rjmp	.+28     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     554:	c4 9a       	sbi	0x18, 4	; 24
+     556:	c2 98       	cbi	0x18, 2	; 24
+     558:	0e c0       	rjmp	.+28     	; 0x576 <__vector_6+0xd8>
 				case 5: PORTB |=(1<<VT2);PORTB &= ~(1<<VT6);break;
-     438:	c1 9a       	sbi	0x18, 1	; 24
-     43a:	c5 98       	cbi	0x18, 5	; 24
-     43c:	0b c0       	rjmp	.+22     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     55a:	c1 9a       	sbi	0x18, 1	; 24
+     55c:	c5 98       	cbi	0x18, 5	; 24
+     55e:	0b c0       	rjmp	.+22     	; 0x576 <__vector_6+0xd8>
 				case 4: PORTB |=(1<<VT3);PORTB &= ~(1<<VT1);break;
-     43e:	c2 9a       	sbi	0x18, 2	; 24
-     440:	c0 98       	cbi	0x18, 0	; 24
-     442:	08 c0       	rjmp	.+16     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     560:	c2 9a       	sbi	0x18, 2	; 24
+     562:	c0 98       	cbi	0x18, 0	; 24
+     564:	08 c0       	rjmp	.+16     	; 0x576 <__vector_6+0xd8>
 				case 3: PORTB |=(1<<VT6);PORTB &= ~(1<<VT4);break;
-     444:	c5 9a       	sbi	0x18, 5	; 24
-     446:	c3 98       	cbi	0x18, 3	; 24
-     448:	05 c0       	rjmp	.+10     	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     566:	c5 9a       	sbi	0x18, 5	; 24
+     568:	c3 98       	cbi	0x18, 3	; 24
+     56a:	05 c0       	rjmp	.+10     	; 0x576 <__vector_6+0xd8>
 				case 2: PORTB |=(1<<VT1);PORTB &= ~(1<<VT5);break;
-     44a:	c0 9a       	sbi	0x18, 0	; 24
-     44c:	c4 98       	cbi	0x18, 4	; 24
-     44e:	02 c0       	rjmp	.+4      	; 0x454 <__LOCK_REGION_LENGTH__+0x54>
+     56c:	c0 9a       	sbi	0x18, 0	; 24
+     56e:	c4 98       	cbi	0x18, 4	; 24
+     570:	02 c0       	rjmp	.+4      	; 0x576 <__vector_6+0xd8>
 				case 1: PORTB |=(1<<VT4);PORTB &= ~(1<<VT2);break;
-     450:	c3 9a       	sbi	0x18, 3	; 24
-     452:	c1 98       	cbi	0x18, 1	; 24
+     572:	c3 9a       	sbi	0x18, 3	; 24
+     574:	c1 98       	cbi	0x18, 1	; 24
 			}	
 		}
 
 		Phasa++;
-     454:	80 91 d9 00 	lds	r24, 0x00D9	; 0x8000d9 <Phasa>
-     458:	90 91 da 00 	lds	r25, 0x00DA	; 0x8000da <Phasa+0x1>
-     45c:	01 96       	adiw	r24, 0x01	; 1
-     45e:	90 93 da 00 	sts	0x00DA, r25	; 0x8000da <Phasa+0x1>
-     462:	80 93 d9 00 	sts	0x00D9, r24	; 0x8000d9 <Phasa>
+     576:	80 91 d9 00 	lds	r24, 0x00D9	; 0x8000d9 <Phasa>
+     57a:	90 91 da 00 	lds	r25, 0x00DA	; 0x8000da <Phasa+0x1>
+     57e:	01 96       	adiw	r24, 0x01	; 1
+     580:	90 93 da 00 	sts	0x00DA, r25	; 0x8000da <Phasa+0x1>
+     584:	80 93 d9 00 	sts	0x00D9, r24	; 0x8000d9 <Phasa>
 		
 		if (Phasa>6){
-     466:	80 91 d9 00 	lds	r24, 0x00D9	; 0x8000d9 <Phasa>
-     46a:	90 91 da 00 	lds	r25, 0x00DA	; 0x8000da <Phasa+0x1>
-     46e:	07 97       	sbiw	r24, 0x07	; 7
-     470:	9c f0       	brlt	.+38     	; 0x498 <__stack+0x39>
+     588:	80 91 d9 00 	lds	r24, 0x00D9	; 0x8000d9 <Phasa>
+     58c:	90 91 da 00 	lds	r25, 0x00DA	; 0x8000da <Phasa+0x1>
+     590:	07 97       	sbiw	r24, 0x07	; 7
+     592:	9c f0       	brlt	.+38     	; 0x5ba <__vector_6+0x11c>
 			Phasa=1;
-     472:	81 e0       	ldi	r24, 0x01	; 1
-     474:	90 e0       	ldi	r25, 0x00	; 0
-     476:	90 93 da 00 	sts	0x00DA, r25	; 0x8000da <Phasa+0x1>
-     47a:	80 93 d9 00 	sts	0x00D9, r24	; 0x8000d9 <Phasa>
-     47e:	0c c0       	rjmp	.+24     	; 0x498 <__stack+0x39>
+     594:	81 e0       	ldi	r24, 0x01	; 1
+     596:	90 e0       	ldi	r25, 0x00	; 0
+     598:	90 93 da 00 	sts	0x00DA, r25	; 0x8000da <Phasa+0x1>
+     59c:	80 93 d9 00 	sts	0x00D9, r24	; 0x8000d9 <Phasa>
+     5a0:	0c c0       	rjmp	.+24     	; 0x5ba <__vector_6+0x11c>
 		}
 		
 	}else{
 		PORTB &= ~(1<<VT1);
-     480:	c0 98       	cbi	0x18, 0	; 24
+     5a2:	c0 98       	cbi	0x18, 0	; 24
 		PORTB &= ~(1<<VT2);
-     482:	c1 98       	cbi	0x18, 1	; 24
+     5a4:	c1 98       	cbi	0x18, 1	; 24
 		PORTB &= ~(1<<VT3);
-     484:	c2 98       	cbi	0x18, 2	; 24
+     5a6:	c2 98       	cbi	0x18, 2	; 24
 		PORTB &= ~(1<<VT4);
-     486:	c3 98       	cbi	0x18, 3	; 24
+     5a8:	c3 98       	cbi	0x18, 3	; 24
 		PORTB &= ~(1<<VT5);
-     488:	c4 98       	cbi	0x18, 4	; 24
+     5aa:	c4 98       	cbi	0x18, 4	; 24
 		PORTB &= ~(1<<VT6);
-     48a:	c5 98       	cbi	0x18, 5	; 24
+     5ac:	c5 98       	cbi	0x18, 5	; 24
 		Phasa=1;
-     48c:	81 e0       	ldi	r24, 0x01	; 1
-     48e:	90 e0       	ldi	r25, 0x00	; 0
-     490:	90 93 da 00 	sts	0x00DA, r25	; 0x8000da <Phasa+0x1>
-     494:	80 93 d9 00 	sts	0x00D9, r24	; 0x8000d9 <Phasa>
+     5ae:	81 e0       	ldi	r24, 0x01	; 1
+     5b0:	90 e0       	ldi	r25, 0x00	; 0
+     5b2:	90 93 da 00 	sts	0x00DA, r25	; 0x8000da <Phasa+0x1>
+     5b6:	80 93 d9 00 	sts	0x00D9, r24	; 0x8000d9 <Phasa>
 	}
 	Rotor.SetFrequency(Rotor.frequency);
-     498:	60 91 62 00 	lds	r22, 0x0062	; 0x800062 <__data_end>
-     49c:	70 91 63 00 	lds	r23, 0x0063	; 0x800063 <__data_end+0x1>
-     4a0:	82 e6       	ldi	r24, 0x62	; 98
-     4a2:	90 e0       	ldi	r25, 0x00	; 0
-     4a4:	c2 d3       	rcall	.+1924   	; 0xc2a <_ZN5Rotor12SetFrequencyEi>
+     5ba:	c2 e6       	ldi	r28, 0x62	; 98
+     5bc:	d0 e0       	ldi	r29, 0x00	; 0
+     5be:	68 81       	ld	r22, Y
+     5c0:	79 81       	ldd	r23, Y+1	; 0x01
+     5c2:	ce 01       	movw	r24, r28
+     5c4:	ad d3       	rcall	.+1882   	; 0xd20 <_ZN5Rotor12SetFrequencyEi>
+	LED_DisplaySend(Rotor.frequency);
+     5c6:	68 81       	ld	r22, Y
+     5c8:	79 81       	ldd	r23, Y+1	; 0x01
+     5ca:	8a 81       	ldd	r24, Y+2	; 0x02
+     5cc:	9b 81       	ldd	r25, Y+3	; 0x03
+     5ce:	f4 de       	rcall	.-536    	; 0x3b8 <_Z15LED_DisplaySendl>
 }
-     4a6:	ff 91       	pop	r31
-     4a8:	ef 91       	pop	r30
-     4aa:	bf 91       	pop	r27
-     4ac:	af 91       	pop	r26
-     4ae:	9f 91       	pop	r25
-     4b0:	8f 91       	pop	r24
-     4b2:	7f 91       	pop	r23
-     4b4:	6f 91       	pop	r22
-     4b6:	5f 91       	pop	r21
-     4b8:	4f 91       	pop	r20
-     4ba:	3f 91       	pop	r19
-     4bc:	2f 91       	pop	r18
-     4be:	0f 90       	pop	r0
-     4c0:	0f be       	out	0x3f, r0	; 63
-     4c2:	0f 90       	pop	r0
-     4c4:	1f 90       	pop	r1
-     4c6:	18 95       	reti
+     5d0:	ff 91       	pop	r31
+     5d2:	ef 91       	pop	r30
+     5d4:	df 91       	pop	r29
+     5d6:	cf 91       	pop	r28
+     5d8:	bf 91       	pop	r27
+     5da:	af 91       	pop	r26
+     5dc:	9f 91       	pop	r25
+     5de:	8f 91       	pop	r24
+     5e0:	7f 91       	pop	r23
+     5e2:	6f 91       	pop	r22
+     5e4:	5f 91       	pop	r21
+     5e6:	4f 91       	pop	r20
+     5e8:	3f 91       	pop	r19
+     5ea:	2f 91       	pop	r18
+     5ec:	0f 90       	pop	r0
+     5ee:	0f be       	out	0x3f, r0	; 63
+     5f0:	0f 90       	pop	r0
+     5f2:	1f 90       	pop	r1
+     5f4:	18 95       	reti
 
-000004c8 <_Z9initTimerv>:
+000005f6 <_Z9initTimerv>:
 
 
 
 
 void initTimer(){
 	TCCR1B |= (1<<WGM12); // устанавливаем режим —“— (сброс по совпадению)
-     4c8:	8e b5       	in	r24, 0x2e	; 46
-     4ca:	88 60       	ori	r24, 0x08	; 8
-     4cc:	8e bd       	out	0x2e, r24	; 46
+     5f6:	8e b5       	in	r24, 0x2e	; 46
+     5f8:	88 60       	ori	r24, 0x08	; 8
+     5fa:	8e bd       	out	0x2e, r24	; 46
 	TIMSK |= (1<<OCIE1A);	//устанавливаем бит разрешени€ прерывани€ 1ого счетчика по совпадению с OCR1A(H и L)
-     4ce:	89 b7       	in	r24, 0x39	; 57
-     4d0:	80 61       	ori	r24, 0x10	; 16
-     4d2:	89 bf       	out	0x39, r24	; 57
+     5fc:	89 b7       	in	r24, 0x39	; 57
+     5fe:	80 61       	ori	r24, 0x10	; 16
+     600:	89 bf       	out	0x39, r24	; 57
 	TCCR1B |= (1<<CS12);//установим делитель.
-     4d4:	8e b5       	in	r24, 0x2e	; 46
-     4d6:	84 60       	ori	r24, 0x04	; 4
-     4d8:	8e bd       	out	0x2e, r24	; 46
+     602:	8e b5       	in	r24, 0x2e	; 46
+     604:	84 60       	ori	r24, 0x04	; 4
+     606:	8e bd       	out	0x2e, r24	; 46
 	sei();
-     4da:	78 94       	sei
-     4dc:	08 95       	ret
+     608:	78 94       	sei
+     60a:	08 95       	ret
 
-000004de <_Z16LED_Display_Initv>:
-}
+0000060c <_Z4Initv>:
 
-void LED_Display_Init(){
-    Send_SPI(0x09, 0xFF); //включим режим декодировани€
-     4de:	6f ef       	ldi	r22, 0xFF	; 255
-     4e0:	89 e0       	ldi	r24, 0x09	; 9
-     4e2:	3b df       	rcall	.-394    	; 0x35a <_Z8Send_SPIcc>
-    Send_SPI(0x0B, dg - 5); //сколько разр€дов используем
-     4e4:	60 91 60 00 	lds	r22, 0x0060	; 0x800060 <__data_start>
-     4e8:	65 50       	subi	r22, 0x05	; 5
-     4ea:	8b e0       	ldi	r24, 0x0B	; 11
-     4ec:	36 df       	rcall	.-404    	; 0x35a <_Z8Send_SPIcc>
-    Send_SPI(0x0A, 0x05); //€ркость
-     4ee:	65 e0       	ldi	r22, 0x05	; 5
-     4f0:	8a e0       	ldi	r24, 0x0A	; 10
-     4f2:	33 df       	rcall	.-410    	; 0x35a <_Z8Send_SPIcc>
-    Send_SPI(0x0C, 1); //включим индикатор
-     4f4:	61 e0       	ldi	r22, 0x01	; 1
-     4f6:	8c e0       	ldi	r24, 0x0C	; 12
-     4f8:	30 df       	rcall	.-416    	; 0x35a <_Z8Send_SPIcc>
-    Clear_Display();	
-     4fa:	38 df       	rcall	.-400    	; 0x36c <_Z13Clear_Displayv>
-	Send_SPI(0x01, 0);
-     4fc:	60 e0       	ldi	r22, 0x00	; 0
-     4fe:	81 e0       	ldi	r24, 0x01	; 1
-     500:	2c df       	rcall	.-424    	; 0x35a <_Z8Send_SPIcc>
-	Send_SPI(0x02, 0);
-     502:	60 e0       	ldi	r22, 0x00	; 0
-     504:	82 e0       	ldi	r24, 0x02	; 2
-     506:	29 df       	rcall	.-430    	; 0x35a <_Z8Send_SPIcc>
-	Send_SPI(0x03, 0);
-     508:	60 e0       	ldi	r22, 0x00	; 0
-     50a:	83 e0       	ldi	r24, 0x03	; 3
-     50c:	26 df       	rcall	.-436    	; 0x35a <_Z8Send_SPIcc>
-	Send_SPI(0x04, 0);
-     50e:	60 e0       	ldi	r22, 0x00	; 0
-     510:	84 e0       	ldi	r24, 0x04	; 4
-     512:	23 df       	rcall	.-442    	; 0x35a <_Z8Send_SPIcc>
-     514:	08 95       	ret
-
-00000516 <_Z4Initv>:
-}
 
 void Init(){
 
 	
 	Protect.Init('C', 0);
-     516:	40 e0       	ldi	r20, 0x00	; 0
-     518:	50 e0       	ldi	r21, 0x00	; 0
-     51a:	63 e4       	ldi	r22, 0x43	; 67
-     51c:	85 ed       	ldi	r24, 0xD5	; 213
-     51e:	90 e0       	ldi	r25, 0x00	; 0
-     520:	3a de       	rcall	.-908    	; 0x196 <_ZN5Input4InitEci>
+     60c:	40 e0       	ldi	r20, 0x00	; 0
+     60e:	50 e0       	ldi	r21, 0x00	; 0
+     610:	63 e4       	ldi	r22, 0x43	; 67
+     612:	85 ed       	ldi	r24, 0xD5	; 213
+     614:	90 e0       	ldi	r25, 0x00	; 0
+     616:	bf dd       	rcall	.-1154   	; 0x196 <_ZN5Input4InitEci>
 	PowerReady.Init('C',1);
-     522:	41 e0       	ldi	r20, 0x01	; 1
-     524:	50 e0       	ldi	r21, 0x00	; 0
-     526:	63 e4       	ldi	r22, 0x43	; 67
-     528:	82 ed       	ldi	r24, 0xD2	; 210
-     52a:	90 e0       	ldi	r25, 0x00	; 0
-     52c:	34 de       	rcall	.-920    	; 0x196 <_ZN5Input4InitEci>
+     618:	41 e0       	ldi	r20, 0x01	; 1
+     61a:	50 e0       	ldi	r21, 0x00	; 0
+     61c:	63 e4       	ldi	r22, 0x43	; 67
+     61e:	82 ed       	ldi	r24, 0xD2	; 210
+     620:	90 e0       	ldi	r25, 0x00	; 0
+     622:	b9 dd       	rcall	.-1166   	; 0x196 <_ZN5Input4InitEci>
 	
 	ButtonStop.Init('D',0);
-     52e:	40 e0       	ldi	r20, 0x00	; 0
-     530:	50 e0       	ldi	r21, 0x00	; 0
-     532:	64 e4       	ldi	r22, 0x44	; 68
-     534:	87 ec       	ldi	r24, 0xC7	; 199
-     536:	90 e0       	ldi	r25, 0x00	; 0
-     538:	92 dd       	rcall	.-1244   	; 0x5e <_ZN6Button4InitEci>
+     624:	40 e0       	ldi	r20, 0x00	; 0
+     626:	50 e0       	ldi	r21, 0x00	; 0
+     628:	64 e4       	ldi	r22, 0x44	; 68
+     62a:	87 ec       	ldi	r24, 0xC7	; 199
+     62c:	90 e0       	ldi	r25, 0x00	; 0
+     62e:	17 dd       	rcall	.-1490   	; 0x5e <_ZN6Button4InitEci>
 	ButtonStart.Init('D',1);
-     53a:	41 e0       	ldi	r20, 0x01	; 1
-     53c:	50 e0       	ldi	r21, 0x00	; 0
-     53e:	64 e4       	ldi	r22, 0x44	; 68
-     540:	8c eb       	ldi	r24, 0xBC	; 188
-     542:	90 e0       	ldi	r25, 0x00	; 0
-     544:	8c dd       	rcall	.-1256   	; 0x5e <_ZN6Button4InitEci>
+     630:	41 e0       	ldi	r20, 0x01	; 1
+     632:	50 e0       	ldi	r21, 0x00	; 0
+     634:	64 e4       	ldi	r22, 0x44	; 68
+     636:	8c eb       	ldi	r24, 0xBC	; 188
+     638:	90 e0       	ldi	r25, 0x00	; 0
+     63a:	11 dd       	rcall	.-1502   	; 0x5e <_ZN6Button4InitEci>
 	ButtonReverse.Init('D',2);
-     546:	42 e0       	ldi	r20, 0x02	; 2
-     548:	50 e0       	ldi	r21, 0x00	; 0
-     54a:	64 e4       	ldi	r22, 0x44	; 68
-     54c:	81 eb       	ldi	r24, 0xB1	; 177
-     54e:	90 e0       	ldi	r25, 0x00	; 0
-     550:	86 dd       	rcall	.-1268   	; 0x5e <_ZN6Button4InitEci>
+     63c:	42 e0       	ldi	r20, 0x02	; 2
+     63e:	50 e0       	ldi	r21, 0x00	; 0
+     640:	64 e4       	ldi	r22, 0x44	; 68
+     642:	81 eb       	ldi	r24, 0xB1	; 177
+     644:	90 e0       	ldi	r25, 0x00	; 0
+     646:	0b dd       	rcall	.-1514   	; 0x5e <_ZN6Button4InitEci>
 	ButtonUp.Init('D',4);
-     552:	44 e0       	ldi	r20, 0x04	; 4
-     554:	50 e0       	ldi	r21, 0x00	; 0
-     556:	64 e4       	ldi	r22, 0x44	; 68
-     558:	86 ea       	ldi	r24, 0xA6	; 166
-     55a:	90 e0       	ldi	r25, 0x00	; 0
-     55c:	80 dd       	rcall	.-1280   	; 0x5e <_ZN6Button4InitEci>
+     648:	44 e0       	ldi	r20, 0x04	; 4
+     64a:	50 e0       	ldi	r21, 0x00	; 0
+     64c:	64 e4       	ldi	r22, 0x44	; 68
+     64e:	86 ea       	ldi	r24, 0xA6	; 166
+     650:	90 e0       	ldi	r25, 0x00	; 0
+     652:	05 dd       	rcall	.-1526   	; 0x5e <_ZN6Button4InitEci>
 	ButtonDown.Init('D',3);
-     55e:	43 e0       	ldi	r20, 0x03	; 3
-     560:	50 e0       	ldi	r21, 0x00	; 0
-     562:	64 e4       	ldi	r22, 0x44	; 68
-     564:	8b e9       	ldi	r24, 0x9B	; 155
-     566:	90 e0       	ldi	r25, 0x00	; 0
-     568:	7a dd       	rcall	.-1292   	; 0x5e <_ZN6Button4InitEci>
+     654:	43 e0       	ldi	r20, 0x03	; 3
+     656:	50 e0       	ldi	r21, 0x00	; 0
+     658:	64 e4       	ldi	r22, 0x44	; 68
+     65a:	8b e9       	ldi	r24, 0x9B	; 155
+     65c:	90 e0       	ldi	r25, 0x00	; 0
+     65e:	ff dc       	rcall	.-1538   	; 0x5e <_ZN6Button4InitEci>
 	
 	Power.Init('C',2, false);
-     56a:	20 e0       	ldi	r18, 0x00	; 0
-     56c:	42 e0       	ldi	r20, 0x02	; 2
-     56e:	50 e0       	ldi	r21, 0x00	; 0
-     570:	63 e4       	ldi	r22, 0x43	; 67
-     572:	87 e9       	ldi	r24, 0x97	; 151
-     574:	90 e0       	ldi	r25, 0x00	; 0
-     576:	e2 d1       	rcall	.+964    	; 0x93c <_ZN6Output4InitEcib>
+     660:	20 e0       	ldi	r18, 0x00	; 0
+     662:	42 e0       	ldi	r20, 0x02	; 2
+     664:	50 e0       	ldi	r21, 0x00	; 0
+     666:	63 e4       	ldi	r22, 0x43	; 67
+     668:	87 e9       	ldi	r24, 0x97	; 151
+     66a:	90 e0       	ldi	r25, 0x00	; 0
+     66c:	e2 d1       	rcall	.+964    	; 0xa32 <_ZN6Output4InitEcib>
 	GreenLed.Init('B',6, true);
-     578:	21 e0       	ldi	r18, 0x01	; 1
-     57a:	46 e0       	ldi	r20, 0x06	; 6
-     57c:	50 e0       	ldi	r21, 0x00	; 0
-     57e:	62 e4       	ldi	r22, 0x42	; 66
-     580:	83 e9       	ldi	r24, 0x93	; 147
-     582:	90 e0       	ldi	r25, 0x00	; 0
-     584:	db d1       	rcall	.+950    	; 0x93c <_ZN6Output4InitEcib>
+     66e:	21 e0       	ldi	r18, 0x01	; 1
+     670:	46 e0       	ldi	r20, 0x06	; 6
+     672:	50 e0       	ldi	r21, 0x00	; 0
+     674:	62 e4       	ldi	r22, 0x42	; 66
+     676:	83 e9       	ldi	r24, 0x93	; 147
+     678:	90 e0       	ldi	r25, 0x00	; 0
+     67a:	db d1       	rcall	.+950    	; 0xa32 <_ZN6Output4InitEcib>
 	RedLed.Init('B',7, true);
-     586:	21 e0       	ldi	r18, 0x01	; 1
-     588:	47 e0       	ldi	r20, 0x07	; 7
-     58a:	50 e0       	ldi	r21, 0x00	; 0
-     58c:	62 e4       	ldi	r22, 0x42	; 66
-     58e:	8f e8       	ldi	r24, 0x8F	; 143
-     590:	90 e0       	ldi	r25, 0x00	; 0
-     592:	d4 d1       	rcall	.+936    	; 0x93c <_ZN6Output4InitEcib>
+     67c:	21 e0       	ldi	r18, 0x01	; 1
+     67e:	47 e0       	ldi	r20, 0x07	; 7
+     680:	50 e0       	ldi	r21, 0x00	; 0
+     682:	62 e4       	ldi	r22, 0x42	; 66
+     684:	8f e8       	ldi	r24, 0x8F	; 143
+     686:	90 e0       	ldi	r25, 0x00	; 0
+     688:	d4 d1       	rcall	.+936    	; 0xa32 <_ZN6Output4InitEcib>
 	BlueLed.Init('D',5,true);
-     594:	21 e0       	ldi	r18, 0x01	; 1
-     596:	45 e0       	ldi	r20, 0x05	; 5
-     598:	50 e0       	ldi	r21, 0x00	; 0
-     59a:	64 e4       	ldi	r22, 0x44	; 68
-     59c:	8b e8       	ldi	r24, 0x8B	; 139
-     59e:	90 e0       	ldi	r25, 0x00	; 0
-     5a0:	cd d1       	rcall	.+922    	; 0x93c <_ZN6Output4InitEcib>
+     68a:	21 e0       	ldi	r18, 0x01	; 1
+     68c:	45 e0       	ldi	r20, 0x05	; 5
+     68e:	50 e0       	ldi	r21, 0x00	; 0
+     690:	64 e4       	ldi	r22, 0x44	; 68
+     692:	8b e8       	ldi	r24, 0x8B	; 139
+     694:	90 e0       	ldi	r25, 0x00	; 0
+     696:	cd d1       	rcall	.+922    	; 0xa32 <_ZN6Output4InitEcib>
 	
 	Rotor.Init();
-     5a2:	82 e6       	ldi	r24, 0x62	; 98
-     5a4:	90 e0       	ldi	r25, 0x00	; 0
-     5a6:	fb d2       	rcall	.+1526   	; 0xb9e <_ZN5Rotor4InitEv>
+     698:	82 e6       	ldi	r24, 0x62	; 98
+     69a:	90 e0       	ldi	r25, 0x00	; 0
+     69c:	fb d2       	rcall	.+1526   	; 0xc94 <_ZN5Rotor4InitEv>
 	
 	DDRB |= (1<<(PB0));
-     5a8:	b8 9a       	sbi	0x17, 0	; 23
+     69e:	b8 9a       	sbi	0x17, 0	; 23
 	DDRB |= (1<<(PB1));
-     5aa:	b9 9a       	sbi	0x17, 1	; 23
+     6a0:	b9 9a       	sbi	0x17, 1	; 23
 	DDRB |= (1<<(PB2));
-     5ac:	ba 9a       	sbi	0x17, 2	; 23
+     6a2:	ba 9a       	sbi	0x17, 2	; 23
 	DDRB |= (1<<(PB3));
-     5ae:	bb 9a       	sbi	0x17, 3	; 23
+     6a4:	bb 9a       	sbi	0x17, 3	; 23
 	DDRB |= (1<<(PB4));
-     5b0:	bc 9a       	sbi	0x17, 4	; 23
+     6a6:	bc 9a       	sbi	0x17, 4	; 23
 	DDRB |= (1<<(PB5));
-     5b2:	bd 9a       	sbi	0x17, 5	; 23
+     6a8:	bd 9a       	sbi	0x17, 5	; 23
 	
 	DDRD |= (1<<(PD7));
-     5b4:	8f 9a       	sbi	0x11, 7	; 17
+     6aa:	8f 9a       	sbi	0x11, 7	; 17
 	
 	SPI_init();
-     5b6:	56 de       	rcall	.-852    	; 0x264 <_Z8SPI_initv>
+     6ac:	db dd       	rcall	.-1098   	; 0x264 <_Z8SPI_initv>
 	LED_Display_Init();
-     5b8:	92 df       	rcall	.-220    	; 0x4de <_Z16LED_Display_Initv>
+     6ae:	68 de       	rcall	.-816    	; 0x380 <_Z16LED_Display_Initv>
 	
 	initTimer();
-     5ba:	86 df       	rcall	.-244    	; 0x4c8 <_Z9initTimerv>
+     6b0:	a2 df       	rcall	.-188    	; 0x5f6 <_Z9initTimerv>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-     5bc:	2f ef       	ldi	r18, 0xFF	; 255
-     5be:	80 e7       	ldi	r24, 0x70	; 112
-     5c0:	92 e0       	ldi	r25, 0x02	; 2
-     5c2:	21 50       	subi	r18, 0x01	; 1
-     5c4:	80 40       	sbci	r24, 0x00	; 0
-     5c6:	90 40       	sbci	r25, 0x00	; 0
-     5c8:	e1 f7       	brne	.-8      	; 0x5c2 <_Z4Initv+0xac>
-     5ca:	00 c0       	rjmp	.+0      	; 0x5cc <_Z4Initv+0xb6>
-     5cc:	00 00       	nop
+     6b2:	2f ef       	ldi	r18, 0xFF	; 255
+     6b4:	80 e7       	ldi	r24, 0x70	; 112
+     6b6:	92 e0       	ldi	r25, 0x02	; 2
+     6b8:	21 50       	subi	r18, 0x01	; 1
+     6ba:	80 40       	sbci	r24, 0x00	; 0
+     6bc:	90 40       	sbci	r25, 0x00	; 0
+     6be:	e1 f7       	brne	.-8      	; 0x6b8 <_Z4Initv+0xac>
+     6c0:	00 c0       	rjmp	.+0      	; 0x6c2 <_Z4Initv+0xb6>
+     6c2:	00 00       	nop
 	_delay_ms(100);
 	Power.On();
-     5ce:	87 e9       	ldi	r24, 0x97	; 151
-     5d0:	90 e0       	ldi	r25, 0x00	; 0
-     5d2:	85 d2       	rcall	.+1290   	; 0xade <_ZN6Output2OnEv>
-     5d4:	08 95       	ret
+     6c4:	87 e9       	ldi	r24, 0x97	; 151
+     6c6:	90 e0       	ldi	r25, 0x00	; 0
+     6c8:	85 d2       	rcall	.+1290   	; 0xbd4 <_ZN6Output2OnEv>
+     6ca:	08 95       	ret
 
-000005d6 <_Z10ReadInputsv>:
+000006cc <_Z10ReadInputsv>:
 }
 
 void ReadInputs(){
 	ButtonStop.Scan();
-     5d6:	87 ec       	ldi	r24, 0xC7	; 199
-     5d8:	90 e0       	ldi	r25, 0x00	; 0
-     5da:	b7 dd       	rcall	.-1170   	; 0x14a <_ZN6Button4ScanEv>
+     6cc:	87 ec       	ldi	r24, 0xC7	; 199
+     6ce:	90 e0       	ldi	r25, 0x00	; 0
+     6d0:	3c dd       	rcall	.-1416   	; 0x14a <_ZN6Button4ScanEv>
 	ButtonStart.Scan();
-     5dc:	8c eb       	ldi	r24, 0xBC	; 188
-     5de:	90 e0       	ldi	r25, 0x00	; 0
-     5e0:	b4 dd       	rcall	.-1176   	; 0x14a <_ZN6Button4ScanEv>
+     6d2:	8c eb       	ldi	r24, 0xBC	; 188
+     6d4:	90 e0       	ldi	r25, 0x00	; 0
+     6d6:	39 dd       	rcall	.-1422   	; 0x14a <_ZN6Button4ScanEv>
 	ButtonReverse.Scan();
-     5e2:	81 eb       	ldi	r24, 0xB1	; 177
-     5e4:	90 e0       	ldi	r25, 0x00	; 0
-     5e6:	b1 dd       	rcall	.-1182   	; 0x14a <_ZN6Button4ScanEv>
+     6d8:	81 eb       	ldi	r24, 0xB1	; 177
+     6da:	90 e0       	ldi	r25, 0x00	; 0
+     6dc:	36 dd       	rcall	.-1428   	; 0x14a <_ZN6Button4ScanEv>
 	ButtonUp.Scan();
-     5e8:	86 ea       	ldi	r24, 0xA6	; 166
-     5ea:	90 e0       	ldi	r25, 0x00	; 0
-     5ec:	ae dd       	rcall	.-1188   	; 0x14a <_ZN6Button4ScanEv>
+     6de:	86 ea       	ldi	r24, 0xA6	; 166
+     6e0:	90 e0       	ldi	r25, 0x00	; 0
+     6e2:	33 dd       	rcall	.-1434   	; 0x14a <_ZN6Button4ScanEv>
 	ButtonDown.Scan();
-     5ee:	8b e9       	ldi	r24, 0x9B	; 155
-     5f0:	90 e0       	ldi	r25, 0x00	; 0
-     5f2:	ab dd       	rcall	.-1194   	; 0x14a <_ZN6Button4ScanEv>
-     5f4:	08 95       	ret
+     6e4:	8b e9       	ldi	r24, 0x9B	; 155
+     6e6:	90 e0       	ldi	r25, 0x00	; 0
+     6e8:	30 dd       	rcall	.-1440   	; 0x14a <_ZN6Button4ScanEv>
+     6ea:	08 95       	ret
 
-000005f6 <_Z13StartControllv>:
+000006ec <_Z13StartControllv>:
 #ifndef ROTORCONTROLL_H_
 #define ROTORCONTROLL_H_
 
 
 void StartControll(){
 	if (ButtonStart.PressRead()&&!Rotor.Started&&!Protect.Read()&&PowerReady.Read()){
-     5f6:	8c eb       	ldi	r24, 0xBC	; 188
-     5f8:	90 e0       	ldi	r25, 0x00	; 0
-     5fa:	6f dd       	rcall	.-1314   	; 0xda <_ZN6Button9PressReadEv>
-     5fc:	88 23       	and	r24, r24
-     5fe:	89 f0       	breq	.+34     	; 0x622 <_Z13StartControllv+0x2c>
-     600:	80 91 7d 00 	lds	r24, 0x007D	; 0x80007d <__data_end+0x1b>
-     604:	81 11       	cpse	r24, r1
-     606:	0d c0       	rjmp	.+26     	; 0x622 <_Z13StartControllv+0x2c>
-     608:	85 ed       	ldi	r24, 0xD5	; 213
-     60a:	90 e0       	ldi	r25, 0x00	; 0
-     60c:	fe dd       	rcall	.-1028   	; 0x20a <_ZN5Input4ReadEv>
-     60e:	81 11       	cpse	r24, r1
-     610:	08 c0       	rjmp	.+16     	; 0x622 <_Z13StartControllv+0x2c>
-     612:	82 ed       	ldi	r24, 0xD2	; 210
-     614:	90 e0       	ldi	r25, 0x00	; 0
-     616:	f9 dd       	rcall	.-1038   	; 0x20a <_ZN5Input4ReadEv>
-     618:	88 23       	and	r24, r24
-     61a:	19 f0       	breq	.+6      	; 0x622 <_Z13StartControllv+0x2c>
+     6ec:	8c eb       	ldi	r24, 0xBC	; 188
+     6ee:	90 e0       	ldi	r25, 0x00	; 0
+     6f0:	f4 dc       	rcall	.-1560   	; 0xda <_ZN6Button9PressReadEv>
+     6f2:	88 23       	and	r24, r24
+     6f4:	89 f0       	breq	.+34     	; 0x718 <_Z13StartControllv+0x2c>
+     6f6:	80 91 7d 00 	lds	r24, 0x007D	; 0x80007d <__data_end+0x1b>
+     6fa:	81 11       	cpse	r24, r1
+     6fc:	0d c0       	rjmp	.+26     	; 0x718 <_Z13StartControllv+0x2c>
+     6fe:	85 ed       	ldi	r24, 0xD5	; 213
+     700:	90 e0       	ldi	r25, 0x00	; 0
+     702:	83 dd       	rcall	.-1274   	; 0x20a <_ZN5Input4ReadEv>
+     704:	81 11       	cpse	r24, r1
+     706:	08 c0       	rjmp	.+16     	; 0x718 <_Z13StartControllv+0x2c>
+     708:	82 ed       	ldi	r24, 0xD2	; 210
+     70a:	90 e0       	ldi	r25, 0x00	; 0
+     70c:	7e dd       	rcall	.-1284   	; 0x20a <_ZN5Input4ReadEv>
+     70e:	88 23       	and	r24, r24
+     710:	19 f0       	breq	.+6      	; 0x718 <_Z13StartControllv+0x2c>
 		Rotor.Starting = true;
-     61c:	81 e0       	ldi	r24, 0x01	; 1
-     61e:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__data_end+0x18>
-     622:	08 95       	ret
+     712:	81 e0       	ldi	r24, 0x01	; 1
+     714:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__data_end+0x18>
+     718:	08 95       	ret
 
-00000624 <_Z12StopControllv>:
+0000071a <_Z12StopControllv>:
 	}
 }
 
 void StopControll(){
 	if (ButtonStop.PressRead()&&!Protect.Read()&&PowerReady.Read()){
-     624:	87 ec       	ldi	r24, 0xC7	; 199
-     626:	90 e0       	ldi	r25, 0x00	; 0
-     628:	58 dd       	rcall	.-1360   	; 0xda <_ZN6Button9PressReadEv>
-     62a:	88 23       	and	r24, r24
-     62c:	69 f0       	breq	.+26     	; 0x648 <_Z12StopControllv+0x24>
-     62e:	85 ed       	ldi	r24, 0xD5	; 213
-     630:	90 e0       	ldi	r25, 0x00	; 0
-     632:	eb dd       	rcall	.-1066   	; 0x20a <_ZN5Input4ReadEv>
-     634:	81 11       	cpse	r24, r1
-     636:	08 c0       	rjmp	.+16     	; 0x648 <_Z12StopControllv+0x24>
-     638:	82 ed       	ldi	r24, 0xD2	; 210
-     63a:	90 e0       	ldi	r25, 0x00	; 0
-     63c:	e6 dd       	rcall	.-1076   	; 0x20a <_ZN5Input4ReadEv>
-     63e:	88 23       	and	r24, r24
-     640:	19 f0       	breq	.+6      	; 0x648 <_Z12StopControllv+0x24>
+     71a:	87 ec       	ldi	r24, 0xC7	; 199
+     71c:	90 e0       	ldi	r25, 0x00	; 0
+     71e:	dd dc       	rcall	.-1606   	; 0xda <_ZN6Button9PressReadEv>
+     720:	88 23       	and	r24, r24
+     722:	69 f0       	breq	.+26     	; 0x73e <_Z12StopControllv+0x24>
+     724:	85 ed       	ldi	r24, 0xD5	; 213
+     726:	90 e0       	ldi	r25, 0x00	; 0
+     728:	70 dd       	rcall	.-1312   	; 0x20a <_ZN5Input4ReadEv>
+     72a:	81 11       	cpse	r24, r1
+     72c:	08 c0       	rjmp	.+16     	; 0x73e <_Z12StopControllv+0x24>
+     72e:	82 ed       	ldi	r24, 0xD2	; 210
+     730:	90 e0       	ldi	r25, 0x00	; 0
+     732:	6b dd       	rcall	.-1322   	; 0x20a <_ZN5Input4ReadEv>
+     734:	88 23       	and	r24, r24
+     736:	19 f0       	breq	.+6      	; 0x73e <_Z12StopControllv+0x24>
 		Rotor.Stoping = true;
-     642:	81 e0       	ldi	r24, 0x01	; 1
-     644:	80 93 7b 00 	sts	0x007B, r24	; 0x80007b <__data_end+0x19>
-     648:	08 95       	ret
+     738:	81 e0       	ldi	r24, 0x01	; 1
+     73a:	80 93 7b 00 	sts	0x007B, r24	; 0x80007b <__data_end+0x19>
+     73e:	08 95       	ret
 
-0000064a <_Z15ReverseControllv>:
+00000740 <_Z15ReverseControllv>:
 	}
 }
 
 void ReverseControll(){
 	if(ButtonReverse.PressRead()){
-     64a:	81 eb       	ldi	r24, 0xB1	; 177
-     64c:	90 e0       	ldi	r25, 0x00	; 0
-     64e:	45 dd       	rcall	.-1398   	; 0xda <_ZN6Button9PressReadEv>
-     650:	88 23       	and	r24, r24
-     652:	19 f0       	breq	.+6      	; 0x65a <_Z15ReverseControllv+0x10>
+     740:	81 eb       	ldi	r24, 0xB1	; 177
+     742:	90 e0       	ldi	r25, 0x00	; 0
+     744:	ca dc       	rcall	.-1644   	; 0xda <_ZN6Button9PressReadEv>
+     746:	88 23       	and	r24, r24
+     748:	19 f0       	breq	.+6      	; 0x750 <_Z15ReverseControllv+0x10>
 		Rotor.Reversing = true;
-     654:	81 e0       	ldi	r24, 0x01	; 1
-     656:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__data_end+0x1a>
-     65a:	08 95       	ret
+     74a:	81 e0       	ldi	r24, 0x01	; 1
+     74c:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__data_end+0x1a>
+     750:	08 95       	ret
 
-0000065c <_Z13SpeedControllv>:
+00000752 <_Z13SpeedControllv>:
 	}
 }
 
 void SpeedControll(){
 	if(ButtonUp.PressRead()){
-     65c:	86 ea       	ldi	r24, 0xA6	; 166
-     65e:	90 e0       	ldi	r25, 0x00	; 0
-     660:	3c dd       	rcall	.-1416   	; 0xda <_ZN6Button9PressReadEv>
-     662:	88 23       	and	r24, r24
-     664:	19 f0       	breq	.+6      	; 0x66c <_Z13SpeedControllv+0x10>
+     752:	86 ea       	ldi	r24, 0xA6	; 166
+     754:	90 e0       	ldi	r25, 0x00	; 0
+     756:	c1 dc       	rcall	.-1662   	; 0xda <_ZN6Button9PressReadEv>
+     758:	88 23       	and	r24, r24
+     75a:	19 f0       	breq	.+6      	; 0x762 <_Z13SpeedControllv+0x10>
 		Rotor.FrequncyUp();
-     666:	82 e6       	ldi	r24, 0x62	; 98
-     668:	90 e0       	ldi	r25, 0x00	; 0
-     66a:	27 d4       	rcall	.+2126   	; 0xeba <_ZN5Rotor10FrequncyUpEv>
+     75c:	82 e6       	ldi	r24, 0x62	; 98
+     75e:	90 e0       	ldi	r25, 0x00	; 0
+     760:	27 d4       	rcall	.+2126   	; 0xfb0 <_ZN5Rotor10FrequncyUpEv>
 	}
 	
 	if(ButtonDown.PressRead()){
-     66c:	8b e9       	ldi	r24, 0x9B	; 155
-     66e:	90 e0       	ldi	r25, 0x00	; 0
-     670:	34 dd       	rcall	.-1432   	; 0xda <_ZN6Button9PressReadEv>
-     672:	88 23       	and	r24, r24
-     674:	19 f0       	breq	.+6      	; 0x67c <_Z13SpeedControllv+0x20>
+     762:	8b e9       	ldi	r24, 0x9B	; 155
+     764:	90 e0       	ldi	r25, 0x00	; 0
+     766:	b9 dc       	rcall	.-1678   	; 0xda <_ZN6Button9PressReadEv>
+     768:	88 23       	and	r24, r24
+     76a:	19 f0       	breq	.+6      	; 0x772 <_Z13SpeedControllv+0x20>
 		Rotor.FrequencyDown();
-     676:	82 e6       	ldi	r24, 0x62	; 98
-     678:	90 e0       	ldi	r25, 0x00	; 0
-     67a:	52 d4       	rcall	.+2212   	; 0xf20 <_ZN5Rotor13FrequencyDownEv>
-     67c:	08 95       	ret
+     76c:	82 e6       	ldi	r24, 0x62	; 98
+     76e:	90 e0       	ldi	r25, 0x00	; 0
+     770:	52 d4       	rcall	.+2212   	; 0x1016 <_ZN5Rotor13FrequencyDownEv>
+     772:	08 95       	ret
 
-0000067e <_Z13ModeStartTimev>:
+00000774 <_Z13ModeStartTimev>:
 
 #ifndef MODECONTROLL_H_
 #define MODECONTROLL_H_
 
 
 void ModeStartTime(){
-     67e:	df 92       	push	r13
-     680:	ef 92       	push	r14
-     682:	ff 92       	push	r15
-     684:	0f 93       	push	r16
-     686:	1f 93       	push	r17
-     688:	cf 93       	push	r28
-     68a:	df 93       	push	r29
+     774:	df 92       	push	r13
+     776:	ef 92       	push	r14
+     778:	ff 92       	push	r15
+     77a:	0f 93       	push	r16
+     77c:	1f 93       	push	r17
+     77e:	cf 93       	push	r28
+     780:	df 93       	push	r29
 	if (Rotor.RotorStopped()){
-     68c:	82 e6       	ldi	r24, 0x62	; 98
-     68e:	90 e0       	ldi	r25, 0x00	; 0
-     690:	fc d4       	rcall	.+2552   	; 0x108a <_ZN5Rotor12RotorStoppedEv>
-     692:	88 23       	and	r24, r24
-     694:	09 f4       	brne	.+2      	; 0x698 <_Z13ModeStartTimev+0x1a>
-     696:	6a c0       	rjmp	.+212    	; 0x76c <_Z13ModeStartTimev+0xee>
+     782:	82 e6       	ldi	r24, 0x62	; 98
+     784:	90 e0       	ldi	r25, 0x00	; 0
+     786:	fc d4       	rcall	.+2552   	; 0x1180 <_ZN5Rotor12RotorStoppedEv>
+     788:	88 23       	and	r24, r24
+     78a:	09 f4       	brne	.+2      	; 0x78e <_Z13ModeStartTimev+0x1a>
+     78c:	6a c0       	rjmp	.+212    	; 0x862 <_Z13ModeStartTimev+0xee>
 		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStart.getpressed)||Mode){
-     698:	c6 ea       	ldi	r28, 0xA6	; 166
-     69a:	d0 e0       	ldi	r29, 0x00	; 0
-     69c:	0f 2e       	mov	r0, r31
-     69e:	fb e9       	ldi	r31, 0x9B	; 155
-     6a0:	ef 2e       	mov	r14, r31
-     6a2:	f0 e0       	ldi	r31, 0x00	; 0
-     6a4:	ff 2e       	mov	r15, r31
-     6a6:	f0 2d       	mov	r31, r0
-     6a8:	0c eb       	ldi	r16, 0xBC	; 188
-     6aa:	10 e0       	ldi	r17, 0x00	; 0
+     78e:	c6 ea       	ldi	r28, 0xA6	; 166
+     790:	d0 e0       	ldi	r29, 0x00	; 0
+     792:	0f 2e       	mov	r0, r31
+     794:	fb e9       	ldi	r31, 0x9B	; 155
+     796:	ef 2e       	mov	r14, r31
+     798:	f0 e0       	ldi	r31, 0x00	; 0
+     79a:	ff 2e       	mov	r15, r31
+     79c:	f0 2d       	mov	r31, r0
+     79e:	0c eb       	ldi	r16, 0xBC	; 188
+     7a0:	10 e0       	ldi	r17, 0x00	; 0
 			Mode = true;
-     6ac:	dd 24       	eor	r13, r13
-     6ae:	d3 94       	inc	r13
+     7a2:	dd 24       	eor	r13, r13
+     7a4:	d3 94       	inc	r13
 #define MODECONTROLL_H_
 
 
 void ModeStartTime(){
 	if (Rotor.RotorStopped()){
 		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStart.getpressed)||Mode){
-     6b0:	89 85       	ldd	r24, Y+9	; 0x09
-     6b2:	9a 85       	ldd	r25, Y+10	; 0x0a
-     6b4:	89 2b       	or	r24, r25
-     6b6:	29 f4       	brne	.+10     	; 0x6c2 <_Z13ModeStartTimev+0x44>
-     6b8:	f7 01       	movw	r30, r14
-     6ba:	81 85       	ldd	r24, Z+9	; 0x09
-     6bc:	92 85       	ldd	r25, Z+10	; 0x0a
-     6be:	89 2b       	or	r24, r25
-     6c0:	29 f0       	breq	.+10     	; 0x6cc <_Z13ModeStartTimev+0x4e>
-     6c2:	f8 01       	movw	r30, r16
-     6c4:	81 85       	ldd	r24, Z+9	; 0x09
-     6c6:	92 85       	ldd	r25, Z+10	; 0x0a
-     6c8:	89 2b       	or	r24, r25
-     6ca:	29 f4       	brne	.+10     	; 0x6d6 <_Z13ModeStartTimev+0x58>
-     6cc:	80 91 d8 00 	lds	r24, 0x00D8	; 0x8000d8 <Mode>
-     6d0:	88 23       	and	r24, r24
-     6d2:	09 f4       	brne	.+2      	; 0x6d6 <_Z13ModeStartTimev+0x58>
-     6d4:	4b c0       	rjmp	.+150    	; 0x76c <_Z13ModeStartTimev+0xee>
+     7a6:	89 85       	ldd	r24, Y+9	; 0x09
+     7a8:	9a 85       	ldd	r25, Y+10	; 0x0a
+     7aa:	89 2b       	or	r24, r25
+     7ac:	29 f4       	brne	.+10     	; 0x7b8 <_Z13ModeStartTimev+0x44>
+     7ae:	f7 01       	movw	r30, r14
+     7b0:	81 85       	ldd	r24, Z+9	; 0x09
+     7b2:	92 85       	ldd	r25, Z+10	; 0x0a
+     7b4:	89 2b       	or	r24, r25
+     7b6:	29 f0       	breq	.+10     	; 0x7c2 <_Z13ModeStartTimev+0x4e>
+     7b8:	f8 01       	movw	r30, r16
+     7ba:	81 85       	ldd	r24, Z+9	; 0x09
+     7bc:	92 85       	ldd	r25, Z+10	; 0x0a
+     7be:	89 2b       	or	r24, r25
+     7c0:	29 f4       	brne	.+10     	; 0x7cc <_Z13ModeStartTimev+0x58>
+     7c2:	80 91 d8 00 	lds	r24, 0x00D8	; 0x8000d8 <Mode>
+     7c6:	88 23       	and	r24, r24
+     7c8:	09 f4       	brne	.+2      	; 0x7cc <_Z13ModeStartTimev+0x58>
+     7ca:	4b c0       	rjmp	.+150    	; 0x862 <_Z13ModeStartTimev+0xee>
 			Mode = true;
-     6d6:	d0 92 d8 00 	sts	0x00D8, r13	; 0x8000d8 <Mode>
+     7cc:	d0 92 d8 00 	sts	0x00D8, r13	; 0x8000d8 <Mode>
 			BlueLed.On();
-     6da:	8b e8       	ldi	r24, 0x8B	; 139
-     6dc:	90 e0       	ldi	r25, 0x00	; 0
-     6de:	ff d1       	rcall	.+1022   	; 0xade <_ZN6Output2OnEv>
+     7d0:	8b e8       	ldi	r24, 0x8B	; 139
+     7d2:	90 e0       	ldi	r25, 0x00	; 0
+     7d4:	ff d1       	rcall	.+1022   	; 0xbd4 <_ZN6Output2OnEv>
 			RedLed.Off();
-     6e0:	8f e8       	ldi	r24, 0x8F	; 143
-     6e2:	90 e0       	ldi	r25, 0x00	; 0
-     6e4:	9c d1       	rcall	.+824    	; 0xa1e <_ZN6Output3OffEv>
+     7d6:	8f e8       	ldi	r24, 0x8F	; 143
+     7d8:	90 e0       	ldi	r25, 0x00	; 0
+     7da:	9c d1       	rcall	.+824    	; 0xb14 <_ZN6Output3OffEv>
 			GreenLed.Off();
-     6e6:	83 e9       	ldi	r24, 0x93	; 147
-     6e8:	90 e0       	ldi	r25, 0x00	; 0
-     6ea:	99 d1       	rcall	.+818    	; 0xa1e <_ZN6Output3OffEv>
+     7dc:	83 e9       	ldi	r24, 0x93	; 147
+     7de:	90 e0       	ldi	r25, 0x00	; 0
+     7e0:	99 d1       	rcall	.+818    	; 0xb14 <_ZN6Output3OffEv>
 
 
 			ButtonUp.Scan();
-     6ec:	ce 01       	movw	r24, r28
-     6ee:	2d dd       	rcall	.-1446   	; 0x14a <_ZN6Button4ScanEv>
+     7e2:	ce 01       	movw	r24, r28
+     7e4:	b2 dc       	rcall	.-1692   	; 0x14a <_ZN6Button4ScanEv>
 			if(ButtonUp.PressRead()){
-     6f0:	ce 01       	movw	r24, r28
-     6f2:	f3 dc       	rcall	.-1562   	; 0xda <_ZN6Button9PressReadEv>
-     6f4:	88 23       	and	r24, r24
-     6f6:	89 f0       	breq	.+34     	; 0x71a <_Z13ModeStartTimev+0x9c>
+     7e6:	ce 01       	movw	r24, r28
+     7e8:	78 dc       	rcall	.-1808   	; 0xda <_ZN6Button9PressReadEv>
+     7ea:	88 23       	and	r24, r24
+     7ec:	89 f0       	breq	.+34     	; 0x810 <_Z13ModeStartTimev+0x9c>
 				Rotor.StartimeUp(100);
-     6f8:	64 e6       	ldi	r22, 0x64	; 100
-     6fa:	70 e0       	ldi	r23, 0x00	; 0
-     6fc:	82 e6       	ldi	r24, 0x62	; 98
-     6fe:	90 e0       	ldi	r25, 0x00	; 0
-     700:	42 d4       	rcall	.+2180   	; 0xf86 <_ZN5Rotor10StartimeUpEi>
+     7ee:	64 e6       	ldi	r22, 0x64	; 100
+     7f0:	70 e0       	ldi	r23, 0x00	; 0
+     7f2:	82 e6       	ldi	r24, 0x62	; 98
+     7f4:	90 e0       	ldi	r25, 0x00	; 0
+     7f6:	42 d4       	rcall	.+2180   	; 0x107c <_ZN5Rotor10StartimeUpEi>
 				BlueLed.Off();
-     702:	8b e8       	ldi	r24, 0x8B	; 139
-     704:	90 e0       	ldi	r25, 0x00	; 0
-     706:	8b d1       	rcall	.+790    	; 0xa1e <_ZN6Output3OffEv>
-     708:	ff ef       	ldi	r31, 0xFF	; 255
-     70a:	24 e3       	ldi	r18, 0x34	; 52
-     70c:	8c e0       	ldi	r24, 0x0C	; 12
-     70e:	f1 50       	subi	r31, 0x01	; 1
-     710:	20 40       	sbci	r18, 0x00	; 0
-     712:	80 40       	sbci	r24, 0x00	; 0
-     714:	e1 f7       	brne	.-8      	; 0x70e <_Z13ModeStartTimev+0x90>
-     716:	00 c0       	rjmp	.+0      	; 0x718 <_Z13ModeStartTimev+0x9a>
-     718:	00 00       	nop
+     7f8:	8b e8       	ldi	r24, 0x8B	; 139
+     7fa:	90 e0       	ldi	r25, 0x00	; 0
+     7fc:	8b d1       	rcall	.+790    	; 0xb14 <_ZN6Output3OffEv>
+     7fe:	ff ef       	ldi	r31, 0xFF	; 255
+     800:	24 e3       	ldi	r18, 0x34	; 52
+     802:	8c e0       	ldi	r24, 0x0C	; 12
+     804:	f1 50       	subi	r31, 0x01	; 1
+     806:	20 40       	sbci	r18, 0x00	; 0
+     808:	80 40       	sbci	r24, 0x00	; 0
+     80a:	e1 f7       	brne	.-8      	; 0x804 <_Z13ModeStartTimev+0x90>
+     80c:	00 c0       	rjmp	.+0      	; 0x80e <_Z13ModeStartTimev+0x9a>
+     80e:	00 00       	nop
 				_delay_ms(500);
 			}
 			
 			ButtonDown.Scan();
-     71a:	c7 01       	movw	r24, r14
-     71c:	16 dd       	rcall	.-1492   	; 0x14a <_ZN6Button4ScanEv>
+     810:	c7 01       	movw	r24, r14
+     812:	9b dc       	rcall	.-1738   	; 0x14a <_ZN6Button4ScanEv>
 			if(ButtonDown.PressRead()){
-     71e:	c7 01       	movw	r24, r14
-     720:	dc dc       	rcall	.-1608   	; 0xda <_ZN6Button9PressReadEv>
-     722:	88 23       	and	r24, r24
-     724:	89 f0       	breq	.+34     	; 0x748 <_Z13ModeStartTimev+0xca>
+     814:	c7 01       	movw	r24, r14
+     816:	61 dc       	rcall	.-1854   	; 0xda <_ZN6Button9PressReadEv>
+     818:	88 23       	and	r24, r24
+     81a:	89 f0       	breq	.+34     	; 0x83e <_Z13ModeStartTimev+0xca>
 				Rotor.StartimeDown(100);
-     726:	64 e6       	ldi	r22, 0x64	; 100
-     728:	70 e0       	ldi	r23, 0x00	; 0
-     72a:	82 e6       	ldi	r24, 0x62	; 98
-     72c:	90 e0       	ldi	r25, 0x00	; 0
-     72e:	4e d4       	rcall	.+2204   	; 0xfcc <_ZN5Rotor12StartimeDownEi>
+     81c:	64 e6       	ldi	r22, 0x64	; 100
+     81e:	70 e0       	ldi	r23, 0x00	; 0
+     820:	82 e6       	ldi	r24, 0x62	; 98
+     822:	90 e0       	ldi	r25, 0x00	; 0
+     824:	4e d4       	rcall	.+2204   	; 0x10c2 <_ZN5Rotor12StartimeDownEi>
 				BlueLed.Off();
-     730:	8b e8       	ldi	r24, 0x8B	; 139
-     732:	90 e0       	ldi	r25, 0x00	; 0
-     734:	74 d1       	rcall	.+744    	; 0xa1e <_ZN6Output3OffEv>
-     736:	9f ef       	ldi	r25, 0xFF	; 255
-     738:	e4 e3       	ldi	r30, 0x34	; 52
-     73a:	fc e0       	ldi	r31, 0x0C	; 12
-     73c:	91 50       	subi	r25, 0x01	; 1
-     73e:	e0 40       	sbci	r30, 0x00	; 0
-     740:	f0 40       	sbci	r31, 0x00	; 0
-     742:	e1 f7       	brne	.-8      	; 0x73c <_Z13ModeStartTimev+0xbe>
-     744:	00 c0       	rjmp	.+0      	; 0x746 <_Z13ModeStartTimev+0xc8>
-     746:	00 00       	nop
+     826:	8b e8       	ldi	r24, 0x8B	; 139
+     828:	90 e0       	ldi	r25, 0x00	; 0
+     82a:	74 d1       	rcall	.+744    	; 0xb14 <_ZN6Output3OffEv>
+     82c:	9f ef       	ldi	r25, 0xFF	; 255
+     82e:	e4 e3       	ldi	r30, 0x34	; 52
+     830:	fc e0       	ldi	r31, 0x0C	; 12
+     832:	91 50       	subi	r25, 0x01	; 1
+     834:	e0 40       	sbci	r30, 0x00	; 0
+     836:	f0 40       	sbci	r31, 0x00	; 0
+     838:	e1 f7       	brne	.-8      	; 0x832 <_Z13ModeStartTimev+0xbe>
+     83a:	00 c0       	rjmp	.+0      	; 0x83c <_Z13ModeStartTimev+0xc8>
+     83c:	00 00       	nop
 				_delay_ms(500);
 			}
 			
 			ButtonStart.Scan();
-     748:	c8 01       	movw	r24, r16
-     74a:	ff dc       	rcall	.-1538   	; 0x14a <_ZN6Button4ScanEv>
+     83e:	c8 01       	movw	r24, r16
+     840:	84 dc       	rcall	.-1784   	; 0x14a <_ZN6Button4ScanEv>
 			ButtonStart.PressRead();
-     74c:	c8 01       	movw	r24, r16
-     74e:	c5 dc       	rcall	.-1654   	; 0xda <_ZN6Button9PressReadEv>
+     842:	c8 01       	movw	r24, r16
+     844:	4a dc       	rcall	.-1900   	; 0xda <_ZN6Button9PressReadEv>
 			
 			if (!ButtonUp.getpressed&&!ButtonStart.getpressed){
-     750:	89 85       	ldd	r24, Y+9	; 0x09
-     752:	9a 85       	ldd	r25, Y+10	; 0x0a
-     754:	89 2b       	or	r24, r25
-     756:	09 f0       	breq	.+2      	; 0x75a <_Z13ModeStartTimev+0xdc>
-     758:	ab cf       	rjmp	.-170    	; 0x6b0 <_Z13ModeStartTimev+0x32>
-     75a:	f8 01       	movw	r30, r16
-     75c:	81 85       	ldd	r24, Z+9	; 0x09
-     75e:	92 85       	ldd	r25, Z+10	; 0x0a
-     760:	89 2b       	or	r24, r25
-     762:	09 f0       	breq	.+2      	; 0x766 <_Z13ModeStartTimev+0xe8>
-     764:	a5 cf       	rjmp	.-182    	; 0x6b0 <_Z13ModeStartTimev+0x32>
+     846:	89 85       	ldd	r24, Y+9	; 0x09
+     848:	9a 85       	ldd	r25, Y+10	; 0x0a
+     84a:	89 2b       	or	r24, r25
+     84c:	09 f0       	breq	.+2      	; 0x850 <_Z13ModeStartTimev+0xdc>
+     84e:	ab cf       	rjmp	.-170    	; 0x7a6 <_Z13ModeStartTimev+0x32>
+     850:	f8 01       	movw	r30, r16
+     852:	81 85       	ldd	r24, Z+9	; 0x09
+     854:	92 85       	ldd	r25, Z+10	; 0x0a
+     856:	89 2b       	or	r24, r25
+     858:	09 f0       	breq	.+2      	; 0x85c <_Z13ModeStartTimev+0xe8>
+     85a:	a5 cf       	rjmp	.-182    	; 0x7a6 <_Z13ModeStartTimev+0x32>
 				Mode = false;
-     766:	10 92 d8 00 	sts	0x00D8, r1	; 0x8000d8 <Mode>
-     76a:	a2 cf       	rjmp	.-188    	; 0x6b0 <_Z13ModeStartTimev+0x32>
+     85c:	10 92 d8 00 	sts	0x00D8, r1	; 0x8000d8 <Mode>
+     860:	a2 cf       	rjmp	.-188    	; 0x7a6 <_Z13ModeStartTimev+0x32>
 			}
 		}
 	}
 }
-     76c:	df 91       	pop	r29
-     76e:	cf 91       	pop	r28
-     770:	1f 91       	pop	r17
-     772:	0f 91       	pop	r16
-     774:	ff 90       	pop	r15
-     776:	ef 90       	pop	r14
-     778:	df 90       	pop	r13
-     77a:	08 95       	ret
+     862:	df 91       	pop	r29
+     864:	cf 91       	pop	r28
+     866:	1f 91       	pop	r17
+     868:	0f 91       	pop	r16
+     86a:	ff 90       	pop	r15
+     86c:	ef 90       	pop	r14
+     86e:	df 90       	pop	r13
+     870:	08 95       	ret
 
-0000077c <_Z12ModeStopTimev>:
+00000872 <_Z12ModeStopTimev>:
 
 void ModeStopTime(){
-     77c:	df 92       	push	r13
-     77e:	ef 92       	push	r14
-     780:	ff 92       	push	r15
-     782:	0f 93       	push	r16
-     784:	1f 93       	push	r17
-     786:	cf 93       	push	r28
-     788:	df 93       	push	r29
+     872:	df 92       	push	r13
+     874:	ef 92       	push	r14
+     876:	ff 92       	push	r15
+     878:	0f 93       	push	r16
+     87a:	1f 93       	push	r17
+     87c:	cf 93       	push	r28
+     87e:	df 93       	push	r29
 	if (Rotor.RotorStopped()){
-     78a:	82 e6       	ldi	r24, 0x62	; 98
-     78c:	90 e0       	ldi	r25, 0x00	; 0
-     78e:	7d d4       	rcall	.+2298   	; 0x108a <_ZN5Rotor12RotorStoppedEv>
-     790:	88 23       	and	r24, r24
-     792:	09 f4       	brne	.+2      	; 0x796 <_Z12ModeStopTimev+0x1a>
-     794:	6a c0       	rjmp	.+212    	; 0x86a <_Z12ModeStopTimev+0xee>
+     880:	82 e6       	ldi	r24, 0x62	; 98
+     882:	90 e0       	ldi	r25, 0x00	; 0
+     884:	7d d4       	rcall	.+2298   	; 0x1180 <_ZN5Rotor12RotorStoppedEv>
+     886:	88 23       	and	r24, r24
+     888:	09 f4       	brne	.+2      	; 0x88c <_Z12ModeStopTimev+0x1a>
+     88a:	6a c0       	rjmp	.+212    	; 0x960 <_Z12ModeStopTimev+0xee>
 		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStop.getpressed)||Mode){
-     796:	c6 ea       	ldi	r28, 0xA6	; 166
-     798:	d0 e0       	ldi	r29, 0x00	; 0
-     79a:	0f 2e       	mov	r0, r31
-     79c:	fb e9       	ldi	r31, 0x9B	; 155
-     79e:	ef 2e       	mov	r14, r31
-     7a0:	f0 e0       	ldi	r31, 0x00	; 0
-     7a2:	ff 2e       	mov	r15, r31
-     7a4:	f0 2d       	mov	r31, r0
-     7a6:	07 ec       	ldi	r16, 0xC7	; 199
-     7a8:	10 e0       	ldi	r17, 0x00	; 0
+     88c:	c6 ea       	ldi	r28, 0xA6	; 166
+     88e:	d0 e0       	ldi	r29, 0x00	; 0
+     890:	0f 2e       	mov	r0, r31
+     892:	fb e9       	ldi	r31, 0x9B	; 155
+     894:	ef 2e       	mov	r14, r31
+     896:	f0 e0       	ldi	r31, 0x00	; 0
+     898:	ff 2e       	mov	r15, r31
+     89a:	f0 2d       	mov	r31, r0
+     89c:	07 ec       	ldi	r16, 0xC7	; 199
+     89e:	10 e0       	ldi	r17, 0x00	; 0
 			Mode = true;
-     7aa:	dd 24       	eor	r13, r13
-     7ac:	d3 94       	inc	r13
+     8a0:	dd 24       	eor	r13, r13
+     8a2:	d3 94       	inc	r13
 	}
 }
 
 void ModeStopTime(){
 	if (Rotor.RotorStopped()){
 		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStop.getpressed)||Mode){
-     7ae:	89 85       	ldd	r24, Y+9	; 0x09
-     7b0:	9a 85       	ldd	r25, Y+10	; 0x0a
-     7b2:	89 2b       	or	r24, r25
-     7b4:	29 f4       	brne	.+10     	; 0x7c0 <_Z12ModeStopTimev+0x44>
-     7b6:	f7 01       	movw	r30, r14
-     7b8:	81 85       	ldd	r24, Z+9	; 0x09
-     7ba:	92 85       	ldd	r25, Z+10	; 0x0a
-     7bc:	89 2b       	or	r24, r25
-     7be:	29 f0       	breq	.+10     	; 0x7ca <_Z12ModeStopTimev+0x4e>
-     7c0:	f8 01       	movw	r30, r16
-     7c2:	81 85       	ldd	r24, Z+9	; 0x09
-     7c4:	92 85       	ldd	r25, Z+10	; 0x0a
-     7c6:	89 2b       	or	r24, r25
-     7c8:	29 f4       	brne	.+10     	; 0x7d4 <_Z12ModeStopTimev+0x58>
-     7ca:	80 91 d8 00 	lds	r24, 0x00D8	; 0x8000d8 <Mode>
-     7ce:	88 23       	and	r24, r24
-     7d0:	09 f4       	brne	.+2      	; 0x7d4 <_Z12ModeStopTimev+0x58>
-     7d2:	4b c0       	rjmp	.+150    	; 0x86a <_Z12ModeStopTimev+0xee>
+     8a4:	89 85       	ldd	r24, Y+9	; 0x09
+     8a6:	9a 85       	ldd	r25, Y+10	; 0x0a
+     8a8:	89 2b       	or	r24, r25
+     8aa:	29 f4       	brne	.+10     	; 0x8b6 <_Z12ModeStopTimev+0x44>
+     8ac:	f7 01       	movw	r30, r14
+     8ae:	81 85       	ldd	r24, Z+9	; 0x09
+     8b0:	92 85       	ldd	r25, Z+10	; 0x0a
+     8b2:	89 2b       	or	r24, r25
+     8b4:	29 f0       	breq	.+10     	; 0x8c0 <_Z12ModeStopTimev+0x4e>
+     8b6:	f8 01       	movw	r30, r16
+     8b8:	81 85       	ldd	r24, Z+9	; 0x09
+     8ba:	92 85       	ldd	r25, Z+10	; 0x0a
+     8bc:	89 2b       	or	r24, r25
+     8be:	29 f4       	brne	.+10     	; 0x8ca <_Z12ModeStopTimev+0x58>
+     8c0:	80 91 d8 00 	lds	r24, 0x00D8	; 0x8000d8 <Mode>
+     8c4:	88 23       	and	r24, r24
+     8c6:	09 f4       	brne	.+2      	; 0x8ca <_Z12ModeStopTimev+0x58>
+     8c8:	4b c0       	rjmp	.+150    	; 0x960 <_Z12ModeStopTimev+0xee>
 			Mode = true;
-     7d4:	d0 92 d8 00 	sts	0x00D8, r13	; 0x8000d8 <Mode>
+     8ca:	d0 92 d8 00 	sts	0x00D8, r13	; 0x8000d8 <Mode>
 			BlueLed.On();
-     7d8:	8b e8       	ldi	r24, 0x8B	; 139
-     7da:	90 e0       	ldi	r25, 0x00	; 0
-     7dc:	80 d1       	rcall	.+768    	; 0xade <_ZN6Output2OnEv>
+     8ce:	8b e8       	ldi	r24, 0x8B	; 139
+     8d0:	90 e0       	ldi	r25, 0x00	; 0
+     8d2:	80 d1       	rcall	.+768    	; 0xbd4 <_ZN6Output2OnEv>
 			RedLed.Off();
-     7de:	8f e8       	ldi	r24, 0x8F	; 143
-     7e0:	90 e0       	ldi	r25, 0x00	; 0
-     7e2:	1d d1       	rcall	.+570    	; 0xa1e <_ZN6Output3OffEv>
+     8d4:	8f e8       	ldi	r24, 0x8F	; 143
+     8d6:	90 e0       	ldi	r25, 0x00	; 0
+     8d8:	1d d1       	rcall	.+570    	; 0xb14 <_ZN6Output3OffEv>
 			GreenLed.Off();
-     7e4:	83 e9       	ldi	r24, 0x93	; 147
-     7e6:	90 e0       	ldi	r25, 0x00	; 0
-     7e8:	1a d1       	rcall	.+564    	; 0xa1e <_ZN6Output3OffEv>
+     8da:	83 e9       	ldi	r24, 0x93	; 147
+     8dc:	90 e0       	ldi	r25, 0x00	; 0
+     8de:	1a d1       	rcall	.+564    	; 0xb14 <_ZN6Output3OffEv>
 
 
 			ButtonUp.Scan();
-     7ea:	ce 01       	movw	r24, r28
-     7ec:	ae dc       	rcall	.-1700   	; 0x14a <_ZN6Button4ScanEv>
+     8e0:	ce 01       	movw	r24, r28
+     8e2:	33 dc       	rcall	.-1946   	; 0x14a <_ZN6Button4ScanEv>
 			if(ButtonUp.PressRead()){
-     7ee:	ce 01       	movw	r24, r28
-     7f0:	74 dc       	rcall	.-1816   	; 0xda <_ZN6Button9PressReadEv>
-     7f2:	88 23       	and	r24, r24
-     7f4:	89 f0       	breq	.+34     	; 0x818 <_Z12ModeStopTimev+0x9c>
+     8e4:	ce 01       	movw	r24, r28
+     8e6:	f9 db       	rcall	.-2062   	; 0xda <_ZN6Button9PressReadEv>
+     8e8:	88 23       	and	r24, r24
+     8ea:	89 f0       	breq	.+34     	; 0x90e <_Z12ModeStopTimev+0x9c>
 				Rotor.StoptimeUp(100);
-     7f6:	64 e6       	ldi	r22, 0x64	; 100
-     7f8:	70 e0       	ldi	r23, 0x00	; 0
-     7fa:	82 e6       	ldi	r24, 0x62	; 98
-     7fc:	90 e0       	ldi	r25, 0x00	; 0
-     7fe:	04 d4       	rcall	.+2056   	; 0x1008 <_ZN5Rotor10StoptimeUpEi>
+     8ec:	64 e6       	ldi	r22, 0x64	; 100
+     8ee:	70 e0       	ldi	r23, 0x00	; 0
+     8f0:	82 e6       	ldi	r24, 0x62	; 98
+     8f2:	90 e0       	ldi	r25, 0x00	; 0
+     8f4:	04 d4       	rcall	.+2056   	; 0x10fe <_ZN5Rotor10StoptimeUpEi>
 				BlueLed.Off();
-     800:	8b e8       	ldi	r24, 0x8B	; 139
-     802:	90 e0       	ldi	r25, 0x00	; 0
-     804:	0c d1       	rcall	.+536    	; 0xa1e <_ZN6Output3OffEv>
-     806:	ff ef       	ldi	r31, 0xFF	; 255
-     808:	24 e3       	ldi	r18, 0x34	; 52
-     80a:	8c e0       	ldi	r24, 0x0C	; 12
-     80c:	f1 50       	subi	r31, 0x01	; 1
-     80e:	20 40       	sbci	r18, 0x00	; 0
-     810:	80 40       	sbci	r24, 0x00	; 0
-     812:	e1 f7       	brne	.-8      	; 0x80c <_Z12ModeStopTimev+0x90>
-     814:	00 c0       	rjmp	.+0      	; 0x816 <_Z12ModeStopTimev+0x9a>
-     816:	00 00       	nop
+     8f6:	8b e8       	ldi	r24, 0x8B	; 139
+     8f8:	90 e0       	ldi	r25, 0x00	; 0
+     8fa:	0c d1       	rcall	.+536    	; 0xb14 <_ZN6Output3OffEv>
+     8fc:	ff ef       	ldi	r31, 0xFF	; 255
+     8fe:	24 e3       	ldi	r18, 0x34	; 52
+     900:	8c e0       	ldi	r24, 0x0C	; 12
+     902:	f1 50       	subi	r31, 0x01	; 1
+     904:	20 40       	sbci	r18, 0x00	; 0
+     906:	80 40       	sbci	r24, 0x00	; 0
+     908:	e1 f7       	brne	.-8      	; 0x902 <_Z12ModeStopTimev+0x90>
+     90a:	00 c0       	rjmp	.+0      	; 0x90c <_Z12ModeStopTimev+0x9a>
+     90c:	00 00       	nop
 				_delay_ms(500);
 			}
 			
 			ButtonDown.Scan();
-     818:	c7 01       	movw	r24, r14
-     81a:	97 dc       	rcall	.-1746   	; 0x14a <_ZN6Button4ScanEv>
+     90e:	c7 01       	movw	r24, r14
+     910:	1c dc       	rcall	.-1992   	; 0x14a <_ZN6Button4ScanEv>
 			if(ButtonDown.PressRead()){
-     81c:	c7 01       	movw	r24, r14
-     81e:	5d dc       	rcall	.-1862   	; 0xda <_ZN6Button9PressReadEv>
-     820:	88 23       	and	r24, r24
-     822:	89 f0       	breq	.+34     	; 0x846 <_Z12ModeStopTimev+0xca>
+     912:	c7 01       	movw	r24, r14
+     914:	e2 db       	rcall	.-2108   	; 0xda <_ZN6Button9PressReadEv>
+     916:	88 23       	and	r24, r24
+     918:	89 f0       	breq	.+34     	; 0x93c <_Z12ModeStopTimev+0xca>
 				Rotor.StoptimeDown(100);
-     824:	64 e6       	ldi	r22, 0x64	; 100
-     826:	70 e0       	ldi	r23, 0x00	; 0
-     828:	82 e6       	ldi	r24, 0x62	; 98
-     82a:	90 e0       	ldi	r25, 0x00	; 0
-     82c:	10 d4       	rcall	.+2080   	; 0x104e <_ZN5Rotor12StoptimeDownEi>
+     91a:	64 e6       	ldi	r22, 0x64	; 100
+     91c:	70 e0       	ldi	r23, 0x00	; 0
+     91e:	82 e6       	ldi	r24, 0x62	; 98
+     920:	90 e0       	ldi	r25, 0x00	; 0
+     922:	10 d4       	rcall	.+2080   	; 0x1144 <_ZN5Rotor12StoptimeDownEi>
 				BlueLed.Off();
-     82e:	8b e8       	ldi	r24, 0x8B	; 139
-     830:	90 e0       	ldi	r25, 0x00	; 0
-     832:	f5 d0       	rcall	.+490    	; 0xa1e <_ZN6Output3OffEv>
-     834:	9f ef       	ldi	r25, 0xFF	; 255
-     836:	e4 e3       	ldi	r30, 0x34	; 52
-     838:	fc e0       	ldi	r31, 0x0C	; 12
-     83a:	91 50       	subi	r25, 0x01	; 1
-     83c:	e0 40       	sbci	r30, 0x00	; 0
-     83e:	f0 40       	sbci	r31, 0x00	; 0
-     840:	e1 f7       	brne	.-8      	; 0x83a <_Z12ModeStopTimev+0xbe>
-     842:	00 c0       	rjmp	.+0      	; 0x844 <_Z12ModeStopTimev+0xc8>
-     844:	00 00       	nop
+     924:	8b e8       	ldi	r24, 0x8B	; 139
+     926:	90 e0       	ldi	r25, 0x00	; 0
+     928:	f5 d0       	rcall	.+490    	; 0xb14 <_ZN6Output3OffEv>
+     92a:	9f ef       	ldi	r25, 0xFF	; 255
+     92c:	e4 e3       	ldi	r30, 0x34	; 52
+     92e:	fc e0       	ldi	r31, 0x0C	; 12
+     930:	91 50       	subi	r25, 0x01	; 1
+     932:	e0 40       	sbci	r30, 0x00	; 0
+     934:	f0 40       	sbci	r31, 0x00	; 0
+     936:	e1 f7       	brne	.-8      	; 0x930 <_Z12ModeStopTimev+0xbe>
+     938:	00 c0       	rjmp	.+0      	; 0x93a <_Z12ModeStopTimev+0xc8>
+     93a:	00 00       	nop
 				_delay_ms(500);
 			}
 			
 			ButtonStop.Scan();
-     846:	c8 01       	movw	r24, r16
-     848:	80 dc       	rcall	.-1792   	; 0x14a <_ZN6Button4ScanEv>
+     93c:	c8 01       	movw	r24, r16
+     93e:	05 dc       	rcall	.-2038   	; 0x14a <_ZN6Button4ScanEv>
 			ButtonStop.PressRead();
-     84a:	c8 01       	movw	r24, r16
-     84c:	46 dc       	rcall	.-1908   	; 0xda <_ZN6Button9PressReadEv>
+     940:	c8 01       	movw	r24, r16
+     942:	cb db       	rcall	.-2154   	; 0xda <_ZN6Button9PressReadEv>
 			
 			if (!ButtonUp.getpressed&&!ButtonStop.getpressed){
-     84e:	89 85       	ldd	r24, Y+9	; 0x09
-     850:	9a 85       	ldd	r25, Y+10	; 0x0a
-     852:	89 2b       	or	r24, r25
-     854:	09 f0       	breq	.+2      	; 0x858 <_Z12ModeStopTimev+0xdc>
-     856:	ab cf       	rjmp	.-170    	; 0x7ae <_Z12ModeStopTimev+0x32>
-     858:	f8 01       	movw	r30, r16
-     85a:	81 85       	ldd	r24, Z+9	; 0x09
-     85c:	92 85       	ldd	r25, Z+10	; 0x0a
-     85e:	89 2b       	or	r24, r25
-     860:	09 f0       	breq	.+2      	; 0x864 <_Z12ModeStopTimev+0xe8>
-     862:	a5 cf       	rjmp	.-182    	; 0x7ae <_Z12ModeStopTimev+0x32>
+     944:	89 85       	ldd	r24, Y+9	; 0x09
+     946:	9a 85       	ldd	r25, Y+10	; 0x0a
+     948:	89 2b       	or	r24, r25
+     94a:	09 f0       	breq	.+2      	; 0x94e <_Z12ModeStopTimev+0xdc>
+     94c:	ab cf       	rjmp	.-170    	; 0x8a4 <_Z12ModeStopTimev+0x32>
+     94e:	f8 01       	movw	r30, r16
+     950:	81 85       	ldd	r24, Z+9	; 0x09
+     952:	92 85       	ldd	r25, Z+10	; 0x0a
+     954:	89 2b       	or	r24, r25
+     956:	09 f0       	breq	.+2      	; 0x95a <_Z12ModeStopTimev+0xe8>
+     958:	a5 cf       	rjmp	.-182    	; 0x8a4 <_Z12ModeStopTimev+0x32>
 				Mode = false;
-     864:	10 92 d8 00 	sts	0x00D8, r1	; 0x8000d8 <Mode>
-     868:	a2 cf       	rjmp	.-188    	; 0x7ae <_Z12ModeStopTimev+0x32>
+     95a:	10 92 d8 00 	sts	0x00D8, r1	; 0x8000d8 <Mode>
+     95e:	a2 cf       	rjmp	.-188    	; 0x8a4 <_Z12ModeStopTimev+0x32>
 			}
 		}
 	}
 }
-     86a:	df 91       	pop	r29
-     86c:	cf 91       	pop	r28
-     86e:	1f 91       	pop	r17
-     870:	0f 91       	pop	r16
-     872:	ff 90       	pop	r15
-     874:	ef 90       	pop	r14
-     876:	df 90       	pop	r13
-     878:	08 95       	ret
+     960:	df 91       	pop	r29
+     962:	cf 91       	pop	r28
+     964:	1f 91       	pop	r17
+     966:	0f 91       	pop	r16
+     968:	ff 90       	pop	r15
+     96a:	ef 90       	pop	r14
+     96c:	df 90       	pop	r13
+     96e:	08 95       	ret
 
-0000087a <_Z15ProtectControllv>:
+00000970 <_Z15ProtectControllv>:
 #ifndef PROTECTCONTROLL_H_
 #define PROTECTCONTROLL_H_
 
 
 void ProtectControll(){
 	if(Protect.Read()||!PowerReady.Read()){
-     87a:	85 ed       	ldi	r24, 0xD5	; 213
-     87c:	90 e0       	ldi	r25, 0x00	; 0
-     87e:	c5 dc       	rcall	.-1654   	; 0x20a <_ZN5Input4ReadEv>
-     880:	81 11       	cpse	r24, r1
-     882:	05 c0       	rjmp	.+10     	; 0x88e <_Z15ProtectControllv+0x14>
-     884:	82 ed       	ldi	r24, 0xD2	; 210
-     886:	90 e0       	ldi	r25, 0x00	; 0
-     888:	c0 dc       	rcall	.-1664   	; 0x20a <_ZN5Input4ReadEv>
-     88a:	81 11       	cpse	r24, r1
-     88c:	05 c0       	rjmp	.+10     	; 0x898 <_Z15ProtectControllv+0x1e>
+     970:	85 ed       	ldi	r24, 0xD5	; 213
+     972:	90 e0       	ldi	r25, 0x00	; 0
+     974:	4a dc       	rcall	.-1900   	; 0x20a <_ZN5Input4ReadEv>
+     976:	81 11       	cpse	r24, r1
+     978:	05 c0       	rjmp	.+10     	; 0x984 <_Z15ProtectControllv+0x14>
+     97a:	82 ed       	ldi	r24, 0xD2	; 210
+     97c:	90 e0       	ldi	r25, 0x00	; 0
+     97e:	45 dc       	rcall	.-1910   	; 0x20a <_ZN5Input4ReadEv>
+     980:	81 11       	cpse	r24, r1
+     982:	05 c0       	rjmp	.+10     	; 0x98e <_Z15ProtectControllv+0x1e>
 		Rotor.Starting = false;
-     88e:	e2 e6       	ldi	r30, 0x62	; 98
-     890:	f0 e0       	ldi	r31, 0x00	; 0
-     892:	10 8e       	std	Z+24, r1	; 0x18
+     984:	e2 e6       	ldi	r30, 0x62	; 98
+     986:	f0 e0       	ldi	r31, 0x00	; 0
+     988:	10 8e       	std	Z+24, r1	; 0x18
 		Rotor.Stoping = false;
-     894:	11 8e       	std	Z+25, r1	; 0x19
+     98a:	11 8e       	std	Z+25, r1	; 0x19
 		Rotor.Started=0;
-     896:	13 8e       	std	Z+27, r1	; 0x1b
+     98c:	13 8e       	std	Z+27, r1	; 0x1b
 	}
 	
 	if (Protect.Read()){
-     898:	85 ed       	ldi	r24, 0xD5	; 213
-     89a:	90 e0       	ldi	r25, 0x00	; 0
-     89c:	b6 dc       	rcall	.-1684   	; 0x20a <_ZN5Input4ReadEv>
-     89e:	88 23       	and	r24, r24
-     8a0:	21 f0       	breq	.+8      	; 0x8aa <_Z15ProtectControllv+0x30>
+     98e:	85 ed       	ldi	r24, 0xD5	; 213
+     990:	90 e0       	ldi	r25, 0x00	; 0
+     992:	3b dc       	rcall	.-1930   	; 0x20a <_ZN5Input4ReadEv>
+     994:	88 23       	and	r24, r24
+     996:	21 f0       	breq	.+8      	; 0x9a0 <_Z15ProtectControllv+0x30>
 		Power.Off();
-     8a2:	87 e9       	ldi	r24, 0x97	; 151
-     8a4:	90 e0       	ldi	r25, 0x00	; 0
-     8a6:	bb d0       	rcall	.+374    	; 0xa1e <_ZN6Output3OffEv>
-     8a8:	08 95       	ret
+     998:	87 e9       	ldi	r24, 0x97	; 151
+     99a:	90 e0       	ldi	r25, 0x00	; 0
+     99c:	bb d0       	rcall	.+374    	; 0xb14 <_ZN6Output3OffEv>
+     99e:	08 95       	ret
 		}else{
 		Power.On();
-     8aa:	87 e9       	ldi	r24, 0x97	; 151
-     8ac:	90 e0       	ldi	r25, 0x00	; 0
-     8ae:	17 d1       	rcall	.+558    	; 0xade <_ZN6Output2OnEv>
-     8b0:	08 95       	ret
+     9a0:	87 e9       	ldi	r24, 0x97	; 151
+     9a2:	90 e0       	ldi	r25, 0x00	; 0
+     9a4:	17 d1       	rcall	.+558    	; 0xbd4 <_ZN6Output2OnEv>
+     9a6:	08 95       	ret
 
-000008b2 <_Z11LedControllv>:
+000009a8 <_Z11LedControllv>:
 
 #ifndef LEDCONTROLL_H_
 #define LEDCONTROLL_H_
 
 void LedControll(){
 	if (Rotor.Starting||Rotor.Stoping){
-     8b2:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__data_end+0x18>
-     8b6:	81 11       	cpse	r24, r1
-     8b8:	04 c0       	rjmp	.+8      	; 0x8c2 <_Z11LedControllv+0x10>
-     8ba:	80 91 7b 00 	lds	r24, 0x007B	; 0x80007b <__data_end+0x19>
-     8be:	88 23       	and	r24, r24
-     8c0:	51 f0       	breq	.+20     	; 0x8d6 <_Z11LedControllv+0x24>
+     9a8:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__data_end+0x18>
+     9ac:	81 11       	cpse	r24, r1
+     9ae:	04 c0       	rjmp	.+8      	; 0x9b8 <_Z11LedControllv+0x10>
+     9b0:	80 91 7b 00 	lds	r24, 0x007B	; 0x80007b <__data_end+0x19>
+     9b4:	88 23       	and	r24, r24
+     9b6:	51 f0       	breq	.+20     	; 0x9cc <_Z11LedControllv+0x24>
 		BlueLed.On();
-     8c2:	8b e8       	ldi	r24, 0x8B	; 139
-     8c4:	90 e0       	ldi	r25, 0x00	; 0
-     8c6:	0b d1       	rcall	.+534    	; 0xade <_ZN6Output2OnEv>
+     9b8:	8b e8       	ldi	r24, 0x8B	; 139
+     9ba:	90 e0       	ldi	r25, 0x00	; 0
+     9bc:	0b d1       	rcall	.+534    	; 0xbd4 <_ZN6Output2OnEv>
 		RedLed.Off();
-     8c8:	8f e8       	ldi	r24, 0x8F	; 143
-     8ca:	90 e0       	ldi	r25, 0x00	; 0
-     8cc:	a8 d0       	rcall	.+336    	; 0xa1e <_ZN6Output3OffEv>
+     9be:	8f e8       	ldi	r24, 0x8F	; 143
+     9c0:	90 e0       	ldi	r25, 0x00	; 0
+     9c2:	a8 d0       	rcall	.+336    	; 0xb14 <_ZN6Output3OffEv>
 		GreenLed.Off();
-     8ce:	83 e9       	ldi	r24, 0x93	; 147
-     8d0:	90 e0       	ldi	r25, 0x00	; 0
-     8d2:	a5 d0       	rcall	.+330    	; 0xa1e <_ZN6Output3OffEv>
-     8d4:	03 c0       	rjmp	.+6      	; 0x8dc <_Z11LedControllv+0x2a>
+     9c4:	83 e9       	ldi	r24, 0x93	; 147
+     9c6:	90 e0       	ldi	r25, 0x00	; 0
+     9c8:	a5 d0       	rcall	.+330    	; 0xb14 <_ZN6Output3OffEv>
+     9ca:	03 c0       	rjmp	.+6      	; 0x9d2 <_Z11LedControllv+0x2a>
 		}else{
 		BlueLed.Off();
-     8d6:	8b e8       	ldi	r24, 0x8B	; 139
-     8d8:	90 e0       	ldi	r25, 0x00	; 0
-     8da:	a1 d0       	rcall	.+322    	; 0xa1e <_ZN6Output3OffEv>
+     9cc:	8b e8       	ldi	r24, 0x8B	; 139
+     9ce:	90 e0       	ldi	r25, 0x00	; 0
+     9d0:	a1 d0       	rcall	.+322    	; 0xb14 <_ZN6Output3OffEv>
 	}
 	
 	if (Rotor.Started){
-     8dc:	80 91 7d 00 	lds	r24, 0x007D	; 0x80007d <__data_end+0x1b>
-     8e0:	88 23       	and	r24, r24
-     8e2:	79 f0       	breq	.+30     	; 0x902 <_Z11LedControllv+0x50>
+     9d2:	80 91 7d 00 	lds	r24, 0x007D	; 0x80007d <__data_end+0x1b>
+     9d6:	88 23       	and	r24, r24
+     9d8:	79 f0       	breq	.+30     	; 0x9f8 <_Z11LedControllv+0x50>
 		if (!Rotor.Starting&&!Rotor.Stoping){GreenLed.On();}
-     8e4:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__data_end+0x18>
-     8e8:	81 11       	cpse	r24, r1
-     8ea:	07 c0       	rjmp	.+14     	; 0x8fa <_Z11LedControllv+0x48>
-     8ec:	80 91 7b 00 	lds	r24, 0x007B	; 0x80007b <__data_end+0x19>
-     8f0:	81 11       	cpse	r24, r1
-     8f2:	03 c0       	rjmp	.+6      	; 0x8fa <_Z11LedControllv+0x48>
-     8f4:	83 e9       	ldi	r24, 0x93	; 147
-     8f6:	90 e0       	ldi	r25, 0x00	; 0
-     8f8:	f2 d0       	rcall	.+484    	; 0xade <_ZN6Output2OnEv>
+     9da:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__data_end+0x18>
+     9de:	81 11       	cpse	r24, r1
+     9e0:	07 c0       	rjmp	.+14     	; 0x9f0 <_Z11LedControllv+0x48>
+     9e2:	80 91 7b 00 	lds	r24, 0x007B	; 0x80007b <__data_end+0x19>
+     9e6:	81 11       	cpse	r24, r1
+     9e8:	03 c0       	rjmp	.+6      	; 0x9f0 <_Z11LedControllv+0x48>
+     9ea:	83 e9       	ldi	r24, 0x93	; 147
+     9ec:	90 e0       	ldi	r25, 0x00	; 0
+     9ee:	f2 d0       	rcall	.+484    	; 0xbd4 <_ZN6Output2OnEv>
 		RedLed.Off();
-     8fa:	8f e8       	ldi	r24, 0x8F	; 143
-     8fc:	90 e0       	ldi	r25, 0x00	; 0
-     8fe:	8f d0       	rcall	.+286    	; 0xa1e <_ZN6Output3OffEv>
-     900:	08 95       	ret
+     9f0:	8f e8       	ldi	r24, 0x8F	; 143
+     9f2:	90 e0       	ldi	r25, 0x00	; 0
+     9f4:	8f d0       	rcall	.+286    	; 0xb14 <_ZN6Output3OffEv>
+     9f6:	08 95       	ret
 		}else{
 		GreenLed.Off();
-     902:	83 e9       	ldi	r24, 0x93	; 147
-     904:	90 e0       	ldi	r25, 0x00	; 0
-     906:	8b d0       	rcall	.+278    	; 0xa1e <_ZN6Output3OffEv>
+     9f8:	83 e9       	ldi	r24, 0x93	; 147
+     9fa:	90 e0       	ldi	r25, 0x00	; 0
+     9fc:	8b d0       	rcall	.+278    	; 0xb14 <_ZN6Output3OffEv>
 		if (!Rotor.Starting&&!Rotor.Stoping){RedLed.On();}
-     908:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__data_end+0x18>
-     90c:	81 11       	cpse	r24, r1
-     90e:	07 c0       	rjmp	.+14     	; 0x91e <_Z11LedControllv+0x6c>
-     910:	80 91 7b 00 	lds	r24, 0x007B	; 0x80007b <__data_end+0x19>
-     914:	81 11       	cpse	r24, r1
-     916:	03 c0       	rjmp	.+6      	; 0x91e <_Z11LedControllv+0x6c>
-     918:	8f e8       	ldi	r24, 0x8F	; 143
-     91a:	90 e0       	ldi	r25, 0x00	; 0
-     91c:	e0 d0       	rcall	.+448    	; 0xade <_ZN6Output2OnEv>
-     91e:	08 95       	ret
+     9fe:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__data_end+0x18>
+     a02:	81 11       	cpse	r24, r1
+     a04:	07 c0       	rjmp	.+14     	; 0xa14 <_Z11LedControllv+0x6c>
+     a06:	80 91 7b 00 	lds	r24, 0x007B	; 0x80007b <__data_end+0x19>
+     a0a:	81 11       	cpse	r24, r1
+     a0c:	03 c0       	rjmp	.+6      	; 0xa14 <_Z11LedControllv+0x6c>
+     a0e:	8f e8       	ldi	r24, 0x8F	; 143
+     a10:	90 e0       	ldi	r25, 0x00	; 0
+     a12:	e0 d0       	rcall	.+448    	; 0xbd4 <_ZN6Output2OnEv>
+     a14:	08 95       	ret
 
-00000920 <main>:
+00000a16 <main>:
 
 
 
 
 int main (void) { //главна€ цикл программы
 	Init();
-     920:	fa dd       	rcall	.-1036   	; 0x516 <_Z4Initv>
+     a16:	fa dd       	rcall	.-1036   	; 0x60c <_Z4Initv>
 
+	
 	while(1) {
 		ReadInputs();
-     922:	59 de       	rcall	.-846    	; 0x5d6 <_Z10ReadInputsv>
+     a18:	59 de       	rcall	.-846    	; 0x6cc <_Z10ReadInputsv>
 		
 		StartControll();
-     924:	68 de       	rcall	.-816    	; 0x5f6 <_Z13StartControllv>
+     a1a:	68 de       	rcall	.-816    	; 0x6ec <_Z13StartControllv>
 		StopControll();
-     926:	7e de       	rcall	.-772    	; 0x624 <_Z12StopControllv>
+     a1c:	7e de       	rcall	.-772    	; 0x71a <_Z12StopControllv>
 		ReverseControll();
-     928:	90 de       	rcall	.-736    	; 0x64a <_Z15ReverseControllv>
+     a1e:	90 de       	rcall	.-736    	; 0x740 <_Z15ReverseControllv>
 		SpeedControll();
-     92a:	98 de       	rcall	.-720    	; 0x65c <_Z13SpeedControllv>
+     a20:	98 de       	rcall	.-720    	; 0x752 <_Z13SpeedControllv>
 		
 		ModeStartTime();
-     92c:	a8 de       	rcall	.-688    	; 0x67e <_Z13ModeStartTimev>
+     a22:	a8 de       	rcall	.-688    	; 0x774 <_Z13ModeStartTimev>
 		ModeStopTime();
-     92e:	26 df       	rcall	.-436    	; 0x77c <_Z12ModeStopTimev>
+     a24:	26 df       	rcall	.-436    	; 0x872 <_Z12ModeStopTimev>
 		
 		ProtectControll();
-     930:	a4 df       	rcall	.-184    	; 0x87a <_Z15ProtectControllv>
+     a26:	a4 df       	rcall	.-184    	; 0x970 <_Z15ProtectControllv>
 		
 		Rotor.Activity();
-     932:	82 e6       	ldi	r24, 0x62	; 98
-     934:	90 e0       	ldi	r25, 0x00	; 0
-     936:	8a d1       	rcall	.+788    	; 0xc4c <_ZN5Rotor8ActivityEv>
+     a28:	82 e6       	ldi	r24, 0x62	; 98
+     a2a:	90 e0       	ldi	r25, 0x00	; 0
+     a2c:	8a d1       	rcall	.+788    	; 0xd42 <_ZN5Rotor8ActivityEv>
 
 		LedControll();
-     938:	bc df       	rcall	.-136    	; 0x8b2 <_Z11LedControllv>
-     93a:	f3 cf       	rjmp	.-26     	; 0x922 <main+0x2>
+     a2e:	bc df       	rcall	.-136    	; 0x9a8 <_Z11LedControllv>
+     a30:	f3 cf       	rjmp	.-26     	; 0xa18 <main+0x2>
 
-0000093c <_ZN6Output4InitEcib>:
+00000a32 <_ZN6Output4InitEcib>:
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
 
 void Output::Init(char port, int pin, bool inv)
 {
-     93c:	fc 01       	movw	r30, r24
+     a32:	fc 01       	movw	r30, r24
 	_port = port;
-     93e:	60 83       	st	Z, r22
+     a34:	60 83       	st	Z, r22
 	_pin = pin;
-     940:	41 83       	std	Z+1, r20	; 0x01
-     942:	52 83       	std	Z+2, r21	; 0x02
+     a36:	41 83       	std	Z+1, r20	; 0x01
+     a38:	52 83       	std	Z+2, r21	; 0x02
 	_inv = inv;
-     944:	23 83       	std	Z+3, r18	; 0x03
+     a3a:	23 83       	std	Z+3, r18	; 0x03
 	
 	if (_inv){
-     946:	22 23       	and	r18, r18
-     948:	a1 f1       	breq	.+104    	; 0x9b2 <_ZN6Output4InitEcib+0x76>
+     a3c:	22 23       	and	r18, r18
+     a3e:	a1 f1       	breq	.+104    	; 0xaa8 <_ZN6Output4InitEcib+0x76>
 		switch (_port){
-     94a:	63 34       	cpi	r22, 0x43	; 67
-     94c:	a1 f0       	breq	.+40     	; 0x976 <_ZN6Output4InitEcib+0x3a>
-     94e:	64 34       	cpi	r22, 0x44	; 68
-     950:	09 f1       	breq	.+66     	; 0x994 <_ZN6Output4InitEcib+0x58>
-     952:	62 34       	cpi	r22, 0x42	; 66
-     954:	09 f0       	breq	.+2      	; 0x958 <_ZN6Output4InitEcib+0x1c>
-     956:	62 c0       	rjmp	.+196    	; 0xa1c <_ZN6Output4InitEcib+0xe0>
+     a40:	63 34       	cpi	r22, 0x43	; 67
+     a42:	a1 f0       	breq	.+40     	; 0xa6c <_ZN6Output4InitEcib+0x3a>
+     a44:	64 34       	cpi	r22, 0x44	; 68
+     a46:	09 f1       	breq	.+66     	; 0xa8a <_ZN6Output4InitEcib+0x58>
+     a48:	62 34       	cpi	r22, 0x42	; 66
+     a4a:	09 f0       	breq	.+2      	; 0xa4e <_ZN6Output4InitEcib+0x1c>
+     a4c:	62 c0       	rjmp	.+196    	; 0xb12 <_ZN6Output4InitEcib+0xe0>
 			case 'B': PORTB |= (1<<(pin)); DDRB |= (1<<(pin)); break;
-     958:	28 b3       	in	r18, 0x18	; 24
-     95a:	81 e0       	ldi	r24, 0x01	; 1
-     95c:	90 e0       	ldi	r25, 0x00	; 0
-     95e:	02 c0       	rjmp	.+4      	; 0x964 <_ZN6Output4InitEcib+0x28>
-     960:	88 0f       	add	r24, r24
-     962:	99 1f       	adc	r25, r25
-     964:	4a 95       	dec	r20
-     966:	e2 f7       	brpl	.-8      	; 0x960 <_ZN6Output4InitEcib+0x24>
-     968:	92 2f       	mov	r25, r18
-     96a:	98 2b       	or	r25, r24
-     96c:	98 bb       	out	0x18, r25	; 24
-     96e:	97 b3       	in	r25, 0x17	; 23
-     970:	89 2b       	or	r24, r25
-     972:	87 bb       	out	0x17, r24	; 23
-     974:	08 95       	ret
+     a4e:	28 b3       	in	r18, 0x18	; 24
+     a50:	81 e0       	ldi	r24, 0x01	; 1
+     a52:	90 e0       	ldi	r25, 0x00	; 0
+     a54:	02 c0       	rjmp	.+4      	; 0xa5a <_ZN6Output4InitEcib+0x28>
+     a56:	88 0f       	add	r24, r24
+     a58:	99 1f       	adc	r25, r25
+     a5a:	4a 95       	dec	r20
+     a5c:	e2 f7       	brpl	.-8      	; 0xa56 <_ZN6Output4InitEcib+0x24>
+     a5e:	92 2f       	mov	r25, r18
+     a60:	98 2b       	or	r25, r24
+     a62:	98 bb       	out	0x18, r25	; 24
+     a64:	97 b3       	in	r25, 0x17	; 23
+     a66:	89 2b       	or	r24, r25
+     a68:	87 bb       	out	0x17, r24	; 23
+     a6a:	08 95       	ret
 			case 'C': PORTC |= (1<<(pin)); DDRC |= (1<<(pin)); break;
-     976:	25 b3       	in	r18, 0x15	; 21
-     978:	81 e0       	ldi	r24, 0x01	; 1
-     97a:	90 e0       	ldi	r25, 0x00	; 0
-     97c:	02 c0       	rjmp	.+4      	; 0x982 <_ZN6Output4InitEcib+0x46>
-     97e:	88 0f       	add	r24, r24
-     980:	99 1f       	adc	r25, r25
-     982:	4a 95       	dec	r20
-     984:	e2 f7       	brpl	.-8      	; 0x97e <_ZN6Output4InitEcib+0x42>
-     986:	92 2f       	mov	r25, r18
-     988:	98 2b       	or	r25, r24
-     98a:	95 bb       	out	0x15, r25	; 21
-     98c:	94 b3       	in	r25, 0x14	; 20
-     98e:	89 2b       	or	r24, r25
-     990:	84 bb       	out	0x14, r24	; 20
-     992:	08 95       	ret
+     a6c:	25 b3       	in	r18, 0x15	; 21
+     a6e:	81 e0       	ldi	r24, 0x01	; 1
+     a70:	90 e0       	ldi	r25, 0x00	; 0
+     a72:	02 c0       	rjmp	.+4      	; 0xa78 <_ZN6Output4InitEcib+0x46>
+     a74:	88 0f       	add	r24, r24
+     a76:	99 1f       	adc	r25, r25
+     a78:	4a 95       	dec	r20
+     a7a:	e2 f7       	brpl	.-8      	; 0xa74 <_ZN6Output4InitEcib+0x42>
+     a7c:	92 2f       	mov	r25, r18
+     a7e:	98 2b       	or	r25, r24
+     a80:	95 bb       	out	0x15, r25	; 21
+     a82:	94 b3       	in	r25, 0x14	; 20
+     a84:	89 2b       	or	r24, r25
+     a86:	84 bb       	out	0x14, r24	; 20
+     a88:	08 95       	ret
 			case 'D': PORTD |= (1<<(pin)); DDRD |= (1<<(pin)); break;
-     994:	22 b3       	in	r18, 0x12	; 18
-     996:	81 e0       	ldi	r24, 0x01	; 1
-     998:	90 e0       	ldi	r25, 0x00	; 0
-     99a:	02 c0       	rjmp	.+4      	; 0x9a0 <_ZN6Output4InitEcib+0x64>
-     99c:	88 0f       	add	r24, r24
-     99e:	99 1f       	adc	r25, r25
-     9a0:	4a 95       	dec	r20
-     9a2:	e2 f7       	brpl	.-8      	; 0x99c <_ZN6Output4InitEcib+0x60>
-     9a4:	92 2f       	mov	r25, r18
-     9a6:	98 2b       	or	r25, r24
-     9a8:	92 bb       	out	0x12, r25	; 18
-     9aa:	91 b3       	in	r25, 0x11	; 17
-     9ac:	89 2b       	or	r24, r25
-     9ae:	81 bb       	out	0x11, r24	; 17
-     9b0:	08 95       	ret
+     a8a:	22 b3       	in	r18, 0x12	; 18
+     a8c:	81 e0       	ldi	r24, 0x01	; 1
+     a8e:	90 e0       	ldi	r25, 0x00	; 0
+     a90:	02 c0       	rjmp	.+4      	; 0xa96 <_ZN6Output4InitEcib+0x64>
+     a92:	88 0f       	add	r24, r24
+     a94:	99 1f       	adc	r25, r25
+     a96:	4a 95       	dec	r20
+     a98:	e2 f7       	brpl	.-8      	; 0xa92 <_ZN6Output4InitEcib+0x60>
+     a9a:	92 2f       	mov	r25, r18
+     a9c:	98 2b       	or	r25, r24
+     a9e:	92 bb       	out	0x12, r25	; 18
+     aa0:	91 b3       	in	r25, 0x11	; 17
+     aa2:	89 2b       	or	r24, r25
+     aa4:	81 bb       	out	0x11, r24	; 17
+     aa6:	08 95       	ret
 		}		
 	}else{
 		switch (_port){
-     9b2:	63 34       	cpi	r22, 0x43	; 67
-     9b4:	a1 f0       	breq	.+40     	; 0x9de <_ZN6Output4InitEcib+0xa2>
-     9b6:	64 34       	cpi	r22, 0x44	; 68
-     9b8:	11 f1       	breq	.+68     	; 0x9fe <_ZN6Output4InitEcib+0xc2>
-     9ba:	62 34       	cpi	r22, 0x42	; 66
-     9bc:	79 f5       	brne	.+94     	; 0xa1c <_ZN6Output4InitEcib+0xe0>
+     aa8:	63 34       	cpi	r22, 0x43	; 67
+     aaa:	a1 f0       	breq	.+40     	; 0xad4 <_ZN6Output4InitEcib+0xa2>
+     aac:	64 34       	cpi	r22, 0x44	; 68
+     aae:	11 f1       	breq	.+68     	; 0xaf4 <_ZN6Output4InitEcib+0xc2>
+     ab0:	62 34       	cpi	r22, 0x42	; 66
+     ab2:	79 f5       	brne	.+94     	; 0xb12 <_ZN6Output4InitEcib+0xe0>
 			case 'B': PORTB &= ~(1<<(pin)); DDRB |= (1<<(pin)); break;
-     9be:	28 b3       	in	r18, 0x18	; 24
-     9c0:	81 e0       	ldi	r24, 0x01	; 1
-     9c2:	90 e0       	ldi	r25, 0x00	; 0
-     9c4:	02 c0       	rjmp	.+4      	; 0x9ca <_ZN6Output4InitEcib+0x8e>
-     9c6:	88 0f       	add	r24, r24
-     9c8:	99 1f       	adc	r25, r25
-     9ca:	4a 95       	dec	r20
-     9cc:	e2 f7       	brpl	.-8      	; 0x9c6 <_ZN6Output4InitEcib+0x8a>
-     9ce:	98 2f       	mov	r25, r24
-     9d0:	90 95       	com	r25
-     9d2:	92 23       	and	r25, r18
-     9d4:	98 bb       	out	0x18, r25	; 24
-     9d6:	97 b3       	in	r25, 0x17	; 23
-     9d8:	89 2b       	or	r24, r25
-     9da:	87 bb       	out	0x17, r24	; 23
-     9dc:	08 95       	ret
+     ab4:	28 b3       	in	r18, 0x18	; 24
+     ab6:	81 e0       	ldi	r24, 0x01	; 1
+     ab8:	90 e0       	ldi	r25, 0x00	; 0
+     aba:	02 c0       	rjmp	.+4      	; 0xac0 <_ZN6Output4InitEcib+0x8e>
+     abc:	88 0f       	add	r24, r24
+     abe:	99 1f       	adc	r25, r25
+     ac0:	4a 95       	dec	r20
+     ac2:	e2 f7       	brpl	.-8      	; 0xabc <_ZN6Output4InitEcib+0x8a>
+     ac4:	98 2f       	mov	r25, r24
+     ac6:	90 95       	com	r25
+     ac8:	92 23       	and	r25, r18
+     aca:	98 bb       	out	0x18, r25	; 24
+     acc:	97 b3       	in	r25, 0x17	; 23
+     ace:	89 2b       	or	r24, r25
+     ad0:	87 bb       	out	0x17, r24	; 23
+     ad2:	08 95       	ret
 			case 'C': PORTC &= ~(1<<(pin)); DDRC |= (1<<(pin)); break;
-     9de:	25 b3       	in	r18, 0x15	; 21
-     9e0:	81 e0       	ldi	r24, 0x01	; 1
-     9e2:	90 e0       	ldi	r25, 0x00	; 0
-     9e4:	02 c0       	rjmp	.+4      	; 0x9ea <_ZN6Output4InitEcib+0xae>
-     9e6:	88 0f       	add	r24, r24
-     9e8:	99 1f       	adc	r25, r25
-     9ea:	4a 95       	dec	r20
-     9ec:	e2 f7       	brpl	.-8      	; 0x9e6 <_ZN6Output4InitEcib+0xaa>
-     9ee:	98 2f       	mov	r25, r24
-     9f0:	90 95       	com	r25
-     9f2:	92 23       	and	r25, r18
-     9f4:	95 bb       	out	0x15, r25	; 21
-     9f6:	94 b3       	in	r25, 0x14	; 20
-     9f8:	89 2b       	or	r24, r25
-     9fa:	84 bb       	out	0x14, r24	; 20
-     9fc:	08 95       	ret
+     ad4:	25 b3       	in	r18, 0x15	; 21
+     ad6:	81 e0       	ldi	r24, 0x01	; 1
+     ad8:	90 e0       	ldi	r25, 0x00	; 0
+     ada:	02 c0       	rjmp	.+4      	; 0xae0 <_ZN6Output4InitEcib+0xae>
+     adc:	88 0f       	add	r24, r24
+     ade:	99 1f       	adc	r25, r25
+     ae0:	4a 95       	dec	r20
+     ae2:	e2 f7       	brpl	.-8      	; 0xadc <_ZN6Output4InitEcib+0xaa>
+     ae4:	98 2f       	mov	r25, r24
+     ae6:	90 95       	com	r25
+     ae8:	92 23       	and	r25, r18
+     aea:	95 bb       	out	0x15, r25	; 21
+     aec:	94 b3       	in	r25, 0x14	; 20
+     aee:	89 2b       	or	r24, r25
+     af0:	84 bb       	out	0x14, r24	; 20
+     af2:	08 95       	ret
 			case 'D': PORTD &= ~(1<<(pin)); DDRD |= (1<<(pin)); break;
-     9fe:	22 b3       	in	r18, 0x12	; 18
-     a00:	81 e0       	ldi	r24, 0x01	; 1
-     a02:	90 e0       	ldi	r25, 0x00	; 0
-     a04:	02 c0       	rjmp	.+4      	; 0xa0a <_ZN6Output4InitEcib+0xce>
-     a06:	88 0f       	add	r24, r24
-     a08:	99 1f       	adc	r25, r25
-     a0a:	4a 95       	dec	r20
-     a0c:	e2 f7       	brpl	.-8      	; 0xa06 <_ZN6Output4InitEcib+0xca>
-     a0e:	98 2f       	mov	r25, r24
-     a10:	90 95       	com	r25
-     a12:	92 23       	and	r25, r18
-     a14:	92 bb       	out	0x12, r25	; 18
-     a16:	91 b3       	in	r25, 0x11	; 17
-     a18:	89 2b       	or	r24, r25
-     a1a:	81 bb       	out	0x11, r24	; 17
-     a1c:	08 95       	ret
+     af4:	22 b3       	in	r18, 0x12	; 18
+     af6:	81 e0       	ldi	r24, 0x01	; 1
+     af8:	90 e0       	ldi	r25, 0x00	; 0
+     afa:	02 c0       	rjmp	.+4      	; 0xb00 <_ZN6Output4InitEcib+0xce>
+     afc:	88 0f       	add	r24, r24
+     afe:	99 1f       	adc	r25, r25
+     b00:	4a 95       	dec	r20
+     b02:	e2 f7       	brpl	.-8      	; 0xafc <_ZN6Output4InitEcib+0xca>
+     b04:	98 2f       	mov	r25, r24
+     b06:	90 95       	com	r25
+     b08:	92 23       	and	r25, r18
+     b0a:	92 bb       	out	0x12, r25	; 18
+     b0c:	91 b3       	in	r25, 0x11	; 17
+     b0e:	89 2b       	or	r24, r25
+     b10:	81 bb       	out	0x11, r24	; 17
+     b12:	08 95       	ret
 
-00000a1e <_ZN6Output3OffEv>:
+00000b14 <_ZN6Output3OffEv>:
 		}
 	}
 	
 }
 
 void Output::Off(){
-     a1e:	fc 01       	movw	r30, r24
+     b14:	fc 01       	movw	r30, r24
 	cli();
-     a20:	f8 94       	cli
+     b16:	f8 94       	cli
 	if (_inv){
-     a22:	83 81       	ldd	r24, Z+3	; 0x03
-     a24:	88 23       	and	r24, r24
-     a26:	61 f1       	breq	.+88     	; 0xa80 <_ZN6Output3OffEv+0x62>
+     b18:	83 81       	ldd	r24, Z+3	; 0x03
+     b1a:	88 23       	and	r24, r24
+     b1c:	61 f1       	breq	.+88     	; 0xb76 <_ZN6Output3OffEv+0x62>
 		switch (_port){
-     a28:	80 81       	ld	r24, Z
-     a2a:	83 34       	cpi	r24, 0x43	; 67
-     a2c:	89 f0       	breq	.+34     	; 0xa50 <_ZN6Output3OffEv+0x32>
-     a2e:	84 34       	cpi	r24, 0x44	; 68
-     a30:	d9 f0       	breq	.+54     	; 0xa68 <_ZN6Output3OffEv+0x4a>
-     a32:	82 34       	cpi	r24, 0x42	; 66
-     a34:	09 f0       	breq	.+2      	; 0xa38 <_ZN6Output3OffEv+0x1a>
-     a36:	51 c0       	rjmp	.+162    	; 0xada <_ZN6Output3OffEv+0xbc>
+     b1e:	80 81       	ld	r24, Z
+     b20:	83 34       	cpi	r24, 0x43	; 67
+     b22:	89 f0       	breq	.+34     	; 0xb46 <_ZN6Output3OffEv+0x32>
+     b24:	84 34       	cpi	r24, 0x44	; 68
+     b26:	d9 f0       	breq	.+54     	; 0xb5e <_ZN6Output3OffEv+0x4a>
+     b28:	82 34       	cpi	r24, 0x42	; 66
+     b2a:	09 f0       	breq	.+2      	; 0xb2e <_ZN6Output3OffEv+0x1a>
+     b2c:	51 c0       	rjmp	.+162    	; 0xbd0 <_ZN6Output3OffEv+0xbc>
 			case 'B': PORTB |= (1<<(_pin)); break;
-     a38:	28 b3       	in	r18, 0x18	; 24
-     a3a:	81 e0       	ldi	r24, 0x01	; 1
-     a3c:	90 e0       	ldi	r25, 0x00	; 0
-     a3e:	01 80       	ldd	r0, Z+1	; 0x01
-     a40:	02 c0       	rjmp	.+4      	; 0xa46 <_ZN6Output3OffEv+0x28>
-     a42:	88 0f       	add	r24, r24
-     a44:	99 1f       	adc	r25, r25
-     a46:	0a 94       	dec	r0
-     a48:	e2 f7       	brpl	.-8      	; 0xa42 <_ZN6Output3OffEv+0x24>
-     a4a:	82 2b       	or	r24, r18
-     a4c:	88 bb       	out	0x18, r24	; 24
-     a4e:	45 c0       	rjmp	.+138    	; 0xada <_ZN6Output3OffEv+0xbc>
+     b2e:	28 b3       	in	r18, 0x18	; 24
+     b30:	81 e0       	ldi	r24, 0x01	; 1
+     b32:	90 e0       	ldi	r25, 0x00	; 0
+     b34:	01 80       	ldd	r0, Z+1	; 0x01
+     b36:	02 c0       	rjmp	.+4      	; 0xb3c <_ZN6Output3OffEv+0x28>
+     b38:	88 0f       	add	r24, r24
+     b3a:	99 1f       	adc	r25, r25
+     b3c:	0a 94       	dec	r0
+     b3e:	e2 f7       	brpl	.-8      	; 0xb38 <_ZN6Output3OffEv+0x24>
+     b40:	82 2b       	or	r24, r18
+     b42:	88 bb       	out	0x18, r24	; 24
+     b44:	45 c0       	rjmp	.+138    	; 0xbd0 <_ZN6Output3OffEv+0xbc>
 			case 'C': PORTC |= (1<<(_pin)); break;
-     a50:	25 b3       	in	r18, 0x15	; 21
-     a52:	81 e0       	ldi	r24, 0x01	; 1
-     a54:	90 e0       	ldi	r25, 0x00	; 0
-     a56:	01 80       	ldd	r0, Z+1	; 0x01
-     a58:	02 c0       	rjmp	.+4      	; 0xa5e <_ZN6Output3OffEv+0x40>
-     a5a:	88 0f       	add	r24, r24
-     a5c:	99 1f       	adc	r25, r25
-     a5e:	0a 94       	dec	r0
-     a60:	e2 f7       	brpl	.-8      	; 0xa5a <_ZN6Output3OffEv+0x3c>
-     a62:	82 2b       	or	r24, r18
-     a64:	85 bb       	out	0x15, r24	; 21
-     a66:	39 c0       	rjmp	.+114    	; 0xada <_ZN6Output3OffEv+0xbc>
+     b46:	25 b3       	in	r18, 0x15	; 21
+     b48:	81 e0       	ldi	r24, 0x01	; 1
+     b4a:	90 e0       	ldi	r25, 0x00	; 0
+     b4c:	01 80       	ldd	r0, Z+1	; 0x01
+     b4e:	02 c0       	rjmp	.+4      	; 0xb54 <_ZN6Output3OffEv+0x40>
+     b50:	88 0f       	add	r24, r24
+     b52:	99 1f       	adc	r25, r25
+     b54:	0a 94       	dec	r0
+     b56:	e2 f7       	brpl	.-8      	; 0xb50 <_ZN6Output3OffEv+0x3c>
+     b58:	82 2b       	or	r24, r18
+     b5a:	85 bb       	out	0x15, r24	; 21
+     b5c:	39 c0       	rjmp	.+114    	; 0xbd0 <_ZN6Output3OffEv+0xbc>
 			case 'D': PORTD |= (1<<(_pin)); break;
-     a68:	22 b3       	in	r18, 0x12	; 18
-     a6a:	81 e0       	ldi	r24, 0x01	; 1
-     a6c:	90 e0       	ldi	r25, 0x00	; 0
-     a6e:	01 80       	ldd	r0, Z+1	; 0x01
-     a70:	02 c0       	rjmp	.+4      	; 0xa76 <_ZN6Output3OffEv+0x58>
-     a72:	88 0f       	add	r24, r24
-     a74:	99 1f       	adc	r25, r25
-     a76:	0a 94       	dec	r0
-     a78:	e2 f7       	brpl	.-8      	; 0xa72 <_ZN6Output3OffEv+0x54>
-     a7a:	82 2b       	or	r24, r18
-     a7c:	82 bb       	out	0x12, r24	; 18
-     a7e:	2d c0       	rjmp	.+90     	; 0xada <_ZN6Output3OffEv+0xbc>
+     b5e:	22 b3       	in	r18, 0x12	; 18
+     b60:	81 e0       	ldi	r24, 0x01	; 1
+     b62:	90 e0       	ldi	r25, 0x00	; 0
+     b64:	01 80       	ldd	r0, Z+1	; 0x01
+     b66:	02 c0       	rjmp	.+4      	; 0xb6c <_ZN6Output3OffEv+0x58>
+     b68:	88 0f       	add	r24, r24
+     b6a:	99 1f       	adc	r25, r25
+     b6c:	0a 94       	dec	r0
+     b6e:	e2 f7       	brpl	.-8      	; 0xb68 <_ZN6Output3OffEv+0x54>
+     b70:	82 2b       	or	r24, r18
+     b72:	82 bb       	out	0x12, r24	; 18
+     b74:	2d c0       	rjmp	.+90     	; 0xbd0 <_ZN6Output3OffEv+0xbc>
 		}
 		}else{
 		switch (_port){
-     a80:	80 81       	ld	r24, Z
-     a82:	83 34       	cpi	r24, 0x43	; 67
-     a84:	89 f0       	breq	.+34     	; 0xaa8 <_ZN6Output3OffEv+0x8a>
-     a86:	84 34       	cpi	r24, 0x44	; 68
-     a88:	e1 f0       	breq	.+56     	; 0xac2 <_ZN6Output3OffEv+0xa4>
-     a8a:	82 34       	cpi	r24, 0x42	; 66
-     a8c:	31 f5       	brne	.+76     	; 0xada <_ZN6Output3OffEv+0xbc>
+     b76:	80 81       	ld	r24, Z
+     b78:	83 34       	cpi	r24, 0x43	; 67
+     b7a:	89 f0       	breq	.+34     	; 0xb9e <_ZN6Output3OffEv+0x8a>
+     b7c:	84 34       	cpi	r24, 0x44	; 68
+     b7e:	e1 f0       	breq	.+56     	; 0xbb8 <_ZN6Output3OffEv+0xa4>
+     b80:	82 34       	cpi	r24, 0x42	; 66
+     b82:	31 f5       	brne	.+76     	; 0xbd0 <_ZN6Output3OffEv+0xbc>
 			case 'B': PORTB  &= ~(1<<(_pin)); break;
-     a8e:	28 b3       	in	r18, 0x18	; 24
-     a90:	81 e0       	ldi	r24, 0x01	; 1
-     a92:	90 e0       	ldi	r25, 0x00	; 0
-     a94:	01 80       	ldd	r0, Z+1	; 0x01
-     a96:	02 c0       	rjmp	.+4      	; 0xa9c <_ZN6Output3OffEv+0x7e>
-     a98:	88 0f       	add	r24, r24
-     a9a:	99 1f       	adc	r25, r25
-     a9c:	0a 94       	dec	r0
-     a9e:	e2 f7       	brpl	.-8      	; 0xa98 <_ZN6Output3OffEv+0x7a>
-     aa0:	80 95       	com	r24
-     aa2:	82 23       	and	r24, r18
-     aa4:	88 bb       	out	0x18, r24	; 24
-     aa6:	19 c0       	rjmp	.+50     	; 0xada <_ZN6Output3OffEv+0xbc>
+     b84:	28 b3       	in	r18, 0x18	; 24
+     b86:	81 e0       	ldi	r24, 0x01	; 1
+     b88:	90 e0       	ldi	r25, 0x00	; 0
+     b8a:	01 80       	ldd	r0, Z+1	; 0x01
+     b8c:	02 c0       	rjmp	.+4      	; 0xb92 <_ZN6Output3OffEv+0x7e>
+     b8e:	88 0f       	add	r24, r24
+     b90:	99 1f       	adc	r25, r25
+     b92:	0a 94       	dec	r0
+     b94:	e2 f7       	brpl	.-8      	; 0xb8e <_ZN6Output3OffEv+0x7a>
+     b96:	80 95       	com	r24
+     b98:	82 23       	and	r24, r18
+     b9a:	88 bb       	out	0x18, r24	; 24
+     b9c:	19 c0       	rjmp	.+50     	; 0xbd0 <_ZN6Output3OffEv+0xbc>
 			case 'C': PORTC  &= ~(1<<(_pin)); break;
-     aa8:	25 b3       	in	r18, 0x15	; 21
-     aaa:	81 e0       	ldi	r24, 0x01	; 1
-     aac:	90 e0       	ldi	r25, 0x00	; 0
-     aae:	01 80       	ldd	r0, Z+1	; 0x01
-     ab0:	02 c0       	rjmp	.+4      	; 0xab6 <_ZN6Output3OffEv+0x98>
-     ab2:	88 0f       	add	r24, r24
-     ab4:	99 1f       	adc	r25, r25
-     ab6:	0a 94       	dec	r0
-     ab8:	e2 f7       	brpl	.-8      	; 0xab2 <_ZN6Output3OffEv+0x94>
-     aba:	80 95       	com	r24
-     abc:	82 23       	and	r24, r18
-     abe:	85 bb       	out	0x15, r24	; 21
-     ac0:	0c c0       	rjmp	.+24     	; 0xada <_ZN6Output3OffEv+0xbc>
+     b9e:	25 b3       	in	r18, 0x15	; 21
+     ba0:	81 e0       	ldi	r24, 0x01	; 1
+     ba2:	90 e0       	ldi	r25, 0x00	; 0
+     ba4:	01 80       	ldd	r0, Z+1	; 0x01
+     ba6:	02 c0       	rjmp	.+4      	; 0xbac <_ZN6Output3OffEv+0x98>
+     ba8:	88 0f       	add	r24, r24
+     baa:	99 1f       	adc	r25, r25
+     bac:	0a 94       	dec	r0
+     bae:	e2 f7       	brpl	.-8      	; 0xba8 <_ZN6Output3OffEv+0x94>
+     bb0:	80 95       	com	r24
+     bb2:	82 23       	and	r24, r18
+     bb4:	85 bb       	out	0x15, r24	; 21
+     bb6:	0c c0       	rjmp	.+24     	; 0xbd0 <_ZN6Output3OffEv+0xbc>
 			case 'D': PORTD  &= ~(1<<(_pin)); break;
-     ac2:	22 b3       	in	r18, 0x12	; 18
-     ac4:	81 e0       	ldi	r24, 0x01	; 1
-     ac6:	90 e0       	ldi	r25, 0x00	; 0
-     ac8:	01 80       	ldd	r0, Z+1	; 0x01
-     aca:	02 c0       	rjmp	.+4      	; 0xad0 <_ZN6Output3OffEv+0xb2>
-     acc:	88 0f       	add	r24, r24
-     ace:	99 1f       	adc	r25, r25
-     ad0:	0a 94       	dec	r0
-     ad2:	e2 f7       	brpl	.-8      	; 0xacc <_ZN6Output3OffEv+0xae>
-     ad4:	80 95       	com	r24
-     ad6:	82 23       	and	r24, r18
-     ad8:	82 bb       	out	0x12, r24	; 18
+     bb8:	22 b3       	in	r18, 0x12	; 18
+     bba:	81 e0       	ldi	r24, 0x01	; 1
+     bbc:	90 e0       	ldi	r25, 0x00	; 0
+     bbe:	01 80       	ldd	r0, Z+1	; 0x01
+     bc0:	02 c0       	rjmp	.+4      	; 0xbc6 <_ZN6Output3OffEv+0xb2>
+     bc2:	88 0f       	add	r24, r24
+     bc4:	99 1f       	adc	r25, r25
+     bc6:	0a 94       	dec	r0
+     bc8:	e2 f7       	brpl	.-8      	; 0xbc2 <_ZN6Output3OffEv+0xae>
+     bca:	80 95       	com	r24
+     bcc:	82 23       	and	r24, r18
+     bce:	82 bb       	out	0x12, r24	; 18
 		}
 	}
 	sei();
-     ada:	78 94       	sei
-     adc:	08 95       	ret
+     bd0:	78 94       	sei
+     bd2:	08 95       	ret
 
-00000ade <_ZN6Output2OnEv>:
+00000bd4 <_ZN6Output2OnEv>:
 }
 
 void Output::On(){
-     ade:	fc 01       	movw	r30, r24
+     bd4:	fc 01       	movw	r30, r24
 	cli();
-     ae0:	f8 94       	cli
+     bd6:	f8 94       	cli
 	if (!_inv){
-     ae2:	83 81       	ldd	r24, Z+3	; 0x03
-     ae4:	81 11       	cpse	r24, r1
-     ae6:	2c c0       	rjmp	.+88     	; 0xb40 <_ZN6Output2OnEv+0x62>
+     bd8:	83 81       	ldd	r24, Z+3	; 0x03
+     bda:	81 11       	cpse	r24, r1
+     bdc:	2c c0       	rjmp	.+88     	; 0xc36 <_ZN6Output2OnEv+0x62>
 		switch (_port){
-     ae8:	80 81       	ld	r24, Z
-     aea:	83 34       	cpi	r24, 0x43	; 67
-     aec:	89 f0       	breq	.+34     	; 0xb10 <_ZN6Output2OnEv+0x32>
-     aee:	84 34       	cpi	r24, 0x44	; 68
-     af0:	d9 f0       	breq	.+54     	; 0xb28 <_ZN6Output2OnEv+0x4a>
-     af2:	82 34       	cpi	r24, 0x42	; 66
-     af4:	09 f0       	breq	.+2      	; 0xaf8 <_ZN6Output2OnEv+0x1a>
-     af6:	51 c0       	rjmp	.+162    	; 0xb9a <_ZN6Output2OnEv+0xbc>
+     bde:	80 81       	ld	r24, Z
+     be0:	83 34       	cpi	r24, 0x43	; 67
+     be2:	89 f0       	breq	.+34     	; 0xc06 <_ZN6Output2OnEv+0x32>
+     be4:	84 34       	cpi	r24, 0x44	; 68
+     be6:	d9 f0       	breq	.+54     	; 0xc1e <_ZN6Output2OnEv+0x4a>
+     be8:	82 34       	cpi	r24, 0x42	; 66
+     bea:	09 f0       	breq	.+2      	; 0xbee <_ZN6Output2OnEv+0x1a>
+     bec:	51 c0       	rjmp	.+162    	; 0xc90 <_ZN6Output2OnEv+0xbc>
 			case 'B': PORTB |= (1<<(_pin)); break;
-     af8:	28 b3       	in	r18, 0x18	; 24
-     afa:	81 e0       	ldi	r24, 0x01	; 1
-     afc:	90 e0       	ldi	r25, 0x00	; 0
-     afe:	01 80       	ldd	r0, Z+1	; 0x01
-     b00:	02 c0       	rjmp	.+4      	; 0xb06 <_ZN6Output2OnEv+0x28>
-     b02:	88 0f       	add	r24, r24
-     b04:	99 1f       	adc	r25, r25
-     b06:	0a 94       	dec	r0
-     b08:	e2 f7       	brpl	.-8      	; 0xb02 <_ZN6Output2OnEv+0x24>
-     b0a:	82 2b       	or	r24, r18
-     b0c:	88 bb       	out	0x18, r24	; 24
-     b0e:	45 c0       	rjmp	.+138    	; 0xb9a <_ZN6Output2OnEv+0xbc>
+     bee:	28 b3       	in	r18, 0x18	; 24
+     bf0:	81 e0       	ldi	r24, 0x01	; 1
+     bf2:	90 e0       	ldi	r25, 0x00	; 0
+     bf4:	01 80       	ldd	r0, Z+1	; 0x01
+     bf6:	02 c0       	rjmp	.+4      	; 0xbfc <_ZN6Output2OnEv+0x28>
+     bf8:	88 0f       	add	r24, r24
+     bfa:	99 1f       	adc	r25, r25
+     bfc:	0a 94       	dec	r0
+     bfe:	e2 f7       	brpl	.-8      	; 0xbf8 <_ZN6Output2OnEv+0x24>
+     c00:	82 2b       	or	r24, r18
+     c02:	88 bb       	out	0x18, r24	; 24
+     c04:	45 c0       	rjmp	.+138    	; 0xc90 <_ZN6Output2OnEv+0xbc>
 			case 'C': PORTC |= (1<<(_pin)); break;
-     b10:	25 b3       	in	r18, 0x15	; 21
-     b12:	81 e0       	ldi	r24, 0x01	; 1
-     b14:	90 e0       	ldi	r25, 0x00	; 0
-     b16:	01 80       	ldd	r0, Z+1	; 0x01
-     b18:	02 c0       	rjmp	.+4      	; 0xb1e <_ZN6Output2OnEv+0x40>
-     b1a:	88 0f       	add	r24, r24
-     b1c:	99 1f       	adc	r25, r25
-     b1e:	0a 94       	dec	r0
-     b20:	e2 f7       	brpl	.-8      	; 0xb1a <_ZN6Output2OnEv+0x3c>
-     b22:	82 2b       	or	r24, r18
-     b24:	85 bb       	out	0x15, r24	; 21
-     b26:	39 c0       	rjmp	.+114    	; 0xb9a <_ZN6Output2OnEv+0xbc>
+     c06:	25 b3       	in	r18, 0x15	; 21
+     c08:	81 e0       	ldi	r24, 0x01	; 1
+     c0a:	90 e0       	ldi	r25, 0x00	; 0
+     c0c:	01 80       	ldd	r0, Z+1	; 0x01
+     c0e:	02 c0       	rjmp	.+4      	; 0xc14 <_ZN6Output2OnEv+0x40>
+     c10:	88 0f       	add	r24, r24
+     c12:	99 1f       	adc	r25, r25
+     c14:	0a 94       	dec	r0
+     c16:	e2 f7       	brpl	.-8      	; 0xc10 <_ZN6Output2OnEv+0x3c>
+     c18:	82 2b       	or	r24, r18
+     c1a:	85 bb       	out	0x15, r24	; 21
+     c1c:	39 c0       	rjmp	.+114    	; 0xc90 <_ZN6Output2OnEv+0xbc>
 			case 'D': PORTD |= (1<<(_pin)); break;
-     b28:	22 b3       	in	r18, 0x12	; 18
-     b2a:	81 e0       	ldi	r24, 0x01	; 1
-     b2c:	90 e0       	ldi	r25, 0x00	; 0
-     b2e:	01 80       	ldd	r0, Z+1	; 0x01
-     b30:	02 c0       	rjmp	.+4      	; 0xb36 <_ZN6Output2OnEv+0x58>
-     b32:	88 0f       	add	r24, r24
-     b34:	99 1f       	adc	r25, r25
-     b36:	0a 94       	dec	r0
-     b38:	e2 f7       	brpl	.-8      	; 0xb32 <_ZN6Output2OnEv+0x54>
-     b3a:	82 2b       	or	r24, r18
-     b3c:	82 bb       	out	0x12, r24	; 18
-     b3e:	2d c0       	rjmp	.+90     	; 0xb9a <_ZN6Output2OnEv+0xbc>
+     c1e:	22 b3       	in	r18, 0x12	; 18
+     c20:	81 e0       	ldi	r24, 0x01	; 1
+     c22:	90 e0       	ldi	r25, 0x00	; 0
+     c24:	01 80       	ldd	r0, Z+1	; 0x01
+     c26:	02 c0       	rjmp	.+4      	; 0xc2c <_ZN6Output2OnEv+0x58>
+     c28:	88 0f       	add	r24, r24
+     c2a:	99 1f       	adc	r25, r25
+     c2c:	0a 94       	dec	r0
+     c2e:	e2 f7       	brpl	.-8      	; 0xc28 <_ZN6Output2OnEv+0x54>
+     c30:	82 2b       	or	r24, r18
+     c32:	82 bb       	out	0x12, r24	; 18
+     c34:	2d c0       	rjmp	.+90     	; 0xc90 <_ZN6Output2OnEv+0xbc>
 		}
 		}else{
 		switch (_port){
-     b40:	80 81       	ld	r24, Z
-     b42:	83 34       	cpi	r24, 0x43	; 67
-     b44:	89 f0       	breq	.+34     	; 0xb68 <_ZN6Output2OnEv+0x8a>
-     b46:	84 34       	cpi	r24, 0x44	; 68
-     b48:	e1 f0       	breq	.+56     	; 0xb82 <_ZN6Output2OnEv+0xa4>
-     b4a:	82 34       	cpi	r24, 0x42	; 66
-     b4c:	31 f5       	brne	.+76     	; 0xb9a <_ZN6Output2OnEv+0xbc>
+     c36:	80 81       	ld	r24, Z
+     c38:	83 34       	cpi	r24, 0x43	; 67
+     c3a:	89 f0       	breq	.+34     	; 0xc5e <_ZN6Output2OnEv+0x8a>
+     c3c:	84 34       	cpi	r24, 0x44	; 68
+     c3e:	e1 f0       	breq	.+56     	; 0xc78 <_ZN6Output2OnEv+0xa4>
+     c40:	82 34       	cpi	r24, 0x42	; 66
+     c42:	31 f5       	brne	.+76     	; 0xc90 <_ZN6Output2OnEv+0xbc>
 			case 'B': PORTB  &= ~(1<<(_pin)); break;
-     b4e:	28 b3       	in	r18, 0x18	; 24
-     b50:	81 e0       	ldi	r24, 0x01	; 1
-     b52:	90 e0       	ldi	r25, 0x00	; 0
-     b54:	01 80       	ldd	r0, Z+1	; 0x01
-     b56:	02 c0       	rjmp	.+4      	; 0xb5c <_ZN6Output2OnEv+0x7e>
-     b58:	88 0f       	add	r24, r24
-     b5a:	99 1f       	adc	r25, r25
-     b5c:	0a 94       	dec	r0
-     b5e:	e2 f7       	brpl	.-8      	; 0xb58 <_ZN6Output2OnEv+0x7a>
-     b60:	80 95       	com	r24
-     b62:	82 23       	and	r24, r18
-     b64:	88 bb       	out	0x18, r24	; 24
-     b66:	19 c0       	rjmp	.+50     	; 0xb9a <_ZN6Output2OnEv+0xbc>
+     c44:	28 b3       	in	r18, 0x18	; 24
+     c46:	81 e0       	ldi	r24, 0x01	; 1
+     c48:	90 e0       	ldi	r25, 0x00	; 0
+     c4a:	01 80       	ldd	r0, Z+1	; 0x01
+     c4c:	02 c0       	rjmp	.+4      	; 0xc52 <_ZN6Output2OnEv+0x7e>
+     c4e:	88 0f       	add	r24, r24
+     c50:	99 1f       	adc	r25, r25
+     c52:	0a 94       	dec	r0
+     c54:	e2 f7       	brpl	.-8      	; 0xc4e <_ZN6Output2OnEv+0x7a>
+     c56:	80 95       	com	r24
+     c58:	82 23       	and	r24, r18
+     c5a:	88 bb       	out	0x18, r24	; 24
+     c5c:	19 c0       	rjmp	.+50     	; 0xc90 <_ZN6Output2OnEv+0xbc>
 			case 'C': PORTC  &= ~(1<<(_pin)); break;
-     b68:	25 b3       	in	r18, 0x15	; 21
-     b6a:	81 e0       	ldi	r24, 0x01	; 1
-     b6c:	90 e0       	ldi	r25, 0x00	; 0
-     b6e:	01 80       	ldd	r0, Z+1	; 0x01
-     b70:	02 c0       	rjmp	.+4      	; 0xb76 <_ZN6Output2OnEv+0x98>
-     b72:	88 0f       	add	r24, r24
-     b74:	99 1f       	adc	r25, r25
-     b76:	0a 94       	dec	r0
-     b78:	e2 f7       	brpl	.-8      	; 0xb72 <_ZN6Output2OnEv+0x94>
-     b7a:	80 95       	com	r24
-     b7c:	82 23       	and	r24, r18
-     b7e:	85 bb       	out	0x15, r24	; 21
-     b80:	0c c0       	rjmp	.+24     	; 0xb9a <_ZN6Output2OnEv+0xbc>
+     c5e:	25 b3       	in	r18, 0x15	; 21
+     c60:	81 e0       	ldi	r24, 0x01	; 1
+     c62:	90 e0       	ldi	r25, 0x00	; 0
+     c64:	01 80       	ldd	r0, Z+1	; 0x01
+     c66:	02 c0       	rjmp	.+4      	; 0xc6c <_ZN6Output2OnEv+0x98>
+     c68:	88 0f       	add	r24, r24
+     c6a:	99 1f       	adc	r25, r25
+     c6c:	0a 94       	dec	r0
+     c6e:	e2 f7       	brpl	.-8      	; 0xc68 <_ZN6Output2OnEv+0x94>
+     c70:	80 95       	com	r24
+     c72:	82 23       	and	r24, r18
+     c74:	85 bb       	out	0x15, r24	; 21
+     c76:	0c c0       	rjmp	.+24     	; 0xc90 <_ZN6Output2OnEv+0xbc>
 			case 'D': PORTD  &= ~(1<<(_pin)); break;
-     b82:	22 b3       	in	r18, 0x12	; 18
-     b84:	81 e0       	ldi	r24, 0x01	; 1
-     b86:	90 e0       	ldi	r25, 0x00	; 0
-     b88:	01 80       	ldd	r0, Z+1	; 0x01
-     b8a:	02 c0       	rjmp	.+4      	; 0xb90 <_ZN6Output2OnEv+0xb2>
-     b8c:	88 0f       	add	r24, r24
-     b8e:	99 1f       	adc	r25, r25
-     b90:	0a 94       	dec	r0
-     b92:	e2 f7       	brpl	.-8      	; 0xb8c <_ZN6Output2OnEv+0xae>
-     b94:	80 95       	com	r24
-     b96:	82 23       	and	r24, r18
-     b98:	82 bb       	out	0x12, r24	; 18
+     c78:	22 b3       	in	r18, 0x12	; 18
+     c7a:	81 e0       	ldi	r24, 0x01	; 1
+     c7c:	90 e0       	ldi	r25, 0x00	; 0
+     c7e:	01 80       	ldd	r0, Z+1	; 0x01
+     c80:	02 c0       	rjmp	.+4      	; 0xc86 <_ZN6Output2OnEv+0xb2>
+     c82:	88 0f       	add	r24, r24
+     c84:	99 1f       	adc	r25, r25
+     c86:	0a 94       	dec	r0
+     c88:	e2 f7       	brpl	.-8      	; 0xc82 <_ZN6Output2OnEv+0xae>
+     c8a:	80 95       	com	r24
+     c8c:	82 23       	and	r24, r18
+     c8e:	82 bb       	out	0x12, r24	; 18
 		}
 	}
 	sei();
-     b9a:	78 94       	sei
-     b9c:	08 95       	ret
+     c90:	78 94       	sei
+     c92:	08 95       	ret
 
-00000b9e <_ZN5Rotor4InitEv>:
+00000c94 <_ZN5Rotor4InitEv>:
 #include <avr/interrupt.h>
 
 
 
 
 void Rotor::Init(){
-     b9e:	0f 93       	push	r16
-     ba0:	1f 93       	push	r17
-     ba2:	fc 01       	movw	r30, r24
+     c94:	0f 93       	push	r16
+     c96:	1f 93       	push	r17
+     c98:	fc 01       	movw	r30, r24
 	workfrequency = 50;
-     ba4:	82 e3       	ldi	r24, 0x32	; 50
-     ba6:	90 e0       	ldi	r25, 0x00	; 0
-     ba8:	a0 e0       	ldi	r26, 0x00	; 0
-     baa:	b0 e0       	ldi	r27, 0x00	; 0
-     bac:	84 83       	std	Z+4, r24	; 0x04
-     bae:	95 83       	std	Z+5, r25	; 0x05
-     bb0:	a6 83       	std	Z+6, r26	; 0x06
-     bb2:	b7 83       	std	Z+7, r27	; 0x07
+     c9a:	82 e3       	ldi	r24, 0x32	; 50
+     c9c:	90 e0       	ldi	r25, 0x00	; 0
+     c9e:	a0 e0       	ldi	r26, 0x00	; 0
+     ca0:	b0 e0       	ldi	r27, 0x00	; 0
+     ca2:	84 83       	std	Z+4, r24	; 0x04
+     ca4:	95 83       	std	Z+5, r25	; 0x05
+     ca6:	a6 83       	std	Z+6, r26	; 0x06
+     ca8:	b7 83       	std	Z+7, r27	; 0x07
 	minfrequency = 40;
-     bb4:	48 e2       	ldi	r20, 0x28	; 40
-     bb6:	50 e0       	ldi	r21, 0x00	; 0
-     bb8:	60 e0       	ldi	r22, 0x00	; 0
-     bba:	70 e0       	ldi	r23, 0x00	; 0
-     bbc:	40 87       	std	Z+8, r20	; 0x08
-     bbe:	51 87       	std	Z+9, r21	; 0x09
-     bc0:	62 87       	std	Z+10, r22	; 0x0a
-     bc2:	73 87       	std	Z+11, r23	; 0x0b
+     caa:	48 e2       	ldi	r20, 0x28	; 40
+     cac:	50 e0       	ldi	r21, 0x00	; 0
+     cae:	60 e0       	ldi	r22, 0x00	; 0
+     cb0:	70 e0       	ldi	r23, 0x00	; 0
+     cb2:	40 87       	std	Z+8, r20	; 0x08
+     cb4:	51 87       	std	Z+9, r21	; 0x09
+     cb6:	62 87       	std	Z+10, r22	; 0x0a
+     cb8:	73 87       	std	Z+11, r23	; 0x0b
 	maxfrequency = 200;
-     bc4:	88 ec       	ldi	r24, 0xC8	; 200
-     bc6:	90 e0       	ldi	r25, 0x00	; 0
-     bc8:	a0 e0       	ldi	r26, 0x00	; 0
-     bca:	b0 e0       	ldi	r27, 0x00	; 0
-     bcc:	84 87       	std	Z+12, r24	; 0x0c
-     bce:	95 87       	std	Z+13, r25	; 0x0d
-     bd0:	a6 87       	std	Z+14, r26	; 0x0e
-     bd2:	b7 87       	std	Z+15, r27	; 0x0f
+     cba:	88 ec       	ldi	r24, 0xC8	; 200
+     cbc:	90 e0       	ldi	r25, 0x00	; 0
+     cbe:	a0 e0       	ldi	r26, 0x00	; 0
+     cc0:	b0 e0       	ldi	r27, 0x00	; 0
+     cc2:	84 87       	std	Z+12, r24	; 0x0c
+     cc4:	95 87       	std	Z+13, r25	; 0x0d
+     cc6:	a6 87       	std	Z+14, r26	; 0x0e
+     cc8:	b7 87       	std	Z+15, r27	; 0x0f
 	minStartStopTime = 100;
-     bd4:	04 e6       	ldi	r16, 0x64	; 100
-     bd6:	10 e0       	ldi	r17, 0x00	; 0
-     bd8:	20 e0       	ldi	r18, 0x00	; 0
-     bda:	30 e0       	ldi	r19, 0x00	; 0
-     bdc:	00 8b       	std	Z+16, r16	; 0x10
-     bde:	11 8b       	std	Z+17, r17	; 0x11
-     be0:	22 8b       	std	Z+18, r18	; 0x12
-     be2:	33 8b       	std	Z+19, r19	; 0x13
+     cca:	04 e6       	ldi	r16, 0x64	; 100
+     ccc:	10 e0       	ldi	r17, 0x00	; 0
+     cce:	20 e0       	ldi	r18, 0x00	; 0
+     cd0:	30 e0       	ldi	r19, 0x00	; 0
+     cd2:	00 8b       	std	Z+16, r16	; 0x10
+     cd4:	11 8b       	std	Z+17, r17	; 0x11
+     cd6:	22 8b       	std	Z+18, r18	; 0x12
+     cd8:	33 8b       	std	Z+19, r19	; 0x13
 	maxStartStopTime = 30000;
-     be4:	00 e3       	ldi	r16, 0x30	; 48
-     be6:	15 e7       	ldi	r17, 0x75	; 117
-     be8:	20 e0       	ldi	r18, 0x00	; 0
-     bea:	30 e0       	ldi	r19, 0x00	; 0
-     bec:	04 8b       	std	Z+20, r16	; 0x14
-     bee:	15 8b       	std	Z+21, r17	; 0x15
-     bf0:	26 8b       	std	Z+22, r18	; 0x16
-     bf2:	37 8b       	std	Z+23, r19	; 0x17
+     cda:	00 e3       	ldi	r16, 0x30	; 48
+     cdc:	15 e7       	ldi	r17, 0x75	; 117
+     cde:	20 e0       	ldi	r18, 0x00	; 0
+     ce0:	30 e0       	ldi	r19, 0x00	; 0
+     ce2:	04 8b       	std	Z+20, r16	; 0x14
+     ce4:	15 8b       	std	Z+21, r17	; 0x15
+     ce6:	26 8b       	std	Z+22, r18	; 0x16
+     ce8:	37 8b       	std	Z+23, r19	; 0x17
 	StopingTime =200;
 	StaringTiming = 1;
 }
 
 void Rotor::SetFrequency(int freq){
 	frequency = freq; // 8.000.000/256/6 = 5.208 √ц  
-     bf4:	40 83       	st	Z, r20
-     bf6:	51 83       	std	Z+1, r21	; 0x01
-     bf8:	62 83       	std	Z+2, r22	; 0x02
-     bfa:	73 83       	std	Z+3, r23	; 0x03
+     cea:	40 83       	st	Z, r20
+     cec:	51 83       	std	Z+1, r21	; 0x01
+     cee:	62 83       	std	Z+2, r22	; 0x02
+     cf0:	73 83       	std	Z+3, r23	; 0x03
 	int OCR_dev;
 	OCR_dev =5208/frequency;
 	OCR1A = OCR_dev;
-     bfc:	22 e8       	ldi	r18, 0x82	; 130
-     bfe:	30 e0       	ldi	r19, 0x00	; 0
-     c00:	3b bd       	out	0x2b, r19	; 43
-     c02:	2a bd       	out	0x2a, r18	; 42
+     cf2:	22 e8       	ldi	r18, 0x82	; 130
+     cf4:	30 e0       	ldi	r19, 0x00	; 0
+     cf6:	3b bd       	out	0x2b, r19	; 43
+     cf8:	2a bd       	out	0x2a, r18	; 42
 	minfrequency = 40;
 	maxfrequency = 200;
 	minStartStopTime = 100;
 	maxStartStopTime = 30000;
 	SetFrequency(minfrequency);
 	StaringTime =200;
-     c04:	85 8f       	std	Z+29, r24	; 0x1d
-     c06:	96 8f       	std	Z+30, r25	; 0x1e
-     c08:	a7 8f       	std	Z+31, r26	; 0x1f
-     c0a:	b0 a3       	std	Z+32, r27	; 0x20
+     cfa:	85 8f       	std	Z+29, r24	; 0x1d
+     cfc:	96 8f       	std	Z+30, r25	; 0x1e
+     cfe:	a7 8f       	std	Z+31, r26	; 0x1f
+     d00:	b0 a3       	std	Z+32, r27	; 0x20
 	StopingTime =200;
-     c0c:	85 a3       	std	Z+37, r24	; 0x25
-     c0e:	96 a3       	std	Z+38, r25	; 0x26
-     c10:	a7 a3       	std	Z+39, r26	; 0x27
-     c12:	b0 a7       	std	Z+40, r27	; 0x28
+     d02:	85 a3       	std	Z+37, r24	; 0x25
+     d04:	96 a3       	std	Z+38, r25	; 0x26
+     d06:	a7 a3       	std	Z+39, r26	; 0x27
+     d08:	b0 a7       	std	Z+40, r27	; 0x28
 	StaringTiming = 1;
-     c14:	81 e0       	ldi	r24, 0x01	; 1
-     c16:	90 e0       	ldi	r25, 0x00	; 0
-     c18:	a0 e0       	ldi	r26, 0x00	; 0
-     c1a:	b0 e0       	ldi	r27, 0x00	; 0
-     c1c:	81 a3       	std	Z+33, r24	; 0x21
-     c1e:	92 a3       	std	Z+34, r25	; 0x22
-     c20:	a3 a3       	std	Z+35, r26	; 0x23
-     c22:	b4 a3       	std	Z+36, r27	; 0x24
+     d0a:	81 e0       	ldi	r24, 0x01	; 1
+     d0c:	90 e0       	ldi	r25, 0x00	; 0
+     d0e:	a0 e0       	ldi	r26, 0x00	; 0
+     d10:	b0 e0       	ldi	r27, 0x00	; 0
+     d12:	81 a3       	std	Z+33, r24	; 0x21
+     d14:	92 a3       	std	Z+34, r25	; 0x22
+     d16:	a3 a3       	std	Z+35, r26	; 0x23
+     d18:	b4 a3       	std	Z+36, r27	; 0x24
 }
-     c24:	1f 91       	pop	r17
-     c26:	0f 91       	pop	r16
-     c28:	08 95       	ret
+     d1a:	1f 91       	pop	r17
+     d1c:	0f 91       	pop	r16
+     d1e:	08 95       	ret
 
-00000c2a <_ZN5Rotor12SetFrequencyEi>:
+00000d20 <_ZN5Rotor12SetFrequencyEi>:
 
 void Rotor::SetFrequency(int freq){
 	frequency = freq; // 8.000.000/256/6 = 5.208 √ц  
-     c2a:	9b 01       	movw	r18, r22
-     c2c:	77 0f       	add	r23, r23
-     c2e:	44 0b       	sbc	r20, r20
-     c30:	55 0b       	sbc	r21, r21
-     c32:	fc 01       	movw	r30, r24
-     c34:	20 83       	st	Z, r18
-     c36:	31 83       	std	Z+1, r19	; 0x01
-     c38:	42 83       	std	Z+2, r20	; 0x02
-     c3a:	53 83       	std	Z+3, r21	; 0x03
+     d20:	9b 01       	movw	r18, r22
+     d22:	77 0f       	add	r23, r23
+     d24:	44 0b       	sbc	r20, r20
+     d26:	55 0b       	sbc	r21, r21
+     d28:	fc 01       	movw	r30, r24
+     d2a:	20 83       	st	Z, r18
+     d2c:	31 83       	std	Z+1, r19	; 0x01
+     d2e:	42 83       	std	Z+2, r20	; 0x02
+     d30:	53 83       	std	Z+3, r21	; 0x03
 	int OCR_dev;
 	OCR_dev =5208/frequency;
 	OCR1A = OCR_dev;
-     c3c:	68 e5       	ldi	r22, 0x58	; 88
-     c3e:	74 e1       	ldi	r23, 0x14	; 20
-     c40:	80 e0       	ldi	r24, 0x00	; 0
-     c42:	90 e0       	ldi	r25, 0x00	; 0
-     c44:	3e d2       	rcall	.+1148   	; 0x10c2 <__udivmodsi4>
-     c46:	3b bd       	out	0x2b, r19	; 43
-     c48:	2a bd       	out	0x2a, r18	; 42
-     c4a:	08 95       	ret
+     d32:	68 e5       	ldi	r22, 0x58	; 88
+     d34:	74 e1       	ldi	r23, 0x14	; 20
+     d36:	80 e0       	ldi	r24, 0x00	; 0
+     d38:	90 e0       	ldi	r25, 0x00	; 0
+     d3a:	3e d2       	rcall	.+1148   	; 0x11b8 <__udivmodsi4>
+     d3c:	3b bd       	out	0x2b, r19	; 43
+     d3e:	2a bd       	out	0x2a, r18	; 42
+     d40:	08 95       	ret
 
-00000c4c <_ZN5Rotor8ActivityEv>:
+00000d42 <_ZN5Rotor8ActivityEv>:
 	
 }
 
 void Rotor::Activity(){
-     c4c:	4f 92       	push	r4
-     c4e:	5f 92       	push	r5
-     c50:	6f 92       	push	r6
-     c52:	7f 92       	push	r7
-     c54:	8f 92       	push	r8
-     c56:	9f 92       	push	r9
-     c58:	af 92       	push	r10
-     c5a:	bf 92       	push	r11
-     c5c:	cf 92       	push	r12
-     c5e:	df 92       	push	r13
-     c60:	ef 92       	push	r14
-     c62:	ff 92       	push	r15
-     c64:	cf 93       	push	r28
-     c66:	df 93       	push	r29
-     c68:	00 d0       	rcall	.+0      	; 0xc6a <_ZN5Rotor8ActivityEv+0x1e>
-     c6a:	00 d0       	rcall	.+0      	; 0xc6c <_ZN5Rotor8ActivityEv+0x20>
-     c6c:	00 d0       	rcall	.+0      	; 0xc6e <_ZN5Rotor8ActivityEv+0x22>
-     c6e:	cd b7       	in	r28, 0x3d	; 61
-     c70:	de b7       	in	r29, 0x3e	; 62
-     c72:	9e 83       	std	Y+6, r25	; 0x06
-     c74:	8d 83       	std	Y+5, r24	; 0x05
+     d42:	4f 92       	push	r4
+     d44:	5f 92       	push	r5
+     d46:	6f 92       	push	r6
+     d48:	7f 92       	push	r7
+     d4a:	8f 92       	push	r8
+     d4c:	9f 92       	push	r9
+     d4e:	af 92       	push	r10
+     d50:	bf 92       	push	r11
+     d52:	cf 92       	push	r12
+     d54:	df 92       	push	r13
+     d56:	ef 92       	push	r14
+     d58:	ff 92       	push	r15
+     d5a:	cf 93       	push	r28
+     d5c:	df 93       	push	r29
+     d5e:	00 d0       	rcall	.+0      	; 0xd60 <_ZN5Rotor8ActivityEv+0x1e>
+     d60:	00 d0       	rcall	.+0      	; 0xd62 <_ZN5Rotor8ActivityEv+0x20>
+     d62:	00 d0       	rcall	.+0      	; 0xd64 <_ZN5Rotor8ActivityEv+0x22>
+     d64:	cd b7       	in	r28, 0x3d	; 61
+     d66:	de b7       	in	r29, 0x3e	; 62
+     d68:	9e 83       	std	Y+6, r25	; 0x06
+     d6a:	8d 83       	std	Y+5, r24	; 0x05
 	
 	if (Starting&&Stoping){
-     c76:	dc 01       	movw	r26, r24
-     c78:	58 96       	adiw	r26, 0x18	; 24
-     c7a:	8c 91       	ld	r24, X
-     c7c:	58 97       	sbiw	r26, 0x18	; 24
-     c7e:	88 23       	and	r24, r24
-     c80:	39 f0       	breq	.+14     	; 0xc90 <_ZN5Rotor8ActivityEv+0x44>
-     c82:	59 96       	adiw	r26, 0x19	; 25
-     c84:	8c 91       	ld	r24, X
-     c86:	59 97       	sbiw	r26, 0x19	; 25
-     c88:	88 23       	and	r24, r24
-     c8a:	11 f0       	breq	.+4      	; 0xc90 <_ZN5Rotor8ActivityEv+0x44>
+     d6c:	dc 01       	movw	r26, r24
+     d6e:	58 96       	adiw	r26, 0x18	; 24
+     d70:	8c 91       	ld	r24, X
+     d72:	58 97       	sbiw	r26, 0x18	; 24
+     d74:	88 23       	and	r24, r24
+     d76:	39 f0       	breq	.+14     	; 0xd86 <_ZN5Rotor8ActivityEv+0x44>
+     d78:	59 96       	adiw	r26, 0x19	; 25
+     d7a:	8c 91       	ld	r24, X
+     d7c:	59 97       	sbiw	r26, 0x19	; 25
+     d7e:	88 23       	and	r24, r24
+     d80:	11 f0       	breq	.+4      	; 0xd86 <_ZN5Rotor8ActivityEv+0x44>
 		Starting=false;
-     c8c:	58 96       	adiw	r26, 0x18	; 24
-     c8e:	1c 92       	st	X, r1
+     d82:	58 96       	adiw	r26, 0x18	; 24
+     d84:	1c 92       	st	X, r1
 	}
 	
 	if (Reversing&&!Started){
-     c90:	ed 81       	ldd	r30, Y+5	; 0x05
-     c92:	fe 81       	ldd	r31, Y+6	; 0x06
-     c94:	82 8d       	ldd	r24, Z+26	; 0x1a
-     c96:	88 23       	and	r24, r24
-     c98:	81 f0       	breq	.+32     	; 0xcba <_ZN5Rotor8ActivityEv+0x6e>
-     c9a:	83 8d       	ldd	r24, Z+27	; 0x1b
-     c9c:	81 11       	cpse	r24, r1
-     c9e:	f3 c0       	rjmp	.+486    	; 0xe86 <_ZN5Rotor8ActivityEv+0x23a>
+     d86:	ed 81       	ldd	r30, Y+5	; 0x05
+     d88:	fe 81       	ldd	r31, Y+6	; 0x06
+     d8a:	82 8d       	ldd	r24, Z+26	; 0x1a
+     d8c:	88 23       	and	r24, r24
+     d8e:	81 f0       	breq	.+32     	; 0xdb0 <_ZN5Rotor8ActivityEv+0x6e>
+     d90:	83 8d       	ldd	r24, Z+27	; 0x1b
+     d92:	81 11       	cpse	r24, r1
+     d94:	f3 c0       	rjmp	.+486    	; 0xf7c <_ZN5Rotor8ActivityEv+0x23a>
 		if (!Reverse){
-     ca0:	84 8d       	ldd	r24, Z+28	; 0x1c
-     ca2:	81 11       	cpse	r24, r1
-     ca4:	03 c0       	rjmp	.+6      	; 0xcac <_ZN5Rotor8ActivityEv+0x60>
+     d96:	84 8d       	ldd	r24, Z+28	; 0x1c
+     d98:	81 11       	cpse	r24, r1
+     d9a:	03 c0       	rjmp	.+6      	; 0xda2 <_ZN5Rotor8ActivityEv+0x60>
 			 Reverse = true;
-     ca6:	81 e0       	ldi	r24, 0x01	; 1
-     ca8:	84 8f       	std	Z+28, r24	; 0x1c
-     caa:	04 c0       	rjmp	.+8      	; 0xcb4 <_ZN5Rotor8ActivityEv+0x68>
+     d9c:	81 e0       	ldi	r24, 0x01	; 1
+     d9e:	84 8f       	std	Z+28, r24	; 0x1c
+     da0:	04 c0       	rjmp	.+8      	; 0xdaa <_ZN5Rotor8ActivityEv+0x68>
 		}else{
 			Reverse = false;
-     cac:	ad 81       	ldd	r26, Y+5	; 0x05
-     cae:	be 81       	ldd	r27, Y+6	; 0x06
-     cb0:	5c 96       	adiw	r26, 0x1c	; 28
-     cb2:	1c 92       	st	X, r1
+     da2:	ad 81       	ldd	r26, Y+5	; 0x05
+     da4:	be 81       	ldd	r27, Y+6	; 0x06
+     da6:	5c 96       	adiw	r26, 0x1c	; 28
+     da8:	1c 92       	st	X, r1
 		}		
 		Reversing = false;
-     cb4:	ed 81       	ldd	r30, Y+5	; 0x05
-     cb6:	fe 81       	ldd	r31, Y+6	; 0x06
-     cb8:	12 8e       	std	Z+26, r1	; 0x1a
+     daa:	ed 81       	ldd	r30, Y+5	; 0x05
+     dac:	fe 81       	ldd	r31, Y+6	; 0x06
+     dae:	12 8e       	std	Z+26, r1	; 0x1a
 	
 	if (Reversing&&Started){
 		Stoping = true;
 	}
 	
 	if (Starting){
-     cba:	ad 81       	ldd	r26, Y+5	; 0x05
-     cbc:	be 81       	ldd	r27, Y+6	; 0x06
-     cbe:	58 96       	adiw	r26, 0x18	; 24
-     cc0:	8c 91       	ld	r24, X
-     cc2:	58 97       	sbiw	r26, 0x18	; 24
-     cc4:	88 23       	and	r24, r24
-     cc6:	09 f4       	brne	.+2      	; 0xcca <_ZN5Rotor8ActivityEv+0x7e>
-     cc8:	5f c0       	rjmp	.+190    	; 0xd88 <_ZN5Rotor8ActivityEv+0x13c>
+     db0:	ad 81       	ldd	r26, Y+5	; 0x05
+     db2:	be 81       	ldd	r27, Y+6	; 0x06
+     db4:	58 96       	adiw	r26, 0x18	; 24
+     db6:	8c 91       	ld	r24, X
+     db8:	58 97       	sbiw	r26, 0x18	; 24
+     dba:	88 23       	and	r24, r24
+     dbc:	09 f4       	brne	.+2      	; 0xdc0 <_ZN5Rotor8ActivityEv+0x7e>
+     dbe:	5f c0       	rjmp	.+190    	; 0xe7e <_ZN5Rotor8ActivityEv+0x13c>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-     cca:	eb ed       	ldi	r30, 0xDB	; 219
-     ccc:	f5 e0       	ldi	r31, 0x05	; 5
-     cce:	31 97       	sbiw	r30, 0x01	; 1
-     cd0:	f1 f7       	brne	.-4      	; 0xcce <_ZN5Rotor8ActivityEv+0x82>
-     cd2:	00 c0       	rjmp	.+0      	; 0xcd4 <_ZN5Rotor8ActivityEv+0x88>
-     cd4:	00 00       	nop
+     dc0:	eb ed       	ldi	r30, 0xDB	; 219
+     dc2:	f5 e0       	ldi	r31, 0x05	; 5
+     dc4:	31 97       	sbiw	r30, 0x01	; 1
+     dc6:	f1 f7       	brne	.-4      	; 0xdc4 <_ZN5Rotor8ActivityEv+0x82>
+     dc8:	00 c0       	rjmp	.+0      	; 0xdca <_ZN5Rotor8ActivityEv+0x88>
+     dca:	00 00       	nop
 		_delay_us(750);
 		StaringTiming++;	
-     cd6:	91 96       	adiw	r26, 0x21	; 33
-     cd8:	cd 90       	ld	r12, X+
-     cda:	dd 90       	ld	r13, X+
-     cdc:	ed 90       	ld	r14, X+
-     cde:	fc 90       	ld	r15, X
-     ce0:	94 97       	sbiw	r26, 0x24	; 36
-     ce2:	ff ef       	ldi	r31, 0xFF	; 255
-     ce4:	cf 1a       	sub	r12, r31
-     ce6:	df 0a       	sbc	r13, r31
-     ce8:	ef 0a       	sbc	r14, r31
-     cea:	ff 0a       	sbc	r15, r31
-     cec:	ad 81       	ldd	r26, Y+5	; 0x05
-     cee:	be 81       	ldd	r27, Y+6	; 0x06
-     cf0:	91 96       	adiw	r26, 0x21	; 33
-     cf2:	cd 92       	st	X+, r12
-     cf4:	dd 92       	st	X+, r13
-     cf6:	ed 92       	st	X+, r14
-     cf8:	fc 92       	st	X, r15
-     cfa:	94 97       	sbiw	r26, 0x24	; 36
+     dcc:	91 96       	adiw	r26, 0x21	; 33
+     dce:	cd 90       	ld	r12, X+
+     dd0:	dd 90       	ld	r13, X+
+     dd2:	ed 90       	ld	r14, X+
+     dd4:	fc 90       	ld	r15, X
+     dd6:	94 97       	sbiw	r26, 0x24	; 36
+     dd8:	ff ef       	ldi	r31, 0xFF	; 255
+     dda:	cf 1a       	sub	r12, r31
+     ddc:	df 0a       	sbc	r13, r31
+     dde:	ef 0a       	sbc	r14, r31
+     de0:	ff 0a       	sbc	r15, r31
+     de2:	ad 81       	ldd	r26, Y+5	; 0x05
+     de4:	be 81       	ldd	r27, Y+6	; 0x06
+     de6:	91 96       	adiw	r26, 0x21	; 33
+     de8:	cd 92       	st	X+, r12
+     dea:	dd 92       	st	X+, r13
+     dec:	ed 92       	st	X+, r14
+     dee:	fc 92       	st	X, r15
+     df0:	94 97       	sbiw	r26, 0x24	; 36
 		frequency = (StaringTiming*(workfrequency-minfrequency))/StaringTime + minfrequency;			
-     cfc:	18 96       	adiw	r26, 0x08	; 8
-     cfe:	8d 90       	ld	r8, X+
-     d00:	9d 90       	ld	r9, X+
-     d02:	ad 90       	ld	r10, X+
-     d04:	bc 90       	ld	r11, X
-     d06:	1b 97       	sbiw	r26, 0x0b	; 11
-     d08:	5d 96       	adiw	r26, 0x1d	; 29
-     d0a:	4d 90       	ld	r4, X+
-     d0c:	5d 90       	ld	r5, X+
-     d0e:	6d 90       	ld	r6, X+
-     d10:	7c 90       	ld	r7, X
-     d12:	90 97       	sbiw	r26, 0x20	; 32
-     d14:	fd 01       	movw	r30, r26
-     d16:	84 81       	ldd	r24, Z+4	; 0x04
-     d18:	95 81       	ldd	r25, Z+5	; 0x05
-     d1a:	a6 81       	ldd	r26, Z+6	; 0x06
-     d1c:	b7 81       	ldd	r27, Z+7	; 0x07
-     d1e:	9c 01       	movw	r18, r24
-     d20:	ad 01       	movw	r20, r26
-     d22:	28 19       	sub	r18, r8
-     d24:	39 09       	sbc	r19, r9
-     d26:	4a 09       	sbc	r20, r10
-     d28:	5b 09       	sbc	r21, r11
-     d2a:	c7 01       	movw	r24, r14
-     d2c:	b6 01       	movw	r22, r12
-     d2e:	ba d1       	rcall	.+884    	; 0x10a4 <__mulsi3>
-     d30:	a3 01       	movw	r20, r6
-     d32:	92 01       	movw	r18, r4
-     d34:	c6 d1       	rcall	.+908    	; 0x10c2 <__udivmodsi4>
-     d36:	da 01       	movw	r26, r20
-     d38:	c9 01       	movw	r24, r18
-     d3a:	88 0d       	add	r24, r8
-     d3c:	99 1d       	adc	r25, r9
-     d3e:	aa 1d       	adc	r26, r10
-     d40:	bb 1d       	adc	r27, r11
+     df2:	18 96       	adiw	r26, 0x08	; 8
+     df4:	8d 90       	ld	r8, X+
+     df6:	9d 90       	ld	r9, X+
+     df8:	ad 90       	ld	r10, X+
+     dfa:	bc 90       	ld	r11, X
+     dfc:	1b 97       	sbiw	r26, 0x0b	; 11
+     dfe:	5d 96       	adiw	r26, 0x1d	; 29
+     e00:	4d 90       	ld	r4, X+
+     e02:	5d 90       	ld	r5, X+
+     e04:	6d 90       	ld	r6, X+
+     e06:	7c 90       	ld	r7, X
+     e08:	90 97       	sbiw	r26, 0x20	; 32
+     e0a:	fd 01       	movw	r30, r26
+     e0c:	84 81       	ldd	r24, Z+4	; 0x04
+     e0e:	95 81       	ldd	r25, Z+5	; 0x05
+     e10:	a6 81       	ldd	r26, Z+6	; 0x06
+     e12:	b7 81       	ldd	r27, Z+7	; 0x07
+     e14:	9c 01       	movw	r18, r24
+     e16:	ad 01       	movw	r20, r26
+     e18:	28 19       	sub	r18, r8
+     e1a:	39 09       	sbc	r19, r9
+     e1c:	4a 09       	sbc	r20, r10
+     e1e:	5b 09       	sbc	r21, r11
+     e20:	c7 01       	movw	r24, r14
+     e22:	b6 01       	movw	r22, r12
+     e24:	ba d1       	rcall	.+884    	; 0x119a <__mulsi3>
+     e26:	a3 01       	movw	r20, r6
+     e28:	92 01       	movw	r18, r4
+     e2a:	c6 d1       	rcall	.+908    	; 0x11b8 <__udivmodsi4>
+     e2c:	da 01       	movw	r26, r20
+     e2e:	c9 01       	movw	r24, r18
+     e30:	88 0d       	add	r24, r8
+     e32:	99 1d       	adc	r25, r9
+     e34:	aa 1d       	adc	r26, r10
+     e36:	bb 1d       	adc	r27, r11
 		if (frequency == 0){frequency = minfrequency;}
-     d42:	00 97       	sbiw	r24, 0x00	; 0
-     d44:	a1 05       	cpc	r26, r1
-     d46:	b1 05       	cpc	r27, r1
-     d48:	39 f0       	breq	.+14     	; 0xd58 <_ZN5Rotor8ActivityEv+0x10c>
+     e38:	00 97       	sbiw	r24, 0x00	; 0
+     e3a:	a1 05       	cpc	r26, r1
+     e3c:	b1 05       	cpc	r27, r1
+     e3e:	39 f0       	breq	.+14     	; 0xe4e <_ZN5Rotor8ActivityEv+0x10c>
 	}
 	
 	if (Starting){
 		_delay_us(750);
 		StaringTiming++;	
 		frequency = (StaringTiming*(workfrequency-minfrequency))/StaringTime + minfrequency;			
-     d4a:	ed 81       	ldd	r30, Y+5	; 0x05
-     d4c:	fe 81       	ldd	r31, Y+6	; 0x06
-     d4e:	80 83       	st	Z, r24
-     d50:	91 83       	std	Z+1, r25	; 0x01
-     d52:	a2 83       	std	Z+2, r26	; 0x02
-     d54:	b3 83       	std	Z+3, r27	; 0x03
-     d56:	07 c0       	rjmp	.+14     	; 0xd66 <_ZN5Rotor8ActivityEv+0x11a>
+     e40:	ed 81       	ldd	r30, Y+5	; 0x05
+     e42:	fe 81       	ldd	r31, Y+6	; 0x06
+     e44:	80 83       	st	Z, r24
+     e46:	91 83       	std	Z+1, r25	; 0x01
+     e48:	a2 83       	std	Z+2, r26	; 0x02
+     e4a:	b3 83       	std	Z+3, r27	; 0x03
+     e4c:	07 c0       	rjmp	.+14     	; 0xe5c <_ZN5Rotor8ActivityEv+0x11a>
 		if (frequency == 0){frequency = minfrequency;}
-     d58:	ad 81       	ldd	r26, Y+5	; 0x05
-     d5a:	be 81       	ldd	r27, Y+6	; 0x06
-     d5c:	8d 92       	st	X+, r8
-     d5e:	9d 92       	st	X+, r9
-     d60:	ad 92       	st	X+, r10
-     d62:	bc 92       	st	X, r11
-     d64:	13 97       	sbiw	r26, 0x03	; 3
+     e4e:	ad 81       	ldd	r26, Y+5	; 0x05
+     e50:	be 81       	ldd	r27, Y+6	; 0x06
+     e52:	8d 92       	st	X+, r8
+     e54:	9d 92       	st	X+, r9
+     e56:	ad 92       	st	X+, r10
+     e58:	bc 92       	st	X, r11
+     e5a:	13 97       	sbiw	r26, 0x03	; 3
 	
 		if (StaringTiming>StaringTime){
-     d66:	4c 14       	cp	r4, r12
-     d68:	5d 04       	cpc	r5, r13
-     d6a:	6e 04       	cpc	r6, r14
-     d6c:	7f 04       	cpc	r7, r15
-     d6e:	60 f4       	brcc	.+24     	; 0xd88 <_ZN5Rotor8ActivityEv+0x13c>
+     e5c:	4c 14       	cp	r4, r12
+     e5e:	5d 04       	cpc	r5, r13
+     e60:	6e 04       	cpc	r6, r14
+     e62:	7f 04       	cpc	r7, r15
+     e64:	60 f4       	brcc	.+24     	; 0xe7e <_ZN5Rotor8ActivityEv+0x13c>
 			StaringTiming = 1;
-     d70:	81 e0       	ldi	r24, 0x01	; 1
-     d72:	90 e0       	ldi	r25, 0x00	; 0
-     d74:	a0 e0       	ldi	r26, 0x00	; 0
-     d76:	b0 e0       	ldi	r27, 0x00	; 0
-     d78:	ed 81       	ldd	r30, Y+5	; 0x05
-     d7a:	fe 81       	ldd	r31, Y+6	; 0x06
-     d7c:	81 a3       	std	Z+33, r24	; 0x21
-     d7e:	92 a3       	std	Z+34, r25	; 0x22
-     d80:	a3 a3       	std	Z+35, r26	; 0x23
-     d82:	b4 a3       	std	Z+36, r27	; 0x24
+     e66:	81 e0       	ldi	r24, 0x01	; 1
+     e68:	90 e0       	ldi	r25, 0x00	; 0
+     e6a:	a0 e0       	ldi	r26, 0x00	; 0
+     e6c:	b0 e0       	ldi	r27, 0x00	; 0
+     e6e:	ed 81       	ldd	r30, Y+5	; 0x05
+     e70:	fe 81       	ldd	r31, Y+6	; 0x06
+     e72:	81 a3       	std	Z+33, r24	; 0x21
+     e74:	92 a3       	std	Z+34, r25	; 0x22
+     e76:	a3 a3       	std	Z+35, r26	; 0x23
+     e78:	b4 a3       	std	Z+36, r27	; 0x24
 			Started = true;
-     d84:	83 8f       	std	Z+27, r24	; 0x1b
+     e7a:	83 8f       	std	Z+27, r24	; 0x1b
 			Starting =false;
-     d86:	10 8e       	std	Z+24, r1	; 0x18
+     e7c:	10 8e       	std	Z+24, r1	; 0x18
 		}
 	}
 
 	if (Stoping){
-     d88:	ad 81       	ldd	r26, Y+5	; 0x05
-     d8a:	be 81       	ldd	r27, Y+6	; 0x06
-     d8c:	59 96       	adiw	r26, 0x19	; 25
-     d8e:	8c 91       	ld	r24, X
-     d90:	59 97       	sbiw	r26, 0x19	; 25
-     d92:	88 23       	and	r24, r24
-     d94:	09 f4       	brne	.+2      	; 0xd98 <_ZN5Rotor8ActivityEv+0x14c>
-     d96:	7c c0       	rjmp	.+248    	; 0xe90 <_ZN5Rotor8ActivityEv+0x244>
-     d98:	eb ed       	ldi	r30, 0xDB	; 219
-     d9a:	f5 e0       	ldi	r31, 0x05	; 5
-     d9c:	31 97       	sbiw	r30, 0x01	; 1
-     d9e:	f1 f7       	brne	.-4      	; 0xd9c <_ZN5Rotor8ActivityEv+0x150>
-     da0:	00 c0       	rjmp	.+0      	; 0xda2 <_ZN5Rotor8ActivityEv+0x156>
-     da2:	00 00       	nop
+     e7e:	ad 81       	ldd	r26, Y+5	; 0x05
+     e80:	be 81       	ldd	r27, Y+6	; 0x06
+     e82:	59 96       	adiw	r26, 0x19	; 25
+     e84:	8c 91       	ld	r24, X
+     e86:	59 97       	sbiw	r26, 0x19	; 25
+     e88:	88 23       	and	r24, r24
+     e8a:	09 f4       	brne	.+2      	; 0xe8e <_ZN5Rotor8ActivityEv+0x14c>
+     e8c:	7c c0       	rjmp	.+248    	; 0xf86 <_ZN5Rotor8ActivityEv+0x244>
+     e8e:	eb ed       	ldi	r30, 0xDB	; 219
+     e90:	f5 e0       	ldi	r31, 0x05	; 5
+     e92:	31 97       	sbiw	r30, 0x01	; 1
+     e94:	f1 f7       	brne	.-4      	; 0xe92 <_ZN5Rotor8ActivityEv+0x150>
+     e96:	00 c0       	rjmp	.+0      	; 0xe98 <_ZN5Rotor8ActivityEv+0x156>
+     e98:	00 00       	nop
 		_delay_us(750);
 		StaringTiming++;
-     da4:	91 96       	adiw	r26, 0x21	; 33
-     da6:	cd 90       	ld	r12, X+
-     da8:	dd 90       	ld	r13, X+
-     daa:	ed 90       	ld	r14, X+
-     dac:	fc 90       	ld	r15, X
-     dae:	94 97       	sbiw	r26, 0x24	; 36
-     db0:	ff ef       	ldi	r31, 0xFF	; 255
-     db2:	cf 1a       	sub	r12, r31
-     db4:	df 0a       	sbc	r13, r31
-     db6:	ef 0a       	sbc	r14, r31
-     db8:	ff 0a       	sbc	r15, r31
-     dba:	ad 81       	ldd	r26, Y+5	; 0x05
-     dbc:	be 81       	ldd	r27, Y+6	; 0x06
-     dbe:	91 96       	adiw	r26, 0x21	; 33
-     dc0:	cd 92       	st	X+, r12
-     dc2:	dd 92       	st	X+, r13
-     dc4:	ed 92       	st	X+, r14
-     dc6:	fc 92       	st	X, r15
-     dc8:	94 97       	sbiw	r26, 0x24	; 36
+     e9a:	91 96       	adiw	r26, 0x21	; 33
+     e9c:	cd 90       	ld	r12, X+
+     e9e:	dd 90       	ld	r13, X+
+     ea0:	ed 90       	ld	r14, X+
+     ea2:	fc 90       	ld	r15, X
+     ea4:	94 97       	sbiw	r26, 0x24	; 36
+     ea6:	ff ef       	ldi	r31, 0xFF	; 255
+     ea8:	cf 1a       	sub	r12, r31
+     eaa:	df 0a       	sbc	r13, r31
+     eac:	ef 0a       	sbc	r14, r31
+     eae:	ff 0a       	sbc	r15, r31
+     eb0:	ad 81       	ldd	r26, Y+5	; 0x05
+     eb2:	be 81       	ldd	r27, Y+6	; 0x06
+     eb4:	91 96       	adiw	r26, 0x21	; 33
+     eb6:	cd 92       	st	X+, r12
+     eb8:	dd 92       	st	X+, r13
+     eba:	ed 92       	st	X+, r14
+     ebc:	fc 92       	st	X, r15
+     ebe:	94 97       	sbiw	r26, 0x24	; 36
 		frequency = workfrequency - ((StaringTiming*(workfrequency-minfrequency))/StopingTime);
-     dca:	14 96       	adiw	r26, 0x04	; 4
-     dcc:	8d 90       	ld	r8, X+
-     dce:	9d 90       	ld	r9, X+
-     dd0:	ad 90       	ld	r10, X+
-     dd2:	bc 90       	ld	r11, X
-     dd4:	17 97       	sbiw	r26, 0x07	; 7
-     dd6:	18 96       	adiw	r26, 0x08	; 8
-     dd8:	4d 90       	ld	r4, X+
-     dda:	5d 90       	ld	r5, X+
-     ddc:	6d 90       	ld	r6, X+
-     dde:	7c 90       	ld	r7, X
-     de0:	1b 97       	sbiw	r26, 0x0b	; 11
-     de2:	95 96       	adiw	r26, 0x25	; 37
-     de4:	8d 91       	ld	r24, X+
-     de6:	9d 91       	ld	r25, X+
-     de8:	0d 90       	ld	r0, X+
-     dea:	bc 91       	ld	r27, X
-     dec:	a0 2d       	mov	r26, r0
-     dee:	89 83       	std	Y+1, r24	; 0x01
-     df0:	9a 83       	std	Y+2, r25	; 0x02
-     df2:	ab 83       	std	Y+3, r26	; 0x03
-     df4:	bc 83       	std	Y+4, r27	; 0x04
-     df6:	a5 01       	movw	r20, r10
-     df8:	94 01       	movw	r18, r8
-     dfa:	24 19       	sub	r18, r4
-     dfc:	35 09       	sbc	r19, r5
-     dfe:	46 09       	sbc	r20, r6
-     e00:	57 09       	sbc	r21, r7
-     e02:	c7 01       	movw	r24, r14
-     e04:	b6 01       	movw	r22, r12
-     e06:	4e d1       	rcall	.+668    	; 0x10a4 <__mulsi3>
-     e08:	29 81       	ldd	r18, Y+1	; 0x01
-     e0a:	3a 81       	ldd	r19, Y+2	; 0x02
-     e0c:	4b 81       	ldd	r20, Y+3	; 0x03
-     e0e:	5c 81       	ldd	r21, Y+4	; 0x04
-     e10:	58 d1       	rcall	.+688    	; 0x10c2 <__udivmodsi4>
-     e12:	82 1a       	sub	r8, r18
-     e14:	93 0a       	sbc	r9, r19
-     e16:	a4 0a       	sbc	r10, r20
-     e18:	b5 0a       	sbc	r11, r21
+     ec0:	14 96       	adiw	r26, 0x04	; 4
+     ec2:	8d 90       	ld	r8, X+
+     ec4:	9d 90       	ld	r9, X+
+     ec6:	ad 90       	ld	r10, X+
+     ec8:	bc 90       	ld	r11, X
+     eca:	17 97       	sbiw	r26, 0x07	; 7
+     ecc:	18 96       	adiw	r26, 0x08	; 8
+     ece:	4d 90       	ld	r4, X+
+     ed0:	5d 90       	ld	r5, X+
+     ed2:	6d 90       	ld	r6, X+
+     ed4:	7c 90       	ld	r7, X
+     ed6:	1b 97       	sbiw	r26, 0x0b	; 11
+     ed8:	95 96       	adiw	r26, 0x25	; 37
+     eda:	8d 91       	ld	r24, X+
+     edc:	9d 91       	ld	r25, X+
+     ede:	0d 90       	ld	r0, X+
+     ee0:	bc 91       	ld	r27, X
+     ee2:	a0 2d       	mov	r26, r0
+     ee4:	89 83       	std	Y+1, r24	; 0x01
+     ee6:	9a 83       	std	Y+2, r25	; 0x02
+     ee8:	ab 83       	std	Y+3, r26	; 0x03
+     eea:	bc 83       	std	Y+4, r27	; 0x04
+     eec:	a5 01       	movw	r20, r10
+     eee:	94 01       	movw	r18, r8
+     ef0:	24 19       	sub	r18, r4
+     ef2:	35 09       	sbc	r19, r5
+     ef4:	46 09       	sbc	r20, r6
+     ef6:	57 09       	sbc	r21, r7
+     ef8:	c7 01       	movw	r24, r14
+     efa:	b6 01       	movw	r22, r12
+     efc:	4e d1       	rcall	.+668    	; 0x119a <__mulsi3>
+     efe:	29 81       	ldd	r18, Y+1	; 0x01
+     f00:	3a 81       	ldd	r19, Y+2	; 0x02
+     f02:	4b 81       	ldd	r20, Y+3	; 0x03
+     f04:	5c 81       	ldd	r21, Y+4	; 0x04
+     f06:	58 d1       	rcall	.+688    	; 0x11b8 <__udivmodsi4>
+     f08:	82 1a       	sub	r8, r18
+     f0a:	93 0a       	sbc	r9, r19
+     f0c:	a4 0a       	sbc	r10, r20
+     f0e:	b5 0a       	sbc	r11, r21
 		if (frequency == 0){frequency = minfrequency;}
-     e1a:	39 f0       	breq	.+14     	; 0xe2a <_ZN5Rotor8ActivityEv+0x1de>
+     f10:	39 f0       	breq	.+14     	; 0xf20 <_ZN5Rotor8ActivityEv+0x1de>
 	}
 
 	if (Stoping){
 		_delay_us(750);
 		StaringTiming++;
 		frequency = workfrequency - ((StaringTiming*(workfrequency-minfrequency))/StopingTime);
-     e1c:	ed 81       	ldd	r30, Y+5	; 0x05
-     e1e:	fe 81       	ldd	r31, Y+6	; 0x06
-     e20:	80 82       	st	Z, r8
-     e22:	91 82       	std	Z+1, r9	; 0x01
-     e24:	a2 82       	std	Z+2, r10	; 0x02
-     e26:	b3 82       	std	Z+3, r11	; 0x03
-     e28:	07 c0       	rjmp	.+14     	; 0xe38 <_ZN5Rotor8ActivityEv+0x1ec>
+     f12:	ed 81       	ldd	r30, Y+5	; 0x05
+     f14:	fe 81       	ldd	r31, Y+6	; 0x06
+     f16:	80 82       	st	Z, r8
+     f18:	91 82       	std	Z+1, r9	; 0x01
+     f1a:	a2 82       	std	Z+2, r10	; 0x02
+     f1c:	b3 82       	std	Z+3, r11	; 0x03
+     f1e:	07 c0       	rjmp	.+14     	; 0xf2e <_ZN5Rotor8ActivityEv+0x1ec>
 		if (frequency == 0){frequency = minfrequency;}
-     e2a:	ad 81       	ldd	r26, Y+5	; 0x05
-     e2c:	be 81       	ldd	r27, Y+6	; 0x06
-     e2e:	4d 92       	st	X+, r4
-     e30:	5d 92       	st	X+, r5
-     e32:	6d 92       	st	X+, r6
-     e34:	7c 92       	st	X, r7
-     e36:	13 97       	sbiw	r26, 0x03	; 3
+     f20:	ad 81       	ldd	r26, Y+5	; 0x05
+     f22:	be 81       	ldd	r27, Y+6	; 0x06
+     f24:	4d 92       	st	X+, r4
+     f26:	5d 92       	st	X+, r5
+     f28:	6d 92       	st	X+, r6
+     f2a:	7c 92       	st	X, r7
+     f2c:	13 97       	sbiw	r26, 0x03	; 3
 		
 		if (StaringTiming>StopingTime){
-     e38:	89 81       	ldd	r24, Y+1	; 0x01
-     e3a:	9a 81       	ldd	r25, Y+2	; 0x02
-     e3c:	ab 81       	ldd	r26, Y+3	; 0x03
-     e3e:	bc 81       	ldd	r27, Y+4	; 0x04
-     e40:	8c 15       	cp	r24, r12
-     e42:	9d 05       	cpc	r25, r13
-     e44:	ae 05       	cpc	r26, r14
-     e46:	bf 05       	cpc	r27, r15
-     e48:	18 f5       	brcc	.+70     	; 0xe90 <_ZN5Rotor8ActivityEv+0x244>
+     f2e:	89 81       	ldd	r24, Y+1	; 0x01
+     f30:	9a 81       	ldd	r25, Y+2	; 0x02
+     f32:	ab 81       	ldd	r26, Y+3	; 0x03
+     f34:	bc 81       	ldd	r27, Y+4	; 0x04
+     f36:	8c 15       	cp	r24, r12
+     f38:	9d 05       	cpc	r25, r13
+     f3a:	ae 05       	cpc	r26, r14
+     f3c:	bf 05       	cpc	r27, r15
+     f3e:	18 f5       	brcc	.+70     	; 0xf86 <_ZN5Rotor8ActivityEv+0x244>
 			StaringTiming = 1;
-     e4a:	81 e0       	ldi	r24, 0x01	; 1
-     e4c:	90 e0       	ldi	r25, 0x00	; 0
-     e4e:	a0 e0       	ldi	r26, 0x00	; 0
-     e50:	b0 e0       	ldi	r27, 0x00	; 0
-     e52:	ed 81       	ldd	r30, Y+5	; 0x05
-     e54:	fe 81       	ldd	r31, Y+6	; 0x06
-     e56:	81 a3       	std	Z+33, r24	; 0x21
-     e58:	92 a3       	std	Z+34, r25	; 0x22
-     e5a:	a3 a3       	std	Z+35, r26	; 0x23
-     e5c:	b4 a3       	std	Z+36, r27	; 0x24
+     f40:	81 e0       	ldi	r24, 0x01	; 1
+     f42:	90 e0       	ldi	r25, 0x00	; 0
+     f44:	a0 e0       	ldi	r26, 0x00	; 0
+     f46:	b0 e0       	ldi	r27, 0x00	; 0
+     f48:	ed 81       	ldd	r30, Y+5	; 0x05
+     f4a:	fe 81       	ldd	r31, Y+6	; 0x06
+     f4c:	81 a3       	std	Z+33, r24	; 0x21
+     f4e:	92 a3       	std	Z+34, r25	; 0x22
+     f50:	a3 a3       	std	Z+35, r26	; 0x23
+     f52:	b4 a3       	std	Z+36, r27	; 0x24
 			Started = false;
-     e5e:	13 8e       	std	Z+27, r1	; 0x1b
+     f54:	13 8e       	std	Z+27, r1	; 0x1b
 			Stoping = false;
-     e60:	11 8e       	std	Z+25, r1	; 0x19
+     f56:	11 8e       	std	Z+25, r1	; 0x19
 			if(Reversing){ _delay_ms(500); Starting=true;}
-     e62:	82 8d       	ldd	r24, Z+26	; 0x1a
-     e64:	88 23       	and	r24, r24
-     e66:	a1 f0       	breq	.+40     	; 0xe90 <_ZN5Rotor8ActivityEv+0x244>
+     f58:	82 8d       	ldd	r24, Z+26	; 0x1a
+     f5a:	88 23       	and	r24, r24
+     f5c:	a1 f0       	breq	.+40     	; 0xf86 <_ZN5Rotor8ActivityEv+0x244>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-     e68:	ff ef       	ldi	r31, 0xFF	; 255
-     e6a:	24 e3       	ldi	r18, 0x34	; 52
-     e6c:	8c e0       	ldi	r24, 0x0C	; 12
-     e6e:	f1 50       	subi	r31, 0x01	; 1
-     e70:	20 40       	sbci	r18, 0x00	; 0
-     e72:	80 40       	sbci	r24, 0x00	; 0
-     e74:	e1 f7       	brne	.-8      	; 0xe6e <_ZN5Rotor8ActivityEv+0x222>
-     e76:	00 c0       	rjmp	.+0      	; 0xe78 <_ZN5Rotor8ActivityEv+0x22c>
-     e78:	00 00       	nop
-     e7a:	81 e0       	ldi	r24, 0x01	; 1
-     e7c:	ad 81       	ldd	r26, Y+5	; 0x05
-     e7e:	be 81       	ldd	r27, Y+6	; 0x06
-     e80:	58 96       	adiw	r26, 0x18	; 24
-     e82:	8c 93       	st	X, r24
+     f5e:	ff ef       	ldi	r31, 0xFF	; 255
+     f60:	24 e3       	ldi	r18, 0x34	; 52
+     f62:	8c e0       	ldi	r24, 0x0C	; 12
+     f64:	f1 50       	subi	r31, 0x01	; 1
+     f66:	20 40       	sbci	r18, 0x00	; 0
+     f68:	80 40       	sbci	r24, 0x00	; 0
+     f6a:	e1 f7       	brne	.-8      	; 0xf64 <_ZN5Rotor8ActivityEv+0x222>
+     f6c:	00 c0       	rjmp	.+0      	; 0xf6e <_ZN5Rotor8ActivityEv+0x22c>
+     f6e:	00 00       	nop
+     f70:	81 e0       	ldi	r24, 0x01	; 1
+     f72:	ad 81       	ldd	r26, Y+5	; 0x05
+     f74:	be 81       	ldd	r27, Y+6	; 0x06
+     f76:	58 96       	adiw	r26, 0x18	; 24
+     f78:	8c 93       	st	X, r24
 		}
 	}	
 	
 
 }
-     e84:	05 c0       	rjmp	.+10     	; 0xe90 <_ZN5Rotor8ActivityEv+0x244>
+     f7a:	05 c0       	rjmp	.+10     	; 0xf86 <_ZN5Rotor8ActivityEv+0x244>
 		}		
 		Reversing = false;
 	}
 	
 	if (Reversing&&Started){
 		Stoping = true;
-     e86:	81 e0       	ldi	r24, 0x01	; 1
-     e88:	ed 81       	ldd	r30, Y+5	; 0x05
-     e8a:	fe 81       	ldd	r31, Y+6	; 0x06
-     e8c:	81 8f       	std	Z+25, r24	; 0x19
-     e8e:	15 cf       	rjmp	.-470    	; 0xcba <_ZN5Rotor8ActivityEv+0x6e>
+     f7c:	81 e0       	ldi	r24, 0x01	; 1
+     f7e:	ed 81       	ldd	r30, Y+5	; 0x05
+     f80:	fe 81       	ldd	r31, Y+6	; 0x06
+     f82:	81 8f       	std	Z+25, r24	; 0x19
+     f84:	15 cf       	rjmp	.-470    	; 0xdb0 <_ZN5Rotor8ActivityEv+0x6e>
 			if(Reversing){ _delay_ms(500); Starting=true;}
 		}
 	}	
 	
 
 }
-     e90:	26 96       	adiw	r28, 0x06	; 6
-     e92:	0f b6       	in	r0, 0x3f	; 63
-     e94:	f8 94       	cli
-     e96:	de bf       	out	0x3e, r29	; 62
-     e98:	0f be       	out	0x3f, r0	; 63
-     e9a:	cd bf       	out	0x3d, r28	; 61
-     e9c:	df 91       	pop	r29
-     e9e:	cf 91       	pop	r28
-     ea0:	ff 90       	pop	r15
-     ea2:	ef 90       	pop	r14
-     ea4:	df 90       	pop	r13
-     ea6:	cf 90       	pop	r12
-     ea8:	bf 90       	pop	r11
-     eaa:	af 90       	pop	r10
-     eac:	9f 90       	pop	r9
-     eae:	8f 90       	pop	r8
-     eb0:	7f 90       	pop	r7
-     eb2:	6f 90       	pop	r6
-     eb4:	5f 90       	pop	r5
-     eb6:	4f 90       	pop	r4
-     eb8:	08 95       	ret
+     f86:	26 96       	adiw	r28, 0x06	; 6
+     f88:	0f b6       	in	r0, 0x3f	; 63
+     f8a:	f8 94       	cli
+     f8c:	de bf       	out	0x3e, r29	; 62
+     f8e:	0f be       	out	0x3f, r0	; 63
+     f90:	cd bf       	out	0x3d, r28	; 61
+     f92:	df 91       	pop	r29
+     f94:	cf 91       	pop	r28
+     f96:	ff 90       	pop	r15
+     f98:	ef 90       	pop	r14
+     f9a:	df 90       	pop	r13
+     f9c:	cf 90       	pop	r12
+     f9e:	bf 90       	pop	r11
+     fa0:	af 90       	pop	r10
+     fa2:	9f 90       	pop	r9
+     fa4:	8f 90       	pop	r8
+     fa6:	7f 90       	pop	r7
+     fa8:	6f 90       	pop	r6
+     faa:	5f 90       	pop	r5
+     fac:	4f 90       	pop	r4
+     fae:	08 95       	ret
 
-00000eba <_ZN5Rotor10FrequncyUpEv>:
+00000fb0 <_ZN5Rotor10FrequncyUpEv>:
 
 void Rotor::FrequncyUp(){
-     eba:	fc 01       	movw	r30, r24
+     fb0:	fc 01       	movw	r30, r24
 	workfrequency++;
-     ebc:	84 81       	ldd	r24, Z+4	; 0x04
-     ebe:	95 81       	ldd	r25, Z+5	; 0x05
-     ec0:	a6 81       	ldd	r26, Z+6	; 0x06
-     ec2:	b7 81       	ldd	r27, Z+7	; 0x07
-     ec4:	01 96       	adiw	r24, 0x01	; 1
-     ec6:	a1 1d       	adc	r26, r1
-     ec8:	b1 1d       	adc	r27, r1
-     eca:	84 83       	std	Z+4, r24	; 0x04
-     ecc:	95 83       	std	Z+5, r25	; 0x05
-     ece:	a6 83       	std	Z+6, r26	; 0x06
-     ed0:	b7 83       	std	Z+7, r27	; 0x07
+     fb2:	84 81       	ldd	r24, Z+4	; 0x04
+     fb4:	95 81       	ldd	r25, Z+5	; 0x05
+     fb6:	a6 81       	ldd	r26, Z+6	; 0x06
+     fb8:	b7 81       	ldd	r27, Z+7	; 0x07
+     fba:	01 96       	adiw	r24, 0x01	; 1
+     fbc:	a1 1d       	adc	r26, r1
+     fbe:	b1 1d       	adc	r27, r1
+     fc0:	84 83       	std	Z+4, r24	; 0x04
+     fc2:	95 83       	std	Z+5, r25	; 0x05
+     fc4:	a6 83       	std	Z+6, r26	; 0x06
+     fc6:	b7 83       	std	Z+7, r27	; 0x07
 	if(workfrequency<minfrequency){workfrequency=minfrequency;}
-     ed2:	40 85       	ldd	r20, Z+8	; 0x08
-     ed4:	51 85       	ldd	r21, Z+9	; 0x09
-     ed6:	62 85       	ldd	r22, Z+10	; 0x0a
-     ed8:	73 85       	ldd	r23, Z+11	; 0x0b
-     eda:	84 17       	cp	r24, r20
-     edc:	95 07       	cpc	r25, r21
-     ede:	a6 07       	cpc	r26, r22
-     ee0:	b7 07       	cpc	r27, r23
-     ee2:	20 f4       	brcc	.+8      	; 0xeec <_ZN5Rotor10FrequncyUpEv+0x32>
-     ee4:	44 83       	std	Z+4, r20	; 0x04
-     ee6:	55 83       	std	Z+5, r21	; 0x05
-     ee8:	66 83       	std	Z+6, r22	; 0x06
-     eea:	77 83       	std	Z+7, r23	; 0x07
+     fc8:	40 85       	ldd	r20, Z+8	; 0x08
+     fca:	51 85       	ldd	r21, Z+9	; 0x09
+     fcc:	62 85       	ldd	r22, Z+10	; 0x0a
+     fce:	73 85       	ldd	r23, Z+11	; 0x0b
+     fd0:	84 17       	cp	r24, r20
+     fd2:	95 07       	cpc	r25, r21
+     fd4:	a6 07       	cpc	r26, r22
+     fd6:	b7 07       	cpc	r27, r23
+     fd8:	20 f4       	brcc	.+8      	; 0xfe2 <_ZN5Rotor10FrequncyUpEv+0x32>
+     fda:	44 83       	std	Z+4, r20	; 0x04
+     fdc:	55 83       	std	Z+5, r21	; 0x05
+     fde:	66 83       	std	Z+6, r22	; 0x06
+     fe0:	77 83       	std	Z+7, r23	; 0x07
 	if(workfrequency>maxfrequency){workfrequency=maxfrequency;}
-     eec:	84 85       	ldd	r24, Z+12	; 0x0c
-     eee:	95 85       	ldd	r25, Z+13	; 0x0d
-     ef0:	a6 85       	ldd	r26, Z+14	; 0x0e
-     ef2:	b7 85       	ldd	r27, Z+15	; 0x0f
-     ef4:	44 81       	ldd	r20, Z+4	; 0x04
-     ef6:	55 81       	ldd	r21, Z+5	; 0x05
-     ef8:	66 81       	ldd	r22, Z+6	; 0x06
-     efa:	77 81       	ldd	r23, Z+7	; 0x07
-     efc:	84 17       	cp	r24, r20
-     efe:	95 07       	cpc	r25, r21
-     f00:	a6 07       	cpc	r26, r22
-     f02:	b7 07       	cpc	r27, r23
-     f04:	20 f4       	brcc	.+8      	; 0xf0e <_ZN5Rotor10FrequncyUpEv+0x54>
-     f06:	84 83       	std	Z+4, r24	; 0x04
-     f08:	95 83       	std	Z+5, r25	; 0x05
-     f0a:	a6 83       	std	Z+6, r26	; 0x06
-     f0c:	b7 83       	std	Z+7, r27	; 0x07
+     fe2:	84 85       	ldd	r24, Z+12	; 0x0c
+     fe4:	95 85       	ldd	r25, Z+13	; 0x0d
+     fe6:	a6 85       	ldd	r26, Z+14	; 0x0e
+     fe8:	b7 85       	ldd	r27, Z+15	; 0x0f
+     fea:	44 81       	ldd	r20, Z+4	; 0x04
+     fec:	55 81       	ldd	r21, Z+5	; 0x05
+     fee:	66 81       	ldd	r22, Z+6	; 0x06
+     ff0:	77 81       	ldd	r23, Z+7	; 0x07
+     ff2:	84 17       	cp	r24, r20
+     ff4:	95 07       	cpc	r25, r21
+     ff6:	a6 07       	cpc	r26, r22
+     ff8:	b7 07       	cpc	r27, r23
+     ffa:	20 f4       	brcc	.+8      	; 0x1004 <_ZN5Rotor10FrequncyUpEv+0x54>
+     ffc:	84 83       	std	Z+4, r24	; 0x04
+     ffe:	95 83       	std	Z+5, r25	; 0x05
+    1000:	a6 83       	std	Z+6, r26	; 0x06
+    1002:	b7 83       	std	Z+7, r27	; 0x07
 	frequency = workfrequency;
-     f0e:	84 81       	ldd	r24, Z+4	; 0x04
-     f10:	95 81       	ldd	r25, Z+5	; 0x05
-     f12:	a6 81       	ldd	r26, Z+6	; 0x06
-     f14:	b7 81       	ldd	r27, Z+7	; 0x07
-     f16:	80 83       	st	Z, r24
-     f18:	91 83       	std	Z+1, r25	; 0x01
-     f1a:	a2 83       	std	Z+2, r26	; 0x02
-     f1c:	b3 83       	std	Z+3, r27	; 0x03
-     f1e:	08 95       	ret
+    1004:	84 81       	ldd	r24, Z+4	; 0x04
+    1006:	95 81       	ldd	r25, Z+5	; 0x05
+    1008:	a6 81       	ldd	r26, Z+6	; 0x06
+    100a:	b7 81       	ldd	r27, Z+7	; 0x07
+    100c:	80 83       	st	Z, r24
+    100e:	91 83       	std	Z+1, r25	; 0x01
+    1010:	a2 83       	std	Z+2, r26	; 0x02
+    1012:	b3 83       	std	Z+3, r27	; 0x03
+    1014:	08 95       	ret
 
-00000f20 <_ZN5Rotor13FrequencyDownEv>:
+00001016 <_ZN5Rotor13FrequencyDownEv>:
 };
 
 void Rotor::FrequencyDown(){
-     f20:	fc 01       	movw	r30, r24
+    1016:	fc 01       	movw	r30, r24
 	workfrequency--;
-     f22:	84 81       	ldd	r24, Z+4	; 0x04
-     f24:	95 81       	ldd	r25, Z+5	; 0x05
-     f26:	a6 81       	ldd	r26, Z+6	; 0x06
-     f28:	b7 81       	ldd	r27, Z+7	; 0x07
-     f2a:	01 97       	sbiw	r24, 0x01	; 1
-     f2c:	a1 09       	sbc	r26, r1
-     f2e:	b1 09       	sbc	r27, r1
-     f30:	84 83       	std	Z+4, r24	; 0x04
-     f32:	95 83       	std	Z+5, r25	; 0x05
-     f34:	a6 83       	std	Z+6, r26	; 0x06
-     f36:	b7 83       	std	Z+7, r27	; 0x07
+    1018:	84 81       	ldd	r24, Z+4	; 0x04
+    101a:	95 81       	ldd	r25, Z+5	; 0x05
+    101c:	a6 81       	ldd	r26, Z+6	; 0x06
+    101e:	b7 81       	ldd	r27, Z+7	; 0x07
+    1020:	01 97       	sbiw	r24, 0x01	; 1
+    1022:	a1 09       	sbc	r26, r1
+    1024:	b1 09       	sbc	r27, r1
+    1026:	84 83       	std	Z+4, r24	; 0x04
+    1028:	95 83       	std	Z+5, r25	; 0x05
+    102a:	a6 83       	std	Z+6, r26	; 0x06
+    102c:	b7 83       	std	Z+7, r27	; 0x07
 	if(workfrequency<minfrequency){workfrequency=minfrequency;}
-     f38:	40 85       	ldd	r20, Z+8	; 0x08
-     f3a:	51 85       	ldd	r21, Z+9	; 0x09
-     f3c:	62 85       	ldd	r22, Z+10	; 0x0a
-     f3e:	73 85       	ldd	r23, Z+11	; 0x0b
-     f40:	84 17       	cp	r24, r20
-     f42:	95 07       	cpc	r25, r21
-     f44:	a6 07       	cpc	r26, r22
-     f46:	b7 07       	cpc	r27, r23
-     f48:	20 f4       	brcc	.+8      	; 0xf52 <_ZN5Rotor13FrequencyDownEv+0x32>
-     f4a:	44 83       	std	Z+4, r20	; 0x04
-     f4c:	55 83       	std	Z+5, r21	; 0x05
-     f4e:	66 83       	std	Z+6, r22	; 0x06
-     f50:	77 83       	std	Z+7, r23	; 0x07
-	if(workfrequency>maxfrequency){workfrequency=maxfrequency;}
-     f52:	84 85       	ldd	r24, Z+12	; 0x0c
-     f54:	95 85       	ldd	r25, Z+13	; 0x0d
-     f56:	a6 85       	ldd	r26, Z+14	; 0x0e
-     f58:	b7 85       	ldd	r27, Z+15	; 0x0f
-     f5a:	44 81       	ldd	r20, Z+4	; 0x04
-     f5c:	55 81       	ldd	r21, Z+5	; 0x05
-     f5e:	66 81       	ldd	r22, Z+6	; 0x06
-     f60:	77 81       	ldd	r23, Z+7	; 0x07
-     f62:	84 17       	cp	r24, r20
-     f64:	95 07       	cpc	r25, r21
-     f66:	a6 07       	cpc	r26, r22
-     f68:	b7 07       	cpc	r27, r23
-     f6a:	20 f4       	brcc	.+8      	; 0xf74 <_ZN5Rotor13FrequencyDownEv+0x54>
-     f6c:	84 83       	std	Z+4, r24	; 0x04
-     f6e:	95 83       	std	Z+5, r25	; 0x05
-     f70:	a6 83       	std	Z+6, r26	; 0x06
-     f72:	b7 83       	std	Z+7, r27	; 0x07
-	frequency=workfrequency;
-     f74:	84 81       	ldd	r24, Z+4	; 0x04
-     f76:	95 81       	ldd	r25, Z+5	; 0x05
-     f78:	a6 81       	ldd	r26, Z+6	; 0x06
-     f7a:	b7 81       	ldd	r27, Z+7	; 0x07
-     f7c:	80 83       	st	Z, r24
-     f7e:	91 83       	std	Z+1, r25	; 0x01
-     f80:	a2 83       	std	Z+2, r26	; 0x02
-     f82:	b3 83       	std	Z+3, r27	; 0x03
-     f84:	08 95       	ret
-
-00000f86 <_ZN5Rotor10StartimeUpEi>:
-};
-
-void Rotor::StartimeUp(int TimeUp){
-     f86:	0f 93       	push	r16
-     f88:	1f 93       	push	r17
-     f8a:	fc 01       	movw	r30, r24
-	StaringTime = StaringTime + TimeUp;
-     f8c:	ab 01       	movw	r20, r22
-     f8e:	77 0f       	add	r23, r23
-     f90:	66 0b       	sbc	r22, r22
-     f92:	77 0b       	sbc	r23, r23
-     f94:	05 8d       	ldd	r16, Z+29	; 0x1d
-     f96:	16 8d       	ldd	r17, Z+30	; 0x1e
-     f98:	27 8d       	ldd	r18, Z+31	; 0x1f
-     f9a:	30 a1       	ldd	r19, Z+32	; 0x20
-     f9c:	40 0f       	add	r20, r16
-     f9e:	51 1f       	adc	r21, r17
-     fa0:	62 1f       	adc	r22, r18
-     fa2:	73 1f       	adc	r23, r19
-     fa4:	45 8f       	std	Z+29, r20	; 0x1d
-     fa6:	56 8f       	std	Z+30, r21	; 0x1e
-     fa8:	67 8f       	std	Z+31, r22	; 0x1f
-     faa:	70 a3       	std	Z+32, r23	; 0x20
-	if (StaringTime > maxStartStopTime){ StaringTime = maxStartStopTime;}
-     fac:	84 89       	ldd	r24, Z+20	; 0x14
-     fae:	95 89       	ldd	r25, Z+21	; 0x15
-     fb0:	a6 89       	ldd	r26, Z+22	; 0x16
-     fb2:	b7 89       	ldd	r27, Z+23	; 0x17
-     fb4:	84 17       	cp	r24, r20
-     fb6:	95 07       	cpc	r25, r21
-     fb8:	a6 07       	cpc	r26, r22
-     fba:	b7 07       	cpc	r27, r23
-     fbc:	20 f4       	brcc	.+8      	; 0xfc6 <_ZN5Rotor10StartimeUpEi+0x40>
-     fbe:	85 8f       	std	Z+29, r24	; 0x1d
-     fc0:	96 8f       	std	Z+30, r25	; 0x1e
-     fc2:	a7 8f       	std	Z+31, r26	; 0x1f
-     fc4:	b0 a3       	std	Z+32, r27	; 0x20
-}
-     fc6:	1f 91       	pop	r17
-     fc8:	0f 91       	pop	r16
-     fca:	08 95       	ret
-
-00000fcc <_ZN5Rotor12StartimeDownEi>:
-
-void Rotor::StartimeDown(int TimeDown){
-     fcc:	fc 01       	movw	r30, r24
-	StaringTime = StaringTime - TimeDown;
-     fce:	cb 01       	movw	r24, r22
-     fd0:	77 0f       	add	r23, r23
-     fd2:	aa 0b       	sbc	r26, r26
-     fd4:	bb 0b       	sbc	r27, r27
-     fd6:	45 8d       	ldd	r20, Z+29	; 0x1d
-     fd8:	56 8d       	ldd	r21, Z+30	; 0x1e
-     fda:	67 8d       	ldd	r22, Z+31	; 0x1f
-     fdc:	70 a1       	ldd	r23, Z+32	; 0x20
-     fde:	48 1b       	sub	r20, r24
-     fe0:	59 0b       	sbc	r21, r25
-     fe2:	6a 0b       	sbc	r22, r26
-     fe4:	7b 0b       	sbc	r23, r27
-     fe6:	45 8f       	std	Z+29, r20	; 0x1d
-     fe8:	56 8f       	std	Z+30, r21	; 0x1e
-     fea:	67 8f       	std	Z+31, r22	; 0x1f
-     fec:	70 a3       	std	Z+32, r23	; 0x20
-	if (StaringTime ==  0){ StaringTime = minStartStopTime;}
-     fee:	45 2b       	or	r20, r21
-     ff0:	46 2b       	or	r20, r22
-     ff2:	47 2b       	or	r20, r23
-     ff4:	41 f4       	brne	.+16     	; 0x1006 <_ZN5Rotor12StartimeDownEi+0x3a>
-     ff6:	80 89       	ldd	r24, Z+16	; 0x10
-     ff8:	91 89       	ldd	r25, Z+17	; 0x11
-     ffa:	a2 89       	ldd	r26, Z+18	; 0x12
-     ffc:	b3 89       	ldd	r27, Z+19	; 0x13
-     ffe:	85 8f       	std	Z+29, r24	; 0x1d
-    1000:	96 8f       	std	Z+30, r25	; 0x1e
-    1002:	a7 8f       	std	Z+31, r26	; 0x1f
-    1004:	b0 a3       	std	Z+32, r27	; 0x20
-    1006:	08 95       	ret
-
-00001008 <_ZN5Rotor10StoptimeUpEi>:
-}
-
-
-void Rotor::StoptimeUp(int TimeUp){
-    1008:	0f 93       	push	r16
-    100a:	1f 93       	push	r17
-    100c:	fc 01       	movw	r30, r24
-	StopingTime = StopingTime + TimeUp;
-    100e:	ab 01       	movw	r20, r22
-    1010:	77 0f       	add	r23, r23
-    1012:	66 0b       	sbc	r22, r22
-    1014:	77 0b       	sbc	r23, r23
-    1016:	05 a1       	ldd	r16, Z+37	; 0x25
-    1018:	16 a1       	ldd	r17, Z+38	; 0x26
-    101a:	27 a1       	ldd	r18, Z+39	; 0x27
-    101c:	30 a5       	ldd	r19, Z+40	; 0x28
-    101e:	40 0f       	add	r20, r16
-    1020:	51 1f       	adc	r21, r17
-    1022:	62 1f       	adc	r22, r18
-    1024:	73 1f       	adc	r23, r19
-    1026:	45 a3       	std	Z+37, r20	; 0x25
-    1028:	56 a3       	std	Z+38, r21	; 0x26
-    102a:	67 a3       	std	Z+39, r22	; 0x27
-    102c:	70 a7       	std	Z+40, r23	; 0x28
-	if (StopingTime > maxStartStopTime){ StopingTime = maxStartStopTime;}
-    102e:	84 89       	ldd	r24, Z+20	; 0x14
-    1030:	95 89       	ldd	r25, Z+21	; 0x15
-    1032:	a6 89       	ldd	r26, Z+22	; 0x16
-    1034:	b7 89       	ldd	r27, Z+23	; 0x17
+    102e:	40 85       	ldd	r20, Z+8	; 0x08
+    1030:	51 85       	ldd	r21, Z+9	; 0x09
+    1032:	62 85       	ldd	r22, Z+10	; 0x0a
+    1034:	73 85       	ldd	r23, Z+11	; 0x0b
     1036:	84 17       	cp	r24, r20
     1038:	95 07       	cpc	r25, r21
     103a:	a6 07       	cpc	r26, r22
     103c:	b7 07       	cpc	r27, r23
-    103e:	20 f4       	brcc	.+8      	; 0x1048 <_ZN5Rotor10StoptimeUpEi+0x40>
-    1040:	85 a3       	std	Z+37, r24	; 0x25
-    1042:	96 a3       	std	Z+38, r25	; 0x26
-    1044:	a7 a3       	std	Z+39, r26	; 0x27
-    1046:	b0 a7       	std	Z+40, r27	; 0x28
-}
-    1048:	1f 91       	pop	r17
-    104a:	0f 91       	pop	r16
-    104c:	08 95       	ret
+    103e:	20 f4       	brcc	.+8      	; 0x1048 <_ZN5Rotor13FrequencyDownEv+0x32>
+    1040:	44 83       	std	Z+4, r20	; 0x04
+    1042:	55 83       	std	Z+5, r21	; 0x05
+    1044:	66 83       	std	Z+6, r22	; 0x06
+    1046:	77 83       	std	Z+7, r23	; 0x07
+	if(workfrequency>maxfrequency){workfrequency=maxfrequency;}
+    1048:	84 85       	ldd	r24, Z+12	; 0x0c
+    104a:	95 85       	ldd	r25, Z+13	; 0x0d
+    104c:	a6 85       	ldd	r26, Z+14	; 0x0e
+    104e:	b7 85       	ldd	r27, Z+15	; 0x0f
+    1050:	44 81       	ldd	r20, Z+4	; 0x04
+    1052:	55 81       	ldd	r21, Z+5	; 0x05
+    1054:	66 81       	ldd	r22, Z+6	; 0x06
+    1056:	77 81       	ldd	r23, Z+7	; 0x07
+    1058:	84 17       	cp	r24, r20
+    105a:	95 07       	cpc	r25, r21
+    105c:	a6 07       	cpc	r26, r22
+    105e:	b7 07       	cpc	r27, r23
+    1060:	20 f4       	brcc	.+8      	; 0x106a <_ZN5Rotor13FrequencyDownEv+0x54>
+    1062:	84 83       	std	Z+4, r24	; 0x04
+    1064:	95 83       	std	Z+5, r25	; 0x05
+    1066:	a6 83       	std	Z+6, r26	; 0x06
+    1068:	b7 83       	std	Z+7, r27	; 0x07
+	frequency=workfrequency;
+    106a:	84 81       	ldd	r24, Z+4	; 0x04
+    106c:	95 81       	ldd	r25, Z+5	; 0x05
+    106e:	a6 81       	ldd	r26, Z+6	; 0x06
+    1070:	b7 81       	ldd	r27, Z+7	; 0x07
+    1072:	80 83       	st	Z, r24
+    1074:	91 83       	std	Z+1, r25	; 0x01
+    1076:	a2 83       	std	Z+2, r26	; 0x02
+    1078:	b3 83       	std	Z+3, r27	; 0x03
+    107a:	08 95       	ret
 
-0000104e <_ZN5Rotor12StoptimeDownEi>:
+0000107c <_ZN5Rotor10StartimeUpEi>:
+};
+
+void Rotor::StartimeUp(int TimeUp){
+    107c:	0f 93       	push	r16
+    107e:	1f 93       	push	r17
+    1080:	fc 01       	movw	r30, r24
+	StaringTime = StaringTime + TimeUp;
+    1082:	ab 01       	movw	r20, r22
+    1084:	77 0f       	add	r23, r23
+    1086:	66 0b       	sbc	r22, r22
+    1088:	77 0b       	sbc	r23, r23
+    108a:	05 8d       	ldd	r16, Z+29	; 0x1d
+    108c:	16 8d       	ldd	r17, Z+30	; 0x1e
+    108e:	27 8d       	ldd	r18, Z+31	; 0x1f
+    1090:	30 a1       	ldd	r19, Z+32	; 0x20
+    1092:	40 0f       	add	r20, r16
+    1094:	51 1f       	adc	r21, r17
+    1096:	62 1f       	adc	r22, r18
+    1098:	73 1f       	adc	r23, r19
+    109a:	45 8f       	std	Z+29, r20	; 0x1d
+    109c:	56 8f       	std	Z+30, r21	; 0x1e
+    109e:	67 8f       	std	Z+31, r22	; 0x1f
+    10a0:	70 a3       	std	Z+32, r23	; 0x20
+	if (StaringTime > maxStartStopTime){ StaringTime = maxStartStopTime;}
+    10a2:	84 89       	ldd	r24, Z+20	; 0x14
+    10a4:	95 89       	ldd	r25, Z+21	; 0x15
+    10a6:	a6 89       	ldd	r26, Z+22	; 0x16
+    10a8:	b7 89       	ldd	r27, Z+23	; 0x17
+    10aa:	84 17       	cp	r24, r20
+    10ac:	95 07       	cpc	r25, r21
+    10ae:	a6 07       	cpc	r26, r22
+    10b0:	b7 07       	cpc	r27, r23
+    10b2:	20 f4       	brcc	.+8      	; 0x10bc <_ZN5Rotor10StartimeUpEi+0x40>
+    10b4:	85 8f       	std	Z+29, r24	; 0x1d
+    10b6:	96 8f       	std	Z+30, r25	; 0x1e
+    10b8:	a7 8f       	std	Z+31, r26	; 0x1f
+    10ba:	b0 a3       	std	Z+32, r27	; 0x20
+}
+    10bc:	1f 91       	pop	r17
+    10be:	0f 91       	pop	r16
+    10c0:	08 95       	ret
+
+000010c2 <_ZN5Rotor12StartimeDownEi>:
+
+void Rotor::StartimeDown(int TimeDown){
+    10c2:	fc 01       	movw	r30, r24
+	StaringTime = StaringTime - TimeDown;
+    10c4:	cb 01       	movw	r24, r22
+    10c6:	77 0f       	add	r23, r23
+    10c8:	aa 0b       	sbc	r26, r26
+    10ca:	bb 0b       	sbc	r27, r27
+    10cc:	45 8d       	ldd	r20, Z+29	; 0x1d
+    10ce:	56 8d       	ldd	r21, Z+30	; 0x1e
+    10d0:	67 8d       	ldd	r22, Z+31	; 0x1f
+    10d2:	70 a1       	ldd	r23, Z+32	; 0x20
+    10d4:	48 1b       	sub	r20, r24
+    10d6:	59 0b       	sbc	r21, r25
+    10d8:	6a 0b       	sbc	r22, r26
+    10da:	7b 0b       	sbc	r23, r27
+    10dc:	45 8f       	std	Z+29, r20	; 0x1d
+    10de:	56 8f       	std	Z+30, r21	; 0x1e
+    10e0:	67 8f       	std	Z+31, r22	; 0x1f
+    10e2:	70 a3       	std	Z+32, r23	; 0x20
+	if (StaringTime ==  0){ StaringTime = minStartStopTime;}
+    10e4:	45 2b       	or	r20, r21
+    10e6:	46 2b       	or	r20, r22
+    10e8:	47 2b       	or	r20, r23
+    10ea:	41 f4       	brne	.+16     	; 0x10fc <_ZN5Rotor12StartimeDownEi+0x3a>
+    10ec:	80 89       	ldd	r24, Z+16	; 0x10
+    10ee:	91 89       	ldd	r25, Z+17	; 0x11
+    10f0:	a2 89       	ldd	r26, Z+18	; 0x12
+    10f2:	b3 89       	ldd	r27, Z+19	; 0x13
+    10f4:	85 8f       	std	Z+29, r24	; 0x1d
+    10f6:	96 8f       	std	Z+30, r25	; 0x1e
+    10f8:	a7 8f       	std	Z+31, r26	; 0x1f
+    10fa:	b0 a3       	std	Z+32, r27	; 0x20
+    10fc:	08 95       	ret
+
+000010fe <_ZN5Rotor10StoptimeUpEi>:
+}
+
+
+void Rotor::StoptimeUp(int TimeUp){
+    10fe:	0f 93       	push	r16
+    1100:	1f 93       	push	r17
+    1102:	fc 01       	movw	r30, r24
+	StopingTime = StopingTime + TimeUp;
+    1104:	ab 01       	movw	r20, r22
+    1106:	77 0f       	add	r23, r23
+    1108:	66 0b       	sbc	r22, r22
+    110a:	77 0b       	sbc	r23, r23
+    110c:	05 a1       	ldd	r16, Z+37	; 0x25
+    110e:	16 a1       	ldd	r17, Z+38	; 0x26
+    1110:	27 a1       	ldd	r18, Z+39	; 0x27
+    1112:	30 a5       	ldd	r19, Z+40	; 0x28
+    1114:	40 0f       	add	r20, r16
+    1116:	51 1f       	adc	r21, r17
+    1118:	62 1f       	adc	r22, r18
+    111a:	73 1f       	adc	r23, r19
+    111c:	45 a3       	std	Z+37, r20	; 0x25
+    111e:	56 a3       	std	Z+38, r21	; 0x26
+    1120:	67 a3       	std	Z+39, r22	; 0x27
+    1122:	70 a7       	std	Z+40, r23	; 0x28
+	if (StopingTime > maxStartStopTime){ StopingTime = maxStartStopTime;}
+    1124:	84 89       	ldd	r24, Z+20	; 0x14
+    1126:	95 89       	ldd	r25, Z+21	; 0x15
+    1128:	a6 89       	ldd	r26, Z+22	; 0x16
+    112a:	b7 89       	ldd	r27, Z+23	; 0x17
+    112c:	84 17       	cp	r24, r20
+    112e:	95 07       	cpc	r25, r21
+    1130:	a6 07       	cpc	r26, r22
+    1132:	b7 07       	cpc	r27, r23
+    1134:	20 f4       	brcc	.+8      	; 0x113e <_ZN5Rotor10StoptimeUpEi+0x40>
+    1136:	85 a3       	std	Z+37, r24	; 0x25
+    1138:	96 a3       	std	Z+38, r25	; 0x26
+    113a:	a7 a3       	std	Z+39, r26	; 0x27
+    113c:	b0 a7       	std	Z+40, r27	; 0x28
+}
+    113e:	1f 91       	pop	r17
+    1140:	0f 91       	pop	r16
+    1142:	08 95       	ret
+
+00001144 <_ZN5Rotor12StoptimeDownEi>:
 
 void Rotor::StoptimeDown(int TimeDown){
-    104e:	fc 01       	movw	r30, r24
+    1144:	fc 01       	movw	r30, r24
 	StopingTime = StopingTime - TimeDown;
-    1050:	cb 01       	movw	r24, r22
-    1052:	77 0f       	add	r23, r23
-    1054:	aa 0b       	sbc	r26, r26
-    1056:	bb 0b       	sbc	r27, r27
-    1058:	45 a1       	ldd	r20, Z+37	; 0x25
-    105a:	56 a1       	ldd	r21, Z+38	; 0x26
-    105c:	67 a1       	ldd	r22, Z+39	; 0x27
-    105e:	70 a5       	ldd	r23, Z+40	; 0x28
-    1060:	48 1b       	sub	r20, r24
-    1062:	59 0b       	sbc	r21, r25
-    1064:	6a 0b       	sbc	r22, r26
-    1066:	7b 0b       	sbc	r23, r27
-    1068:	45 a3       	std	Z+37, r20	; 0x25
-    106a:	56 a3       	std	Z+38, r21	; 0x26
-    106c:	67 a3       	std	Z+39, r22	; 0x27
-    106e:	70 a7       	std	Z+40, r23	; 0x28
+    1146:	cb 01       	movw	r24, r22
+    1148:	77 0f       	add	r23, r23
+    114a:	aa 0b       	sbc	r26, r26
+    114c:	bb 0b       	sbc	r27, r27
+    114e:	45 a1       	ldd	r20, Z+37	; 0x25
+    1150:	56 a1       	ldd	r21, Z+38	; 0x26
+    1152:	67 a1       	ldd	r22, Z+39	; 0x27
+    1154:	70 a5       	ldd	r23, Z+40	; 0x28
+    1156:	48 1b       	sub	r20, r24
+    1158:	59 0b       	sbc	r21, r25
+    115a:	6a 0b       	sbc	r22, r26
+    115c:	7b 0b       	sbc	r23, r27
+    115e:	45 a3       	std	Z+37, r20	; 0x25
+    1160:	56 a3       	std	Z+38, r21	; 0x26
+    1162:	67 a3       	std	Z+39, r22	; 0x27
+    1164:	70 a7       	std	Z+40, r23	; 0x28
 	if (StopingTime ==  0){ StopingTime = minStartStopTime;}
-    1070:	45 2b       	or	r20, r21
-    1072:	46 2b       	or	r20, r22
-    1074:	47 2b       	or	r20, r23
-    1076:	41 f4       	brne	.+16     	; 0x1088 <_ZN5Rotor12StoptimeDownEi+0x3a>
-    1078:	80 89       	ldd	r24, Z+16	; 0x10
-    107a:	91 89       	ldd	r25, Z+17	; 0x11
-    107c:	a2 89       	ldd	r26, Z+18	; 0x12
-    107e:	b3 89       	ldd	r27, Z+19	; 0x13
-    1080:	85 a3       	std	Z+37, r24	; 0x25
-    1082:	96 a3       	std	Z+38, r25	; 0x26
-    1084:	a7 a3       	std	Z+39, r26	; 0x27
-    1086:	b0 a7       	std	Z+40, r27	; 0x28
-    1088:	08 95       	ret
+    1166:	45 2b       	or	r20, r21
+    1168:	46 2b       	or	r20, r22
+    116a:	47 2b       	or	r20, r23
+    116c:	41 f4       	brne	.+16     	; 0x117e <_ZN5Rotor12StoptimeDownEi+0x3a>
+    116e:	80 89       	ldd	r24, Z+16	; 0x10
+    1170:	91 89       	ldd	r25, Z+17	; 0x11
+    1172:	a2 89       	ldd	r26, Z+18	; 0x12
+    1174:	b3 89       	ldd	r27, Z+19	; 0x13
+    1176:	85 a3       	std	Z+37, r24	; 0x25
+    1178:	96 a3       	std	Z+38, r25	; 0x26
+    117a:	a7 a3       	std	Z+39, r26	; 0x27
+    117c:	b0 a7       	std	Z+40, r27	; 0x28
+    117e:	08 95       	ret
 
-0000108a <_ZN5Rotor12RotorStoppedEv>:
+00001180 <_ZN5Rotor12RotorStoppedEv>:
 }
 
 
 bool Rotor::RotorStopped(){
-    108a:	fc 01       	movw	r30, r24
+    1180:	fc 01       	movw	r30, r24
 	if(Started||Starting||Stoping){
-    108c:	83 8d       	ldd	r24, Z+27	; 0x1b
-    108e:	81 11       	cpse	r24, r1
-    1090:	07 c0       	rjmp	.+14     	; 0x10a0 <_ZN5Rotor12RotorStoppedEv+0x16>
-    1092:	90 8d       	ldd	r25, Z+24	; 0x18
-    1094:	91 11       	cpse	r25, r1
-    1096:	05 c0       	rjmp	.+10     	; 0x10a2 <_ZN5Rotor12RotorStoppedEv+0x18>
-    1098:	91 8d       	ldd	r25, Z+25	; 0x19
-    109a:	81 e0       	ldi	r24, 0x01	; 1
-    109c:	89 27       	eor	r24, r25
-    109e:	08 95       	ret
+    1182:	83 8d       	ldd	r24, Z+27	; 0x1b
+    1184:	81 11       	cpse	r24, r1
+    1186:	07 c0       	rjmp	.+14     	; 0x1196 <_ZN5Rotor12RotorStoppedEv+0x16>
+    1188:	90 8d       	ldd	r25, Z+24	; 0x18
+    118a:	91 11       	cpse	r25, r1
+    118c:	05 c0       	rjmp	.+10     	; 0x1198 <_ZN5Rotor12RotorStoppedEv+0x18>
+    118e:	91 8d       	ldd	r25, Z+25	; 0x19
+    1190:	81 e0       	ldi	r24, 0x01	; 1
+    1192:	89 27       	eor	r24, r25
+    1194:	08 95       	ret
 		return false;
-    10a0:	80 e0       	ldi	r24, 0x00	; 0
+    1196:	80 e0       	ldi	r24, 0x00	; 0
 	}else{
 		return true;
 	}
-    10a2:	08 95       	ret
+    1198:	08 95       	ret
 
-000010a4 <__mulsi3>:
-    10a4:	db 01       	movw	r26, r22
-    10a6:	8f 93       	push	r24
-    10a8:	9f 93       	push	r25
-    10aa:	2d d0       	rcall	.+90     	; 0x1106 <__muluhisi3>
-    10ac:	bf 91       	pop	r27
-    10ae:	af 91       	pop	r26
-    10b0:	a2 9f       	mul	r26, r18
-    10b2:	80 0d       	add	r24, r0
-    10b4:	91 1d       	adc	r25, r1
-    10b6:	a3 9f       	mul	r26, r19
-    10b8:	90 0d       	add	r25, r0
-    10ba:	b2 9f       	mul	r27, r18
-    10bc:	90 0d       	add	r25, r0
-    10be:	11 24       	eor	r1, r1
-    10c0:	08 95       	ret
+0000119a <__mulsi3>:
+    119a:	db 01       	movw	r26, r22
+    119c:	8f 93       	push	r24
+    119e:	9f 93       	push	r25
+    11a0:	49 d0       	rcall	.+146    	; 0x1234 <__muluhisi3>
+    11a2:	bf 91       	pop	r27
+    11a4:	af 91       	pop	r26
+    11a6:	a2 9f       	mul	r26, r18
+    11a8:	80 0d       	add	r24, r0
+    11aa:	91 1d       	adc	r25, r1
+    11ac:	a3 9f       	mul	r26, r19
+    11ae:	90 0d       	add	r25, r0
+    11b0:	b2 9f       	mul	r27, r18
+    11b2:	90 0d       	add	r25, r0
+    11b4:	11 24       	eor	r1, r1
+    11b6:	08 95       	ret
 
-000010c2 <__udivmodsi4>:
-    10c2:	a1 e2       	ldi	r26, 0x21	; 33
-    10c4:	1a 2e       	mov	r1, r26
-    10c6:	aa 1b       	sub	r26, r26
-    10c8:	bb 1b       	sub	r27, r27
-    10ca:	fd 01       	movw	r30, r26
-    10cc:	0d c0       	rjmp	.+26     	; 0x10e8 <__udivmodsi4_ep>
+000011b8 <__udivmodsi4>:
+    11b8:	a1 e2       	ldi	r26, 0x21	; 33
+    11ba:	1a 2e       	mov	r1, r26
+    11bc:	aa 1b       	sub	r26, r26
+    11be:	bb 1b       	sub	r27, r27
+    11c0:	fd 01       	movw	r30, r26
+    11c2:	0d c0       	rjmp	.+26     	; 0x11de <__udivmodsi4_ep>
 
-000010ce <__udivmodsi4_loop>:
-    10ce:	aa 1f       	adc	r26, r26
-    10d0:	bb 1f       	adc	r27, r27
-    10d2:	ee 1f       	adc	r30, r30
-    10d4:	ff 1f       	adc	r31, r31
-    10d6:	a2 17       	cp	r26, r18
-    10d8:	b3 07       	cpc	r27, r19
-    10da:	e4 07       	cpc	r30, r20
-    10dc:	f5 07       	cpc	r31, r21
-    10de:	20 f0       	brcs	.+8      	; 0x10e8 <__udivmodsi4_ep>
-    10e0:	a2 1b       	sub	r26, r18
-    10e2:	b3 0b       	sbc	r27, r19
-    10e4:	e4 0b       	sbc	r30, r20
-    10e6:	f5 0b       	sbc	r31, r21
+000011c4 <__udivmodsi4_loop>:
+    11c4:	aa 1f       	adc	r26, r26
+    11c6:	bb 1f       	adc	r27, r27
+    11c8:	ee 1f       	adc	r30, r30
+    11ca:	ff 1f       	adc	r31, r31
+    11cc:	a2 17       	cp	r26, r18
+    11ce:	b3 07       	cpc	r27, r19
+    11d0:	e4 07       	cpc	r30, r20
+    11d2:	f5 07       	cpc	r31, r21
+    11d4:	20 f0       	brcs	.+8      	; 0x11de <__udivmodsi4_ep>
+    11d6:	a2 1b       	sub	r26, r18
+    11d8:	b3 0b       	sbc	r27, r19
+    11da:	e4 0b       	sbc	r30, r20
+    11dc:	f5 0b       	sbc	r31, r21
 
-000010e8 <__udivmodsi4_ep>:
-    10e8:	66 1f       	adc	r22, r22
-    10ea:	77 1f       	adc	r23, r23
-    10ec:	88 1f       	adc	r24, r24
-    10ee:	99 1f       	adc	r25, r25
-    10f0:	1a 94       	dec	r1
-    10f2:	69 f7       	brne	.-38     	; 0x10ce <__udivmodsi4_loop>
-    10f4:	60 95       	com	r22
-    10f6:	70 95       	com	r23
-    10f8:	80 95       	com	r24
-    10fa:	90 95       	com	r25
-    10fc:	9b 01       	movw	r18, r22
-    10fe:	ac 01       	movw	r20, r24
-    1100:	bd 01       	movw	r22, r26
-    1102:	cf 01       	movw	r24, r30
-    1104:	08 95       	ret
+000011de <__udivmodsi4_ep>:
+    11de:	66 1f       	adc	r22, r22
+    11e0:	77 1f       	adc	r23, r23
+    11e2:	88 1f       	adc	r24, r24
+    11e4:	99 1f       	adc	r25, r25
+    11e6:	1a 94       	dec	r1
+    11e8:	69 f7       	brne	.-38     	; 0x11c4 <__udivmodsi4_loop>
+    11ea:	60 95       	com	r22
+    11ec:	70 95       	com	r23
+    11ee:	80 95       	com	r24
+    11f0:	90 95       	com	r25
+    11f2:	9b 01       	movw	r18, r22
+    11f4:	ac 01       	movw	r20, r24
+    11f6:	bd 01       	movw	r22, r26
+    11f8:	cf 01       	movw	r24, r30
+    11fa:	08 95       	ret
 
-00001106 <__muluhisi3>:
-    1106:	09 d0       	rcall	.+18     	; 0x111a <__umulhisi3>
-    1108:	a5 9f       	mul	r26, r21
-    110a:	90 0d       	add	r25, r0
-    110c:	b4 9f       	mul	r27, r20
-    110e:	90 0d       	add	r25, r0
-    1110:	a4 9f       	mul	r26, r20
-    1112:	80 0d       	add	r24, r0
-    1114:	91 1d       	adc	r25, r1
-    1116:	11 24       	eor	r1, r1
-    1118:	08 95       	ret
+000011fc <__divmodsi4>:
+    11fc:	05 2e       	mov	r0, r21
+    11fe:	97 fb       	bst	r25, 7
+    1200:	16 f4       	brtc	.+4      	; 0x1206 <__divmodsi4+0xa>
+    1202:	00 94       	com	r0
+    1204:	0f d0       	rcall	.+30     	; 0x1224 <__negsi2>
+    1206:	57 fd       	sbrc	r21, 7
+    1208:	05 d0       	rcall	.+10     	; 0x1214 <__divmodsi4_neg2>
+    120a:	d6 df       	rcall	.-84     	; 0x11b8 <__udivmodsi4>
+    120c:	07 fc       	sbrc	r0, 7
+    120e:	02 d0       	rcall	.+4      	; 0x1214 <__divmodsi4_neg2>
+    1210:	46 f4       	brtc	.+16     	; 0x1222 <__divmodsi4_exit>
+    1212:	08 c0       	rjmp	.+16     	; 0x1224 <__negsi2>
 
-0000111a <__umulhisi3>:
-    111a:	a2 9f       	mul	r26, r18
-    111c:	b0 01       	movw	r22, r0
-    111e:	b3 9f       	mul	r27, r19
-    1120:	c0 01       	movw	r24, r0
-    1122:	a3 9f       	mul	r26, r19
-    1124:	01 d0       	rcall	.+2      	; 0x1128 <__umulhisi3+0xe>
-    1126:	b2 9f       	mul	r27, r18
-    1128:	70 0d       	add	r23, r0
-    112a:	81 1d       	adc	r24, r1
-    112c:	11 24       	eor	r1, r1
-    112e:	91 1d       	adc	r25, r1
-    1130:	08 95       	ret
+00001214 <__divmodsi4_neg2>:
+    1214:	50 95       	com	r21
+    1216:	40 95       	com	r20
+    1218:	30 95       	com	r19
+    121a:	21 95       	neg	r18
+    121c:	3f 4f       	sbci	r19, 0xFF	; 255
+    121e:	4f 4f       	sbci	r20, 0xFF	; 255
+    1220:	5f 4f       	sbci	r21, 0xFF	; 255
 
-00001132 <_exit>:
-    1132:	f8 94       	cli
+00001222 <__divmodsi4_exit>:
+    1222:	08 95       	ret
 
-00001134 <__stop_program>:
-    1134:	ff cf       	rjmp	.-2      	; 0x1134 <__stop_program>
+00001224 <__negsi2>:
+    1224:	90 95       	com	r25
+    1226:	80 95       	com	r24
+    1228:	70 95       	com	r23
+    122a:	61 95       	neg	r22
+    122c:	7f 4f       	sbci	r23, 0xFF	; 255
+    122e:	8f 4f       	sbci	r24, 0xFF	; 255
+    1230:	9f 4f       	sbci	r25, 0xFF	; 255
+    1232:	08 95       	ret
+
+00001234 <__muluhisi3>:
+    1234:	09 d0       	rcall	.+18     	; 0x1248 <__umulhisi3>
+    1236:	a5 9f       	mul	r26, r21
+    1238:	90 0d       	add	r25, r0
+    123a:	b4 9f       	mul	r27, r20
+    123c:	90 0d       	add	r25, r0
+    123e:	a4 9f       	mul	r26, r20
+    1240:	80 0d       	add	r24, r0
+    1242:	91 1d       	adc	r25, r1
+    1244:	11 24       	eor	r1, r1
+    1246:	08 95       	ret
+
+00001248 <__umulhisi3>:
+    1248:	a2 9f       	mul	r26, r18
+    124a:	b0 01       	movw	r22, r0
+    124c:	b3 9f       	mul	r27, r19
+    124e:	c0 01       	movw	r24, r0
+    1250:	a3 9f       	mul	r26, r19
+    1252:	01 d0       	rcall	.+2      	; 0x1256 <__umulhisi3+0xe>
+    1254:	b2 9f       	mul	r27, r18
+    1256:	70 0d       	add	r23, r0
+    1258:	81 1d       	adc	r24, r1
+    125a:	11 24       	eor	r1, r1
+    125c:	91 1d       	adc	r25, r1
+    125e:	08 95       	ret
+
+00001260 <_exit>:
+    1260:	f8 94       	cli
+
+00001262 <__stop_program>:
+    1262:	ff cf       	rjmp	.-2      	; 0x1262 <__stop_program>

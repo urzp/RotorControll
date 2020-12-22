@@ -175,6 +175,9 @@
     <Compile Include="delay.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Display.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Input.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -206,6 +209,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="RotorControll.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SPI.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
