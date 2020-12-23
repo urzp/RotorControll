@@ -71,61 +71,21 @@ Rotor Rotor;
 #include  "SPI.h"
 #include  "Display.h"
 
-void SendInfDisplay(){
-	if (!Mode){
-		if(!Rotor.RotorStopped()) {
-			LED_DisplaySend(Rotor.frequency, 0);
-			}else{
-			if(ModeFeq){
-				LED_DisplaySend(Rotor.frequency, 0);
-				}else{
-				LED_DisplaySend(0, 0);
-			}
-			
-		}
-	}
+
+void initTimer(){
+	TCCR1B |= (1<<WGM12); // устанавливаем режим СТС (сброс по совпадению)
+	TIMSK |= (1<<OCIE1A);	//устанавливаем бит разрешения прерывания 1ого счетчика по совпадению с OCR1A(H и L)
+	TCCR1B |= (1<<CS12);//установим делитель.
+	sei();
 }
+
+
+
 
 
 ISR (TIMER1_COMPA_vect)
 {
-	if (Rotor.Started||Rotor.Starting){
-		
-		if (!Rotor.Reverse){
-			switch (Phasa){
-				case 1: PORTB &= ~(1<<VT5);PORTB |=(1<<VT3);break;
-				case 2: PORTB &= ~(1<<VT2);PORTB |=(1<<VT6);break;
-				case 3: PORTB &= ~(1<<VT3);PORTB |=(1<<VT1);break;
-				case 4: PORTB &= ~(1<<VT6);PORTB |=(1<<VT4);break;
-				case 5: PORTB &= ~(1<<VT1);PORTB |= (1<<VT5);break;
-				case 6: PORTB &= ~(1<<VT4);PORTB |= (1<<VT2);break;
-			}
-		}else{
-			switch (Phasa){
-				case 6: PORTB |=(1<<VT5);PORTB &= ~(1<<VT3);break;
-				case 5: PORTB |=(1<<VT2);PORTB &= ~(1<<VT6);break;
-				case 4: PORTB |=(1<<VT3);PORTB &= ~(1<<VT1);break;
-				case 3: PORTB |=(1<<VT6);PORTB &= ~(1<<VT4);break;
-				case 2: PORTB |=(1<<VT1);PORTB &= ~(1<<VT5);break;
-				case 1: PORTB |=(1<<VT4);PORTB &= ~(1<<VT2);break;
-			}	
-		}
-
-		Phasa++;
-		
-		if (Phasa>6){
-			Phasa=1;
-		}
-		
-	}else{
-		PORTB &= ~(1<<VT1);
-		PORTB &= ~(1<<VT2);
-		PORTB &= ~(1<<VT3);
-		PORTB &= ~(1<<VT4);
-		PORTB &= ~(1<<VT5);
-		PORTB &= ~(1<<VT6);
-		Phasa=1;
-	}
+	Rotor.Move();
 	Rotor.SetFrequency(Rotor.frequency);
 	SendInfDisplay();
 }
@@ -134,12 +94,7 @@ ISR (TIMER1_COMPA_vect)
 
 
 
-void initTimer(){
-	TCCR1B |= (1<<WGM12); // устанавливаем режим СТС (сброс по совпадению)
-	TIMSK |= (1<<OCIE1A);	//устанавливаем бит разрешения прерывания 1ого счетчика по совпадению с OCR1A(H и L)
-	TCCR1B |= (1<<CS12);//установим делитель.
-	sei();
-}
+
 
 
 

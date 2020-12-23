@@ -18,6 +18,7 @@ public:
 	bool Starting, Stoping, Reversing;
 	bool Started, Reverse;
 	unsigned long StaringTime,StaringTiming, StopingTime;
+	int phasa;
 protected:
 private:
 
@@ -33,6 +34,10 @@ public:
 	void StoptimeUp(int TimeUp);
 	void StoptimeDown(int TimeDown);
 	bool RotorStopped();
+	void Move();
+	void MoveForvard();
+	void MoveBack();
+	void MoveTest();
 protected:
 private:
 

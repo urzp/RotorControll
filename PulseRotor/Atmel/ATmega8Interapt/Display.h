@@ -76,4 +76,19 @@ void DidplayFeqSet(){
 }
 
 
+void SendInfDisplay(){
+	if (!Mode){
+		if(!Rotor.RotorStopped()) {
+			LED_DisplaySend(Rotor.frequency, 0);
+			}else{
+			if(ModeFeq){
+				LED_DisplaySend(Rotor.frequency, 0);
+				}else{
+				LED_DisplaySend(0, 0);
+			}
+			
+		}
+	}
+}
+
 #endif /* DISPLAY_H_ */

@@ -59,14 +59,14 @@ void ModeStopTime(){
 			if(ButtonUp.PressRead()){
 				Rotor.StoptimeUp(100);
 				BlueLed.Off();
-				_delay_ms(500);
+				_delay_ms(200);
 			}
 			
 			ButtonDown.Scan();
 			if(ButtonDown.PressRead()){
 				Rotor.StoptimeDown(100);
 				BlueLed.Off();
-				_delay_ms(500);
+				_delay_ms(200);
 			}
 			
 			LED_DisplayTime_ms(Rotor.StopingTime);
