@@ -8,9 +8,10 @@
 
 #ifndef MODECONTROLL_H_
 #define MODECONTROLL_H_
-
+int slipTimes = 1000;
 
 void ModeStartTime(){
+	int slip;
 	if (Rotor.RotorStopped()){
 		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStart.getpressed)||Mode){
 			Mode = true;
@@ -20,17 +21,40 @@ void ModeStartTime(){
 
 
 			ButtonUp.Scan();
+			if(ButtonUp.getpressed){
+				slip++;
+				if(slip>=slipTimes){
+					slip = slipTimes;
+					Rotor.StartimeUp(1000);
+					_delay_ms(100);
+				}
+			}	
 			if(ButtonUp.PressRead()){
+				slip = 0;
 				Rotor.StartimeUp(100);
 				BlueLed.Off();
-				_delay_ms(500);
+				_delay_ms(100);
 			}
 			
+			
+			
+			
+			
+			
 			ButtonDown.Scan();
+			if(ButtonDown.getpressed){
+				slip++;
+				if(slip>=slipTimes){
+					slip = slipTimes;
+					Rotor.StartimeDown(1000);
+					_delay_ms(100);
+				}
+			}
 			if(ButtonDown.PressRead()){
+				slip = 0;
 				Rotor.StartimeDown(100);
 				BlueLed.Off();
-				_delay_ms(500);
+				_delay_ms(100);
 			}
 			
 			LED_DisplayTime_ms(Rotor.StaringTime);
@@ -47,6 +71,7 @@ void ModeStartTime(){
 }
 
 void ModeStopTime(){
+	int slip;
 	if (Rotor.RotorStopped()){
 		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStop.getpressed)||Mode){
 			Mode = true;
@@ -56,17 +81,43 @@ void ModeStopTime(){
 
 
 			ButtonUp.Scan();
+			if(ButtonUp.getpressed){
+				slip++;
+				if(slip>=slipTimes){
+					slip = slipTimes;
+					Rotor.StoptimeUp(1000);
+					_delay_ms(100);
+				}
+			}
 			if(ButtonUp.PressRead()){
+				slip = 0;
 				Rotor.StoptimeUp(100);
 				BlueLed.Off();
-				_delay_ms(200);
+				_delay_ms(100);
 			}
 			
+			
+			
+			
+			
+			
 			ButtonDown.Scan();
+			ButtonUp.Scan();
+			if(ButtonDown.getpressed){
+				slip++;
+				if(slip>=slipTimes){
+					slip = slipTimes;
+					Rotor.StoptimeDown(1000);
+					_delay_ms(100);
+				}
+			}
+			
+			
 			if(ButtonDown.PressRead()){
+				slip = 0;
 				Rotor.StoptimeDown(100);
 				BlueLed.Off();
-				_delay_ms(200);
+				_delay_ms(100);
 			}
 			
 			LED_DisplayTime_ms(Rotor.StopingTime);

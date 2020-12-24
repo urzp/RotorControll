@@ -27,8 +27,8 @@ public:
 	void Init();
 	void SetFrequency(int freq);
 	void Activity();
-	void FrequncyUp();
-	void FrequencyDown();
+	void FrequncyUp(int up);
+	void FrequencyDown(int down);
 	void StartimeUp(int TimeUp);
 	void StartimeDown(int TimeDown);
 	void StoptimeUp(int TimeUp);

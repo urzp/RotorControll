@@ -29,14 +29,41 @@ void ReverseControll(){
 }
 
 void SpeedControll(){
+	
+	
+	
+	if (ButtonUp.getpressed){
+		slip++;
+		if (slip>=3000){
+			slip=3000;
+			Rotor.FrequncyUp(10);
+			ModeFeq = true;
+			ModeFeqCount = 0;
+			_delay_ms(200);
+		}
+	}
+	
 	if(ButtonUp.PressRead()){
-		Rotor.FrequncyUp();
+		slip=1;
+		Rotor.FrequncyUp(1);
 		ModeFeq = true;
 		ModeFeqCount = 0;
 	}
 	
+	if (ButtonDown.getpressed){
+		slip++;
+		if (slip>=3000){
+			slip=3000;
+			Rotor.FrequencyDown(10);
+			ModeFeq = true;
+			ModeFeqCount = 0;
+			_delay_ms(200);
+		}
+	}	
+	
 	if(ButtonDown.PressRead()){
-		Rotor.FrequencyDown();
+		slip=1;
+		Rotor.FrequencyDown(1);
 		ModeFeq = true;		
 		ModeFeqCount = 0;
 	}

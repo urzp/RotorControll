@@ -22,7 +22,7 @@ const int CL = PB5;
 void Rotor::Init(){
 	workfrequency = 50;
 	minfrequency = 1;
-	maxfrequency = 200;
+	maxfrequency = 150;
 	minStartStopTime = 100;
 	maxStartStopTime = 30000;
 	SetFrequency(workfrequency);
@@ -89,17 +89,15 @@ void Rotor::Activity(){
 
 }
 
-void Rotor::FrequncyUp(){
-	workfrequency++;
+void Rotor::FrequncyUp(int up){
+	workfrequency=workfrequency+up;
 	if(workfrequency<minfrequency){workfrequency=minfrequency;}
 	if(workfrequency>maxfrequency){workfrequency=maxfrequency;}
 	frequency = workfrequency;
 };
 
-void Rotor::FrequencyDown(){
-	workfrequency--;
-	if(workfrequency<minfrequency){workfrequency=minfrequency;}
-	if(workfrequency>maxfrequency){workfrequency=maxfrequency;}
+void Rotor::FrequencyDown(int down){
+	if(workfrequency>down){workfrequency=workfrequency-down;}else{workfrequency=minfrequency;}
 	frequency=workfrequency;
 };
 
@@ -109,8 +107,8 @@ void Rotor::StartimeUp(int TimeUp){
 }
 
 void Rotor::StartimeDown(int TimeDown){
-	StaringTime = StaringTime - TimeDown;
-	if (StaringTime ==  0){ StaringTime = minStartStopTime;}
+	if(StaringTime>TimeDown){StaringTime = StaringTime - TimeDown;
+	}else{ StaringTime = minStartStopTime;}
 }
 
 
@@ -120,8 +118,8 @@ void Rotor::StoptimeUp(int TimeUp){
 }
 
 void Rotor::StoptimeDown(int TimeDown){
-	StopingTime = StopingTime - TimeDown;
-	if (StopingTime ==  0){ StopingTime = minStartStopTime;}
+	if(StopingTime>TimeDown){StopingTime = StopingTime - TimeDown;
+	}else{ StopingTime = minStartStopTime;}
 }
 
 

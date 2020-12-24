@@ -31,8 +31,7 @@ const int CLK = PC3;
 const int DataSPI = PC4;
 const int LOAD = PC5;
 
-const int timeCTRIN = 1;
-const int timeCTR = 6;
+
 char dg = 8;
 
 volatile int Phasa;
@@ -50,6 +49,8 @@ int  ModeFeqCount;
 int countpulse;
 int TruePulse;
 int freq=1;
+
+int slip;
 
 Input Protect;
 Input PowerReady;
@@ -127,7 +128,7 @@ void Init(){
 	DDRD |= (1<<(PD7));
 	
 	SPI_init();
-	LED_Display_Init();
+	//LED_Display_Init();
 	
 	initTimer();
 	_delay_ms(100);
