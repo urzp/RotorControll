@@ -19,6 +19,7 @@ public:
 	bool Started, Reverse;
 	unsigned long StaringTime,StaringTiming, StopingTime;
 	int phasa;
+	bool LowFreq;
 protected:
 private:
 

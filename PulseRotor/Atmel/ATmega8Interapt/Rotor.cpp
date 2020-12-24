@@ -20,7 +20,7 @@ const int CL = PB5;
 
 
 void Rotor::Init(){
-	workfrequency = 50;
+	workfrequency = 20;
 	minfrequency = 1;
 	maxfrequency = 150;
 	minStartStopTime = 100;
@@ -36,6 +36,7 @@ void Rotor::SetFrequency(int freq){
 	frequency = freq; // 8.000.000/256/6 = 5208 Ãö 
 	int OCR_dev;
 	OCR_dev = 5208/frequency;
+	if(LowFreq){OCR_dev = OCR_dev/2;}
 	OCR1A = OCR_dev;
 	
 }
@@ -132,11 +133,15 @@ bool Rotor::RotorStopped(){
 }
 
 void Rotor::Move(){
+	
+	if(frequency<20&&phasa==1){LowFreq = true;}
+	if(frequency>=20&&phasa==1){LowFreq = false;}	
+		
 	if (Started||Starting){
 		
 		if (!Reverse){
-			MoveForvard();
-			}else{
+			if(LowFreq){MoveTest();}else{MoveForvard();}
+		}else{
 			MoveBack();
 		}
 		
@@ -179,14 +184,21 @@ void Rotor::MoveBack(){
 
 void Rotor::MoveTest(){
 	switch (phasa){
-		case 1: PORTB &= ~(1<<CH);PORTB |=(1<<BH);break;
-		case 2: PORTB &= ~(1<<AL);PORTB |=(1<<CL);break;
-		case 3: PORTB &= ~(1<<BH);PORTB |=(1<<AH);break;
-		case 4: PORTB &= ~(1<<CL);PORTB |=(1<<BL);break;
-		case 5: PORTB &= ~(1<<AH);PORTB |= (1<<CH);break;
-		case 6: PORTB &= ~(1<<BL);PORTB |= (1<<AL);break;
+		case 1: PORTB &= ~(1<<CH);break;
+		case 2: break;
+		case 3: PORTB |=(1<<BH);break;	
+		case 4: PORTB &= ~(1<<AL);PORTB |=(1<<CL);break;
+		case 5: PORTB &= ~(1<<BH);break;
+		case 6: break;
+		case 7: PORTB |=(1<<AH);break;
+		case 8: PORTB &= ~(1<<CL);PORTB |=(1<<BL);break;
+		case 9: PORTB &= ~(1<<AH);
+		case 10: break;
+		case 11: PORTB |= (1<<CH);break;
+		case 12: PORTB &= ~(1<<BL);PORTB |= (1<<AL);break;
+		
 	}
 	phasa++;
-	if (phasa>6){phasa=1;}	
+	if (phasa>12){phasa=1;}	
 	
 }
