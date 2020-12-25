@@ -56,7 +56,7 @@ char SHD0032G(volatile long n ){
 	
 }
 
-void LED_DisplaySend(volatile long n, int point)
+void LED_DisplaySend_(volatile long n, int point)
 {
 	char ng = 0; //переменная для минуса
 	if (n < 0)
@@ -79,7 +79,7 @@ void LED_DisplaySend(volatile long n, int point)
 	}
 }
 
-void LED_DisplaySend_(volatile long n, int point){
+void LED_DisplaySend(volatile long n, int point){
 	
 	char symbol_1, symbol_2, symbol_3, symbol_4;
 	char SHDsymbol_1, SHDsymbol_2, SHDsymbol_3, SHDsymbol_4;

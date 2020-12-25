@@ -128,7 +128,7 @@ void Init(){
 	DDRD |= (1<<(PD7));
 	
 	SPI_init();
-	LED_Display_Init();
+	//LED_Display_Init();
 	
 	initTimer();
 	_delay_ms(100);

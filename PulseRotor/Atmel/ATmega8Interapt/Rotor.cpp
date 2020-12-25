@@ -20,8 +20,8 @@ const int CL = PB5;
 
 
 void Rotor::Init(){
-	workfrequency = 20;
-	minfrequency = 1;
+	workfrequency = 40;
+	minfrequency = 10;
 	maxfrequency = 150;
 	minStartStopTime = 100;
 	maxStartStopTime = 30000;
@@ -36,7 +36,7 @@ void Rotor::SetFrequency(int freq){
 	frequency = freq; // 8.000.000/256/6 = 5208 Ãö 
 	int OCR_dev;
 	OCR_dev = 5208/frequency;
-	if(LowFreq){OCR_dev = OCR_dev/2;}
+	if(LowFreq){OCR_dev = OCR_dev/4;}
 	OCR1A = OCR_dev;
 	
 }
@@ -83,7 +83,7 @@ void Rotor::Activity(){
 			StaringTiming = 1;
 			Started = false;
 			Stoping = false;
-			if(Reversing){ _delay_ms(500); Starting=true;}
+			if(Reversing){ _delay_ms(50); Starting=true;}
 		}
 	}	
 	
@@ -98,7 +98,8 @@ void Rotor::FrequncyUp(int up){
 };
 
 void Rotor::FrequencyDown(int down){
-	if(workfrequency>down){workfrequency=workfrequency-down;}else{workfrequency=minfrequency;}
+	if(workfrequency-down>minfrequency&&workfrequency>down){workfrequency=workfrequency-down;}else{workfrequency=minfrequency;}
+	
 	frequency=workfrequency;
 };
 
@@ -134,8 +135,8 @@ bool Rotor::RotorStopped(){
 
 void Rotor::Move(){
 	
-	if(frequency<20&&phasa==1){LowFreq = true;}
-	if(frequency>=20&&phasa==1){LowFreq = false;}	
+	if(frequency<40&&phasa==1){LowFreq = true;}
+	if(frequency>=40&&phasa==1){LowFreq = false;}	
 		
 	if (Started||Starting){
 		
@@ -184,21 +185,62 @@ void Rotor::MoveBack(){
 
 void Rotor::MoveTest(){
 	switch (phasa){
-		case 1: PORTB &= ~(1<<CH);break;
+		case 1: PORTB &= ~(1<<CH); break;
 		case 2: break;
-		case 3: PORTB |=(1<<BH);break;	
-		case 4: PORTB &= ~(1<<AL);PORTB |=(1<<CL);break;
-		case 5: PORTB &= ~(1<<BH);break;
-		case 6: break;
-		case 7: PORTB |=(1<<AH);break;
-		case 8: PORTB &= ~(1<<CL);PORTB |=(1<<BL);break;
-		case 9: PORTB &= ~(1<<AH);
+		case 3: break;
+		case 4: break;
+		case 5: break;
+		case 6: PORTB |=(1<<BH);break;
+		case 7: PORTB &= ~(1<<AL);PORTB |=(1<<CL);break;
+		case 8: PORTB &= ~(1<<BH);break;
+		case 9: break;
 		case 10: break;
-		case 11: PORTB |= (1<<CH);break;
-		case 12: PORTB &= ~(1<<BL);PORTB |= (1<<AL);break;
+		case 11: break;
+		case 12: break;
+		case 13: break;
+		case 14: PORTB |=(1<<AH);break;
+		case 15: PORTB &= ~(1<<CL);PORTB |=(1<<BL);break;
+		case 16: PORTB &= ~(1<<AH);break;
+		case 17: break;
+		case 18: break;
+		case 19: break;
+		case 20: break;
+		case 21: break;
+		case 22: PORTB |=(1<<CH);break;
+		case 23: PORTB &= ~(1<<BL);PORTB |=(1<<AL);break;
+		case 24: PORTB &= ~(1<<CH); break;
 		
 	}
 	phasa++;
-	if (phasa>12){phasa=1;}	
+	if (phasa>24){phasa=1;}	
 	
 }
+
+		//case 1: PORTB &= ~(1<<CH);break;
+		//case 2: break;
+		//case 3: PORTB |=(1<<BH);break;
+		//case 4: PORTB &= ~(1<<AL);PORTB |=(1<<CL);break;
+		//case 5: PORTB &= ~(1<<BH);break;
+		//case 6: break;
+		//case 7: PORTB |=(1<<AH);break;
+		//case 8: PORTB &= ~(1<<CL);PORTB |=(1<<BL);break;
+		//case 9: PORTB &= ~(1<<AH);
+		//case 10: break;
+		//case 11: PORTB |= (1<<CH);break;
+		//case 12: PORTB &= ~(1<<BL);PORTB |= (1<<AL);break;
+
+
+
+
+		//case 1: PORTB &= ~(1<<CH);break;
+		//case 2: break;
+		//case 3: break;
+		//case 4: PORTB &= ~(1<<AL);PORTB |=(1<<CL);PORTB |=(1<<BH);break;
+		//case 5: PORTB &= ~(1<<BH);break;
+		//case 6: break;
+		//case 7: break;
+		//case 8: PORTB &= ~(1<<CL);PORTB |=(1<<BL);PORTB |=(1<<AH);break;
+		//case 9: PORTB &= ~(1<<AH);break;
+		//case 10: break;
+		//case 11: break;
+		//case 12: PORTB &= ~(1<<BL);PORTB |= (1<<AL);PORTB |= (1<<CH);break;
