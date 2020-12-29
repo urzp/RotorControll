@@ -11,13 +11,13 @@
 
 
 void StartControll(){
-	if (ButtonStart.PressRead()&&!Rotor.Started&&!Protect.Read()&&PowerReady.Read()){
+	if (ButtonStart.PressRead()&&!Rotor.Started&&!Protect.Read()){
 		Rotor.Starting = true;
 	}
 }
 
 void StopControll(){
-	if (ButtonStop.PressRead()&&!Protect.Read()&&PowerReady.Read()){
+	if (ButtonStop.PressRead()&&!Protect.Read()){
 		Rotor.Stoping = true;
 	}
 }

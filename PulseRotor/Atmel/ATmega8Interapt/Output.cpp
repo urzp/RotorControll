@@ -48,6 +48,7 @@ void Output::Off(){
 			case 'D': PORTD  &= ~(1<<(_pin)); break;
 		}
 	}
+	status = false;
 	sei();
 }
 
@@ -66,5 +67,14 @@ void Output::On(){
 			case 'D': PORTD  &= ~(1<<(_pin)); break;
 		}
 	}
+	status = true;
 	sei();
+}
+
+void Output::Switch(){
+	if(status){
+		Off();
+	}else{
+		On();
+	}
 }

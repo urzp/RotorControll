@@ -11,7 +11,7 @@
 
 
 void ProtectControll(){
-	if(Protect.Read()||!PowerReady.Read()){
+	if(Protect.Read()){
 		Rotor.Starting = false;
 		Rotor.Stoping = false;
 		Rotor.Started=0;

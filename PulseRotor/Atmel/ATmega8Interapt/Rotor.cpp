@@ -10,10 +10,12 @@
 #include "delay.h"
 #include <avr/interrupt.h>
 
+#define C_PWM   OCR2
+
 const int AH = PB0;
 const int AL = PB1;
 const int BH = PB2;
-const int BL = PB3;
+const int BL = PC2;
 const int CH = PB4;
 const int CL = PB5;
 
@@ -21,7 +23,7 @@ const int CL = PB5;
 
 void Rotor::Init(){
 	workfrequency = 40;
-	minfrequency = 10;
+	minfrequency = 1;
 	maxfrequency = 150;
 	minStartStopTime = 100;
 	maxStartStopTime = 30000;
@@ -36,9 +38,24 @@ void Rotor::SetFrequency(int freq){
 	frequency = freq; // 8.000.000/256/6 = 5208 Ãö 
 	int OCR_dev;
 	OCR_dev = 5208/frequency;
-	if(LowFreq){OCR_dev = OCR_dev/4;}
 	OCR1A = OCR_dev;
 	
+	if (frequency>=1&&frequency<5){C_PWM = 90;}
+	if (frequency>=5&&frequency<10){C_PWM = 100;}
+	if (frequency>=10&&frequency<20){C_PWM = 130;}
+	if (frequency>=20&&frequency<30){C_PWM = 150;}
+	if (frequency>=30&&frequency<40){C_PWM = 200;}
+	if (frequency>=40&&frequency<50){C_PWM = 200;}
+	if (frequency>=50){C_PWM = 255;}
+	
+	//if (frequency>=1&&frequency<5){C_PWM = 40;}
+	//if (frequency>=5&&frequency<10){C_PWM = 50;}
+	//if (frequency>=10&&frequency<20){C_PWM = 70;}	
+	//if (frequency>=20&&frequency<30){C_PWM = 90;}
+	//if (frequency>=30&&frequency<40){C_PWM = 110;}	
+	//if (frequency>=40&&frequency<50){C_PWM = 130;}
+	//if (frequency>=50){C_PWM = 255;}	
+
 }
 
 void Rotor::Activity(){
@@ -83,7 +100,7 @@ void Rotor::Activity(){
 			StaringTiming = 1;
 			Started = false;
 			Stoping = false;
-			if(Reversing){ _delay_ms(50); Starting=true;}
+			if(Reversing){ _delay_ms(150); Starting=true;}
 		}
 	}	
 	
@@ -135,13 +152,11 @@ bool Rotor::RotorStopped(){
 
 void Rotor::Move(){
 	
-	if(frequency<40&&phasa==1){LowFreq = true;}
-	if(frequency>=40&&phasa==1){LowFreq = false;}	
 		
 	if (Started||Starting){
 		
 		if (!Reverse){
-			if(LowFreq){MoveTest();}else{MoveForvard();}
+			MoveForvard();
 		}else{
 			MoveBack();
 		}
@@ -150,7 +165,7 @@ void Rotor::Move(){
 		PORTB &= ~(1<<AH);
 		PORTB &= ~(1<<AL);
 		PORTB &= ~(1<<BH);
-		PORTB &= ~(1<<BL);
+		PORTC &= ~(1<<BL);
 		PORTB &= ~(1<<CH);
 		PORTB &= ~(1<<CL);
 		phasa=1;
@@ -162,9 +177,9 @@ void Rotor::MoveForvard(){
 		case 1: PORTB &= ~(1<<CH);PORTB |=(1<<BH);break;
 		case 2: PORTB &= ~(1<<AL);PORTB |=(1<<CL);break;
 		case 3: PORTB &= ~(1<<BH);PORTB |=(1<<AH);break;
-		case 4: PORTB &= ~(1<<CL);PORTB |=(1<<BL);break;
+		case 4: PORTB &= ~(1<<CL);PORTC |=(1<<BL);break;
 		case 5: PORTB &= ~(1<<AH);PORTB |= (1<<CH);break;
-		case 6: PORTB &= ~(1<<BL);PORTB |= (1<<AL);break;
+		case 6: PORTC &= ~(1<<BL);PORTB |= (1<<AL);break;
 	}
 	phasa++;
 	if (phasa>6){phasa=1;}
@@ -175,46 +190,15 @@ void Rotor::MoveBack(){
 		case 6: PORTB |=(1<<CH);PORTB &= ~(1<<BH);break;
 		case 5: PORTB |=(1<<AL);PORTB &= ~(1<<CL);break;
 		case 4: PORTB |=(1<<BH);PORTB &= ~(1<<AH);break;
-		case 3: PORTB |=(1<<CL);PORTB &= ~(1<<BL);break;
+		case 3: PORTB |=(1<<CL);PORTC &= ~(1<<BL);break;
 		case 2: PORTB |=(1<<AH);PORTB &= ~(1<<CH);break;
-		case 1: PORTB |=(1<<BL);PORTB &= ~(1<<AL);break;
+		case 1: PORTC |=(1<<BL);PORTB &= ~(1<<AL);break;
 	}
 	phasa++;
 	if (phasa>6){phasa=1;}
 }
 
-void Rotor::MoveTest(){
-	switch (phasa){
-		case 1: PORTB &= ~(1<<CH); break;
-		case 2: break;
-		case 3: break;
-		case 4: break;
-		case 5: break;
-		case 6: PORTB |=(1<<BH);break;
-		case 7: PORTB &= ~(1<<AL);PORTB |=(1<<CL);break;
-		case 8: PORTB &= ~(1<<BH);break;
-		case 9: break;
-		case 10: break;
-		case 11: break;
-		case 12: break;
-		case 13: break;
-		case 14: PORTB |=(1<<AH);break;
-		case 15: PORTB &= ~(1<<CL);PORTB |=(1<<BL);break;
-		case 16: PORTB &= ~(1<<AH);break;
-		case 17: break;
-		case 18: break;
-		case 19: break;
-		case 20: break;
-		case 21: break;
-		case 22: PORTB |=(1<<CH);break;
-		case 23: PORTB &= ~(1<<BL);PORTB |=(1<<AL);break;
-		case 24: PORTB &= ~(1<<CH); break;
-		
-	}
-	phasa++;
-	if (phasa>24){phasa=1;}	
-	
-}
+
 
 		//case 1: PORTB &= ~(1<<CH);break;
 		//case 2: break;
@@ -244,3 +228,28 @@ void Rotor::MoveTest(){
 		//case 10: break;
 		//case 11: break;
 		//case 12: PORTB &= ~(1<<BL);PORTB |= (1<<AL);PORTB |= (1<<CH);break;
+		
+				//case 1: PORTB &= ~(1<<CH); break;
+				//case 2: break;
+				//case 3: break;
+				//case 4: break;
+				//case 5: break;
+				//case 6: PORTB |=(1<<BH);break;
+				//case 7: PORTB &= ~(1<<AL);PORTB |=(1<<CL);break;
+				//case 8: PORTB &= ~(1<<BH);break;
+				//case 9: break;
+				//case 10: break;
+				//case 11: break;
+				//case 12: break;
+				//case 13: break;
+				//case 14: PORTB |=(1<<AH);break;
+				//case 15: PORTB &= ~(1<<CL);PORTB |=(1<<BL);break;
+				//case 16: PORTB &= ~(1<<AH);break;
+				//case 17: break;
+				//case 18: break;
+				//case 19: break;
+				//case 20: break;
+				//case 21: break;
+				//case 22: PORTB |=(1<<CH);break;
+				//case 23: PORTB &= ~(1<<BL);PORTB |=(1<<AL);break;
+				//case 24: PORTB &= ~(1<<CH); break;

@@ -18,6 +18,7 @@
 #include "Output.h"
 #include "Rotor.h"
 
+#define C_PWM   OCR2
 
 
 const int VT1 = PB0;
@@ -49,11 +50,12 @@ int  ModeFeqCount;
 int countpulse;
 int TruePulse;
 int freq=1;
+volatile int PMWCount, SetPower;
 
 int slip;
 
 Input Protect;
-Input PowerReady;
+
 
 Button ButtonStop;
 Button ButtonStart;
@@ -62,6 +64,7 @@ Button ButtonUp;
 Button ButtonDown;
 
 Output Power;
+Output PMW;
 Output GreenLed;
 Output RedLed;
 Output BlueLed;
@@ -96,14 +99,23 @@ ISR (TIMER1_COMPA_vect)
 
 
 
+void PMW_init(void) {
+	DDRB |= (1<<PB3);
+	PORTB &= ~(1<<PB3);
+	
+	TCCR2 |= (1 << COM21) | (1 << WGM21) | (1 << WGM20)| (1 << CS21);
+	TCNT2 = 0x00;
+	C_PWM = 0;
+	
+}
 
 
 
 void Init(){
-
+	
 	
 	Protect.Init('C', 0);
-	PowerReady.Init('C',1);
+	
 	
 	ButtonStop.Init('D',0);
 	ButtonStart.Init('D',1);
@@ -111,7 +123,8 @@ void Init(){
 	ButtonUp.Init('D',4);
 	ButtonDown.Init('D',3);
 	
-	Power.Init('C',2, false);
+	Power.Init('C',1, false);
+	
 	GreenLed.Init('B',6, true);
 	RedLed.Init('B',7, true);
 	BlueLed.Init('D',5,true);
@@ -121,7 +134,7 @@ void Init(){
 	DDRB |= (1<<(PB0));
 	DDRB |= (1<<(PB1));
 	DDRB |= (1<<(PB2));
-	DDRB |= (1<<(PB3));
+	DDRC |= (1<<(PC2));
 	DDRB |= (1<<(PB4));
 	DDRB |= (1<<(PB5));
 	
@@ -131,6 +144,7 @@ void Init(){
 	//LED_Display_Init();
 	
 	initTimer();
+	PMW_init();
 	_delay_ms(100);
 	Power.On();
 }

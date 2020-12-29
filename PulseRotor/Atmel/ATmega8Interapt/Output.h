@@ -17,6 +17,7 @@ public:
 	char _port;
 	int _pin;
 	bool _inv;
+	bool status;
 protected:
 private:
 
@@ -25,6 +26,7 @@ public:
 	void Init(char port, int pin, bool inv);
 	void On();
 	void Off();
+	void Switch();
 protected:
 private:
 
