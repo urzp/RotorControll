@@ -50,6 +50,7 @@ char SHD0032G(volatile long n ){
 		case 7: symbol=0b00001110; break;
 		case 8: symbol=0b11111110; break;
 		case 9: symbol=0b11011110; break;
+		case 0x10:symbol=0b11011110; break;
 	}
 	
 	return symbol;

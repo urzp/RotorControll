@@ -28,8 +28,8 @@ void Rotor::Init(){
 	minStartStopTime = 100;
 	maxStartStopTime = 30000;
 	SetFrequency(workfrequency);
-	StaringTime =1000;
-	StopingTime =1000;
+	StaringTime =200;
+	StopingTime =200;
 	StaringTiming = 1;
 	phasa=1;
 }
@@ -37,16 +37,26 @@ void Rotor::Init(){
 void Rotor::SetFrequency(int freq){
 	frequency = freq; // 8.000.000/256/6 = 5208 Ãö 
 	int OCR_dev;
-	OCR_dev = 5208/frequency;
+	//if(!LowFreq){OCR_dev = 5208/frequency;}else{OCR_dev = 1302/frequency;}
+	OCR_dev = 5208/frequency;	
 	OCR1A = OCR_dev;
 	
-	if (frequency>=1&&frequency<5){C_PWM = 90;}
-	if (frequency>=5&&frequency<10){C_PWM = 100;}
-	if (frequency>=10&&frequency<20){C_PWM = 130;}
-	if (frequency>=20&&frequency<30){C_PWM = 150;}
-	if (frequency>=30&&frequency<40){C_PWM = 200;}
-	if (frequency>=40&&frequency<50){C_PWM = 200;}
-	if (frequency>=50){C_PWM = 255;}
+	//if (frequency>=1&&frequency<4){NPMW = 10;}
+	//if (frequency>=5&&frequency<8){NPMW = 15;}	
+	//if (frequency>=8&&frequency<10){NPMW = 20;}
+	//if (frequency>=10&&frequency<15){NPMW = 25;}	
+	//if (frequency>=15&&frequency<20){NPMW = 30;}
+	//if (frequency>=20&&frequency<30){NPMW = 40;}
+	//if (frequency>=30&&frequency<40){NPMW = 80;}
+	//if (frequency>=40&&frequency<50){NPMW = 120;}
+		
+	if(Started||Starting){
+	if (frequency>=50){NPMW = FreqPower[49];}else{NPMW = FreqPower[frequency];}
+	}else{
+		NPMW = 0;
+	}
+	
+	C_PWM =  NPMW;	
 	
 	//if (frequency>=1&&frequency<5){C_PWM = 40;}
 	//if (frequency>=5&&frequency<10){C_PWM = 50;}
@@ -152,24 +162,41 @@ bool Rotor::RotorStopped(){
 
 void Rotor::Move(){
 	
+	//if(frequency<15&&phasa==1&&!LowFreq){
+		//PortsOff();
+		//LowFreq=true;	
+	//}
+	//if(frequency>=15&&phasa==1&&LowFreq){
+		//PortsOff();
+		//LowFreq=false;
+	//}
 		
 	if (Started||Starting){
 		
 		if (!Reverse){
-			MoveForvard();
+			//if(!LowFreq){MoveForvard();}
+			//if(LowFreq){MoveTest();}
+				MoveForvard();
 		}else{
-			MoveBack();
+			//if(!LowFreq){MoveForvard();}
+			//if(LowFreq){MoveTest();}
+				MoveBack();
 		}
 		
 		}else{
+		PortsOff();
+		phasa=1;
+		NPMW=0;
+	}	
+}
+
+void Rotor::PortsOff(){
 		PORTB &= ~(1<<AH);
 		PORTB &= ~(1<<AL);
 		PORTB &= ~(1<<BH);
 		PORTC &= ~(1<<BL);
 		PORTB &= ~(1<<CH);
-		PORTB &= ~(1<<CL);
-		phasa=1;
-	}	
+		PORTB &= ~(1<<CL);	
 }
 
 void Rotor::MoveForvard(){
@@ -197,6 +224,38 @@ void Rotor::MoveBack(){
 	phasa++;
 	if (phasa>6){phasa=1;}
 }
+
+void Rotor::MoveTest(){
+	switch (phasa){
+			case 1: break;
+			case 2: break;
+			case 3: break;
+			case 4: break;
+			case 5: break;
+			case 6: PORTB |=(1<<BH);break;
+			case 7: PORTB &= ~(1<<AL);PORTB |=(1<<CL);break;
+			case 8: PORTB &= ~(1<<BH);break;
+			case 9: break;
+			case 10: break;
+			case 11: break;
+			case 12: break;
+			case 13: break;
+			case 14: PORTB |=(1<<AH);break;
+			case 15: PORTB &= ~(1<<CL);PORTC |=(1<<BL);break;
+			case 16: PORTB &= ~(1<<AH);break;
+			case 17: break;
+			case 18: break;
+			case 19: break;
+			case 20: break;
+			case 21: break;
+			case 22: PORTB |=(1<<CH);break;
+			case 23: PORTC &= ~(1<<BL);PORTB |=(1<<AL);break;
+			case 24: PORTB &= ~(1<<CH); break;
+	}
+	phasa++;
+	if (phasa>24){phasa=1;}
+}
+
 
 
 

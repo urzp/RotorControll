@@ -123,7 +123,7 @@ void Init(){
 	ButtonUp.Init('D',4);
 	ButtonDown.Init('D',3);
 	
-	Power.Init('C',1, false);
+	Power.Init('D',7, false);
 	
 	GreenLed.Init('B',6, true);
 	RedLed.Init('B',7, true);
