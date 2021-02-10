@@ -32,6 +32,10 @@ const int CLK = PC3;
 const int DataSPI = PC4;
 const int LOAD = PC5;
 
+const int ModeNo = 0;
+const int ModeSetTime = 1;
+const int ModeSetPMW = 2;
+const int ModeCurrent = 3;
 
 char dg = 8;
 
@@ -44,13 +48,15 @@ int debounse;
 
 int IntConter=1;
 bool MovingPulse[51];
-bool Mode, ModeFeq;
+int Mode;
+bool  ModeFeq;
 int  ModeFeqCount;
 
 int countpulse;
 int TruePulse;
 int freq=1;
 volatile int PMWCount, SetPower;
+long unsigned int adc_value, adc_summ, adc_count, adc_avarage;
 
 int slip;
 
@@ -62,6 +68,7 @@ Button ButtonStart;
 Button ButtonReverse;
 Button ButtonUp;
 Button ButtonDown;
+Button ButtonReset;
 
 Output Power;
 Output PMW;
@@ -110,6 +117,30 @@ void PMW_init(void) {
 }
 
 
+void ADC_Init(void)
+{
+	ADCSRA |= (1<<ADEN) // Разрешение использования АЦП
+	|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);//Делитель 128 = 64 кГц
+	ADMUX |= (1<<REFS0)|(1<<MUX0); //Внутренний Источник ОН 2,56в, вход ADC0
+	ADCSRA |= (1<<ADSC);
+}
+
+void ADC_read(){
+	if (ADCSRA & (1<<ADSC)){
+		
+		}else{
+		adc_value = ADC;
+		adc_value = adc_value / 2;
+		adc_summ=adc_summ+adc_value;
+		adc_count++;
+		if (adc_count==500){
+			adc_avarage = adc_summ/500;
+			adc_count=0;
+			adc_summ=0;
+		}
+		ADCSRA |= (1<<ADSC);
+	}
+}
 
 void Init(){
 	
@@ -122,6 +153,7 @@ void Init(){
 	ButtonReverse.Init('D',2);
 	ButtonUp.Init('D',4);
 	ButtonDown.Init('D',3);
+	ButtonReset.Init('D',6);
 	
 	Power.Init('D',7, false);
 	
@@ -136,8 +168,7 @@ void Init(){
 	DDRB |= (1<<(PB2));
 	DDRC |= (1<<(PC2));
 	DDRB |= (1<<(PB4));
-	DDRB |= (1<<(PB5));
-	
+	DDRB |= (1<<(PB5));	
 	DDRD |= (1<<(PD7));
 	
 	SPI_init();
@@ -145,6 +176,7 @@ void Init(){
 	
 	initTimer();
 	PMW_init();
+	ADC_Init();
 	_delay_ms(100);
 	Power.On();
 }
@@ -155,6 +187,8 @@ void ReadInputs(){
 	ButtonReverse.Scan();
 	ButtonUp.Scan();
 	ButtonDown.Scan();
+	ButtonReset.Scan();
+	ADC_read();
 };
 
 #include "RotorControll.h"
@@ -181,6 +215,7 @@ int main (void) { //главная цикл программы
 		
 		ModeStartTime();
 		ModeStopTime();
+		ModeSettingPMW();
 		
 		ProtectControll();
 		

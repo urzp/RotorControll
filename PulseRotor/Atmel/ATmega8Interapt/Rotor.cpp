@@ -130,6 +130,18 @@ void Rotor::FrequencyDown(int down){
 	frequency=workfrequency;
 };
 
+void Rotor::PMWUp(int up){
+	if (frequency<50&&frequency!=0){
+	if (FreqPower[frequency]+up<=255){FreqPower[frequency] = FreqPower[frequency] + up;}
+	}
+}
+
+void Rotor::PMWDown(int down){
+	if (frequency<50&&frequency!=0){
+		if(FreqPower[frequency]-down > 0){FreqPower[frequency] = FreqPower[frequency] - down;}	
+	}
+}
+
 void Rotor::StartimeUp(int TimeUp){
 	StaringTime = StaringTime + TimeUp;
 	if (StaringTime > maxStartStopTime){ StaringTime = maxStartStopTime;}

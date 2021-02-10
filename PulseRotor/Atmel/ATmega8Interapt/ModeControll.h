@@ -13,8 +13,8 @@ int slipTimes = 1000;
 void ModeStartTime(){
 	int slip;
 	if (Rotor.RotorStopped()){
-		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStart.getpressed)||Mode){
-			Mode = true;
+		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStart.getpressed)||Mode==ModeSetTime){
+			Mode = ModeSetTime;
 			BlueLed.On();
 			RedLed.Off();
 			GreenLed.Off();
@@ -64,7 +64,7 @@ void ModeStartTime(){
 			ButtonStart.PressRead();
 			
 			if (!ButtonUp.getpressed&&!ButtonStart.getpressed){
-				Mode = false;
+				Mode = ModeNo;
 			}
 		}
 	}
@@ -73,8 +73,8 @@ void ModeStartTime(){
 void ModeStopTime(){
 	int slip;
 	if (Rotor.RotorStopped()){
-		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStop.getpressed)||Mode){
-			Mode = true;
+		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStop.getpressed)||Mode==ModeSetTime){
+			Mode = ModeSetTime;
 			BlueLed.On();
 			RedLed.Off();
 			GreenLed.Off();
@@ -126,11 +126,22 @@ void ModeStopTime(){
 			ButtonStop.PressRead();
 			
 			if (!ButtonUp.getpressed&&!ButtonStop.getpressed){
-				Mode = false;
+				Mode = ModeNo;
 			}
 		}
 	}
 }
 
+
+void ModeSettingPMW(){
+	int slip;
+	if (ButtonReset.PressRead()){
+		switch (Mode){
+			case ModeNo:  Mode = ModeSetPMW; break;
+			case ModeSetPMW:  Mode = ModeCurrent; break;
+			case ModeCurrent:  Mode = ModeNo; break;		
+		}
+	}
+}
 
 #endif /* MODECONTROLL_H_ */

@@ -36,7 +36,8 @@ void SpeedControll(){
 		slip++;
 		if (slip>=3000){
 			slip=3000;
-			Rotor.FrequncyUp(10);
+			if(Mode == ModeNo){Rotor.FrequncyUp(10);}
+			if(Mode == ModeSetPMW||Mode == ModeCurrent){Rotor.PMWUp(10);}
 			ModeFeq = true;
 			ModeFeqCount = 0;
 			_delay_ms(200);
@@ -45,7 +46,8 @@ void SpeedControll(){
 	
 	if(ButtonUp.PressRead()){
 		slip=1;
-		Rotor.FrequncyUp(1);
+		if(Mode == ModeNo) {Rotor.FrequncyUp(1);}
+		if(Mode == ModeSetPMW||Mode == ModeCurrent){Rotor.PMWUp(1);}
 		ModeFeq = true;
 		ModeFeqCount = 0;
 	}
@@ -54,7 +56,8 @@ void SpeedControll(){
 		slip++;
 		if (slip>=3000){
 			slip=3000;
-			Rotor.FrequencyDown(10);
+			if(Mode == ModeNo){Rotor.FrequencyDown(10);}
+			if(Mode == ModeSetPMW){Rotor.PMWDown(10);}
 			ModeFeq = true;
 			ModeFeqCount = 0;
 			_delay_ms(200);
@@ -63,7 +66,8 @@ void SpeedControll(){
 	
 	if(ButtonDown.PressRead()){
 		slip=1;
-		Rotor.FrequencyDown(1);
+		if(Mode == ModeNo){Rotor.FrequencyDown(1);}
+		if(Mode == ModeSetPMW){Rotor.PMWDown(1);}
 		ModeFeq = true;		
 		ModeFeqCount = 0;
 	}

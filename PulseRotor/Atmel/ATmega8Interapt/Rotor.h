@@ -35,6 +35,8 @@ public:
 	void Activity();
 	void FrequncyUp(int up);
 	void FrequencyDown(int down);
+	void PMWUp(int up);
+	void PMWDown(int down);
 	void StartimeUp(int TimeUp);
 	void StartimeDown(int TimeDown);
 	void StoptimeUp(int TimeUp);

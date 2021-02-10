@@ -50,7 +50,10 @@ char SHD0032G(volatile long n ){
 		case 7: symbol=0b00001110; break;
 		case 8: symbol=0b11111110; break;
 		case 9: symbol=0b11011110; break;
-		case 0x10:symbol=0b11011110; break;
+		case 10:symbol=0b11101110; break; //A
+		case 11:symbol=0b01100010; break; //Ã
+		case 12:symbol=0b01110010; break; //C
+		case 13:symbol=0b11010110;; break; //%
 	}
 	
 	return symbol;
@@ -80,18 +83,19 @@ void LED_DisplaySend_(volatile long n, int point)
 	}
 }
 
-void LED_DisplaySend(volatile long n, int point){
+void LED_DisplaySend(volatile long n, int point, int sumbol){
 	
-	char symbol_1, symbol_2, symbol_3, symbol_4;
-	char SHDsymbol_1, SHDsymbol_2, SHDsymbol_3, SHDsymbol_4;
+	char symbol_0, symbol_1, symbol_2, symbol_3, symbol_4;
+	char SHDsymbol_0, SHDsymbol_1, SHDsymbol_2, SHDsymbol_3, SHDsymbol_4;
 	
-	
+	SHDsymbol_0 = SHD0032G(sumbol);
+
 	if (n == 0) {
 		SHDsymbol_1 = SHD0032G(0);
 		SHDsymbol_2 = 0b00000000;
 		SHDsymbol_3 = 0b00000000;
 		SHDsymbol_4 = 0b00000000;
-		Send_SPI_SHD0032(SHDsymbol_1,SHDsymbol_2,SHDsymbol_3,SHDsymbol_4);
+		Send_SPI_SHD0032(SHDsymbol_0,SHDsymbol_1,SHDsymbol_2,SHDsymbol_3);
 		return;
 	}
 	
@@ -109,7 +113,7 @@ void LED_DisplaySend(volatile long n, int point){
 
 	
 	if(n<1000){SHDsymbol_4 = 0b00000000;}
-	if(n<100 ){SHDsymbol_3 = 0b00000000;}
+	if(n<100&&point<2 ){SHDsymbol_3 = 0b00000000;}
 	if(n<10&&point==0){SHDsymbol_2 = 0b00000000;}
 	
 	
@@ -120,14 +124,14 @@ void LED_DisplaySend(volatile long n, int point){
 		case 4: SHDsymbol_4 |=(1<<0);break;
 	}
 	
-	Send_SPI_SHD0032(SHDsymbol_1,SHDsymbol_2,SHDsymbol_3,SHDsymbol_4); 
+	Send_SPI_SHD0032(SHDsymbol_0, SHDsymbol_1,SHDsymbol_2,SHDsymbol_3); 
 	
 	}
 
 
 void LED_DisplayTime_ms(volatile long n)
 {
-	LED_DisplaySend(n/100, 1);
+	LED_DisplaySend(n/100, 1, 12);
 }
 
 void DidplayFeqSet(){
@@ -142,17 +146,25 @@ void DidplayFeqSet(){
 
 
 void SendInfDisplay(){
-	if (!Mode){
+	if (Mode==ModeNo){
 		if(!Rotor.RotorStopped()) {
-			LED_DisplaySend(Rotor.frequency, 0);
+			LED_DisplaySend(Rotor.frequency, 0, 11);
 			}else{
 			if(ModeFeq){
-				LED_DisplaySend(Rotor.frequency, 0);
+				LED_DisplaySend(Rotor.frequency, 0, 11);
 				}else{
-				LED_DisplaySend(0, 0);
+				LED_DisplaySend(0, 0, 11);
 			}
 			
 		}
+	}
+	
+	if(Mode==ModeSetPMW){
+		LED_DisplaySend(Rotor.NPMW, 0, 13);
+	}
+	
+	if(Mode==ModeCurrent){
+		LED_DisplaySend(adc_avarage, 2, 10);
 	}
 }
 
