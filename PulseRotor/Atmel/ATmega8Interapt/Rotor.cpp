@@ -32,6 +32,7 @@ void Rotor::Init(){
 	StopingTime =200;
 	StaringTiming = 1;
 	phasa=1;
+	WorkCurrent = 30;
 }
 
 void Rotor::SetFrequency(int freq){
@@ -109,11 +110,16 @@ void Rotor::Activity(){
 		if (StaringTiming>StopingTime){
 			StaringTiming = 1;
 			Started = false;
+			Adjust = false;
 			Stoping = false;
 			if(Reversing){ _delay_ms(150); Starting=true;}
 		}
 	}	
 	
+	if (Adjust&&Started){
+		Adjusting();
+		
+	}
 
 }
 
@@ -163,12 +169,50 @@ void Rotor::StoptimeDown(int TimeDown){
 	}else{ StopingTime = minStartStopTime;}
 }
 
+void Rotor::WorkCurrentUp(int Up){
+	WorkCurrent = WorkCurrent + Up;
+	if (WorkCurrent > 1000){ WorkCurrent = 10000;}
+}
+
+void Rotor::WorkCurrentDown(int Down){
+	if(WorkCurrent>Down){WorkCurrent = WorkCurrent - Down;
+		}else{ WorkCurrent = 1;}
+}
 
 bool Rotor::RotorStopped(){
 	if(Started||Starting||Stoping){
 		return false;
 	}else{
 		return true;
+	}
+}
+
+void Rotor::StartAdjust(){
+	workfrequency = 1;
+	Starting = true;
+	Adjust = true;
+	for(int i=0; i<49; i++){
+		FreqPower[i]=0;
+	}
+}
+
+void Rotor::Adjusting(){
+	CounterStable++;
+	if(CounterStable>1000){
+		CounterStable=0;
+		if (Current<WorkCurrent&&frequency<50&&FreqPower[frequency]<255){
+			FreqPower[frequency] = FreqPower[frequency] + 1;	
+		}else{
+			if(frequency==49){
+				Adjust = false;
+				Stoping = true;
+				workfrequency = 50;
+			}else{
+				frequency = frequency + 1;
+				FreqPower[frequency] = FreqPower[frequency - 1] - 10;
+			} 
+			
+		}
 	}
 }
 

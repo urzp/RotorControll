@@ -36,6 +36,9 @@ const int ModeNo = 0;
 const int ModeSetTime = 1;
 const int ModeSetPMW = 2;
 const int ModeCurrent = 3;
+const int ModeSetStartTime = 10;
+const int ModeSetStopTime = 11;
+const int ModeSetWorkCarrent = 12;
 
 char dg = 8;
 
@@ -133,8 +136,8 @@ void ADC_read(){
 		adc_value = adc_value / 2;
 		adc_summ=adc_summ+adc_value;
 		adc_count++;
-		if (adc_count==500){
-			adc_avarage = adc_summ/500;
+		if (adc_count==250){
+			adc_avarage = adc_summ/300;
 			adc_count=0;
 			adc_summ=0;
 		}
@@ -189,6 +192,7 @@ void ReadInputs(){
 	ButtonDown.Scan();
 	ButtonReset.Scan();
 	ADC_read();
+	Rotor.Current = adc_avarage;
 };
 
 #include "RotorControll.h"
@@ -215,6 +219,8 @@ int main (void) { //главная цикл программы
 		
 		ModeStartTime();
 		ModeStopTime();
+		ModeSetCurrent();
+		ModeAdjustRotor();
 		ModeSettingPMW();
 		
 		ProtectControll();

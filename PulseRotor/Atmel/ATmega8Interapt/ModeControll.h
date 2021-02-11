@@ -6,60 +6,85 @@
  */ 
 
 
+
 #ifndef MODECONTROLL_H_
 #define MODECONTROLL_H_
+
+
 int slipTimes = 1000;
 
+
+void LedMode(){
+		BlueLed.On();
+		RedLed.Off();
+		GreenLed.Off();	
+}
+
+void IfSetUp(){
+	ButtonUp.Scan();
+	if(ButtonUp.getpressed){
+		slip++;
+		if(slip>=slipTimes){
+			slip = slipTimes;
+			switch(Mode){
+				case ModeSetStartTime:Rotor.StartimeUp(1000);break;
+				case ModeSetStopTime:Rotor.StoptimeUp(1000);break;
+				case ModeSetWorkCarrent:Rotor.WorkCurrentUp(10);break;
+			}
+			_delay_ms(100);
+		}
+	}
+	if(ButtonUp.PressRead()){
+		slip = 0;
+		switch(Mode){
+			case ModeSetStartTime:Rotor.StartimeUp(100);break;
+			case ModeSetStopTime:Rotor.StoptimeUp(100);break;
+			case ModeSetWorkCarrent:Rotor.WorkCurrentUp(1);break;
+		}
+		BlueLed.Off();
+		_delay_ms(100);
+	}
+}
+
+void IfSetDown(){
+	ButtonDown.Scan();
+	if(ButtonDown.getpressed){
+		slip++;
+		if(slip>=slipTimes){
+			slip = slipTimes;
+			switch(Mode){
+				case ModeSetStartTime:Rotor.StartimeDown(1000);break;
+				case ModeSetStopTime:Rotor.StoptimeDown(1000);break;
+				case ModeSetWorkCarrent:Rotor.WorkCurrentDown(10);break;
+			}
+			_delay_ms(100);
+		}
+	}
+	if(ButtonDown.PressRead()){
+		slip = 0;
+		switch(Mode){
+			case ModeSetStartTime:Rotor.StartimeDown(100);break;
+			case ModeSetStopTime:Rotor.StoptimeDown(100);break;
+			case ModeSetWorkCarrent:Rotor.WorkCurrentDown(1);break;
+		}
+		BlueLed.Off();
+		_delay_ms(100);
+	}	
+}
+
+
 void ModeStartTime(){
-	int slip;
+	
 	if (Rotor.RotorStopped()){
-		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStart.getpressed)||Mode==ModeSetTime){
-			Mode = ModeSetTime;
-			BlueLed.On();
-			RedLed.Off();
-			GreenLed.Off();
-
-
-			ButtonUp.Scan();
-			if(ButtonUp.getpressed){
-				slip++;
-				if(slip>=slipTimes){
-					slip = slipTimes;
-					Rotor.StartimeUp(1000);
-					_delay_ms(100);
-				}
-			}	
-			if(ButtonUp.PressRead()){
-				slip = 0;
-				Rotor.StartimeUp(100);
-				BlueLed.Off();
-				_delay_ms(100);
-			}
+		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStart.getpressed)||Mode==ModeSetStartTime){
+			Mode = ModeSetStartTime;
+			LedMode();
 			
+			IfSetUp();
+			IfSetDown();
 			
-			
-			
-			
-			
-			ButtonDown.Scan();
-			if(ButtonDown.getpressed){
-				slip++;
-				if(slip>=slipTimes){
-					slip = slipTimes;
-					Rotor.StartimeDown(1000);
-					_delay_ms(100);
-				}
-			}
-			if(ButtonDown.PressRead()){
-				slip = 0;
-				Rotor.StartimeDown(100);
-				BlueLed.Off();
-				_delay_ms(100);
-			}
-			
-			LED_DisplayTime_ms(Rotor.StaringTime);
-			
-			
+			LED_DisplayTime_ms(Rotor.StaringTime);		
+	
 			ButtonStart.Scan();
 			ButtonStart.PressRead();
 			
@@ -71,54 +96,14 @@ void ModeStartTime(){
 }
 
 void ModeStopTime(){
-	int slip;
+	
 	if (Rotor.RotorStopped()){
-		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStop.getpressed)||Mode==ModeSetTime){
-			Mode = ModeSetTime;
-			BlueLed.On();
-			RedLed.Off();
-			GreenLed.Off();
-
-
-			ButtonUp.Scan();
-			if(ButtonUp.getpressed){
-				slip++;
-				if(slip>=slipTimes){
-					slip = slipTimes;
-					Rotor.StoptimeUp(1000);
-					_delay_ms(100);
-				}
-			}
-			if(ButtonUp.PressRead()){
-				slip = 0;
-				Rotor.StoptimeUp(100);
-				BlueLed.Off();
-				_delay_ms(100);
-			}
+		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonStop.getpressed)||Mode==ModeSetStopTime){
+			Mode = ModeSetStopTime;
+			LedMode();
 			
-			
-			
-			
-			
-			
-			ButtonDown.Scan();
-			ButtonUp.Scan();
-			if(ButtonDown.getpressed){
-				slip++;
-				if(slip>=slipTimes){
-					slip = slipTimes;
-					Rotor.StoptimeDown(1000);
-					_delay_ms(100);
-				}
-			}
-			
-			
-			if(ButtonDown.PressRead()){
-				slip = 0;
-				Rotor.StoptimeDown(100);
-				BlueLed.Off();
-				_delay_ms(100);
-			}
+			IfSetUp();
+			IfSetDown();
 			
 			LED_DisplayTime_ms(Rotor.StopingTime);
 			
@@ -132,9 +117,41 @@ void ModeStopTime(){
 	}
 }
 
+void ModeSetCurrent(){
+	
+	if (Rotor.RotorStopped()){
+		while(((ButtonUp.getpressed||ButtonDown.getpressed)&&ButtonReset.getpressed)||Mode==ModeSetWorkCarrent){
+			Mode = ModeSetWorkCarrent;
+			LedMode();
+			
+			IfSetUp();
+			IfSetDown();
+			
+			LED_DisplayCurrent(Rotor.WorkCurrent);
+			
+			ButtonReset.Scan();
+			ButtonReset.PressRead();
+			
+			if (!ButtonUp.getpressed&&!ButtonReset.getpressed){
+				Mode = ModeNo;
+			}					
+			
+		}
+	}
+}
+
+void ModeAdjustRotor(){
+	if (Rotor.RotorStopped()){
+		while(ButtonStart.getpressed&&ButtonReset.getpressed){
+			Rotor.StartAdjust();	
+			ButtonReset.Scan();
+			ButtonReset.PressRead();
+		}
+	}
+}
 
 void ModeSettingPMW(){
-	int slip;
+	
 	if (ButtonReset.PressRead()){
 		switch (Mode){
 			case ModeNo:  Mode = ModeSetPMW; break;

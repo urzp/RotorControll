@@ -134,6 +134,10 @@ void LED_DisplayTime_ms(volatile long n)
 	LED_DisplaySend(n/100, 1, 12);
 }
 
+void LED_DisplayCurrent(volatile long n){
+	LED_DisplaySend(n, 2, 10);
+}
+
 void DidplayFeqSet(){
 	if(ModeFeq){
 		ModeFeqCount++;
