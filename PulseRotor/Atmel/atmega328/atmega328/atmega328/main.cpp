@@ -1,7 +1,7 @@
 /*
- * RotorAtmega16.cpp
+ * atmega328.cpp
  *
- * Created: 12.02.2021 12:36:27
+ * Created: 13.02.2021 12:41:22
  * Author : Paul
  */ 
 
@@ -10,16 +10,16 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-#define A_PD     4
+#define A_PD     0
 #define A_PWM    OCR1A
-#define B_PD   5
+#define B_PD   4
 #define B_PWM  OCR1B
-#define C_PD    7
-#define C_PWM   OCR2
+#define C_PD    5
+#define C_PWM   OCR2A
 
-const int A_Derect = PD2;
-const int B_Derect = PD3;
-const int C_Derect = PD6;
+const int A_Derect = PB0;
+const int B_Derect = PB4;
+const int C_Derect = PB5;
 
 volatile int phasa_a=0;
 volatile int phasa_b=19;
@@ -31,53 +31,44 @@ int SinTable[60]={0,27,53,79,104,127,150,171,189,206,221,233,242,249,254,255,254
 
 volatile int A_volume, B_volume, C_volume;
 
+
 void set_A_PWM(){
 	if (A_volume >= 0){
-		PORTD |= (1<<A_Derect);
+		PORTB |= (1<<A_Derect);
 		A_PWM = A_volume;
 	}
 	if (A_volume<0){
-		PORTD &= ~(1<<A_Derect);
+		PORTB &= ~(1<<A_Derect);
 		A_PWM = 255 + A_volume;
 	}
 }
 
 void set_B_PWM(){
 	if (B_volume >= 0){
-		PORTD |= (1<<B_Derect);
+		PORTB |= (1<<B_Derect);
 		B_PWM = B_volume;
 	}
 	if (B_volume<0){
-		PORTD &= ~(1<<B_Derect);
+		PORTB &= ~(1<<B_Derect);
 		B_PWM = 255 + B_volume;
 	}
 }
 
 void set_C_PWM(){
 	if (C_volume >= 0){
-		PORTD |= (1<<C_Derect);
+		PORTB |= (1<<C_Derect);
 		C_PWM = C_volume;
 	}
 	if (C_volume<0){
-		PORTD &= ~(1<<C_Derect);
+		PORTB &= ~(1<<C_Derect);
 		C_PWM = 255 + C_volume;
 	}
 }
 
 void pin_init(void) {
-	DDRD |= (1<<A_PD) | (1<<B_PD) | (1<<C_PD) | (1<<A_Derect) | (1<<B_Derect) | (1<<C_Derect) | (1<<PD1);
-	PORTD &= ~((1<<A_PD) | (1<<B_PD) | (1<<C_PD));
-	PORTD |= (1<<A_Derect) | (1<<B_Derect) | (1<<C_Derect)  | (1<<PD1) ;
-	
-}
-
-void timer0_init(){
-	TCCR0 |= (1<<WGM01); // устанавливаем режим СТС (сброс по совпадению)
-	TIMSK |= (1<<OCIE0);	//устанавливаем бит разрешения прерывания 0ого счетчика по совпадению с OCR1A(H и L)
-	TCCR0 |= (1<<CS02) | (1<<CS00);//установим делитель.
-	sei();
-	 //16.000.000/1024 = 15625 Гц   SinTable[31]
-	OCR0 = 245/50;
+	DDRB |= (1<<A_PD) | (1<<B_PD) | (1<<C_PD) | (1<<A_Derect) | (1<<B_Derect) | (1<<C_Derect);
+	PORTB &= ~((1<<A_PD) | (1<<B_PD) | (1<<C_PD));
+	PORTB |= (1<<A_Derect) | (1<<B_Derect) | (1<<C_Derect);
 }
 
 void timer1_init(void) {
@@ -90,56 +81,42 @@ void timer1_init(void) {
 }
 
 void timer2_init(void) {
-	TCCR2 |= (1 << COM21) | (1 << WGM21) | (1 << WGM20) | (1 << CS21);
+	TCCR2A |= (1 << COM2A1) | (1 << WGM21) | (1 << WGM20) | (1 << CS21);
 	TCNT2 = 0x00;
-	OCR2 = 0x00;
+	OCR2A = 0x00;
 }
-
 
 void tik(){
 	phasa_a++;
 	phasa_b++;
 	phasa_c++;
-		
+	
 	if (phasa_a>59){phasa_a=0;}
 	if (phasa_b>59){phasa_b=0;}
 	if (phasa_c>59){phasa_c=0;}
-		
+	
 	A_volume = SinTable[phasa_a];
 	B_volume = SinTable[phasa_b];
 	C_volume = SinTable[phasa_c];
-		
+	
 	set_A_PWM();
 	set_B_PWM();
-	set_C_PWM();	
+	set_C_PWM();
 	
-	if (phasa_a==0){PORTD |= (1<<PD1);}
-	if (phasa_a==29){PORTD  &= ~(1<<PD1);}
+	//if (phasa_a==0){PORTD |= (1<<PD1);}
+	//if (phasa_a==29){PORTD  &= ~(1<<PD1);}
 }
-
-ISR (TIMER0_COMP_vect)
-{
-	tik();
-}
-
 
 int main(void)
 {
- 
- 	pin_init();
-	timer0_init();
- 	timer1_init();
- 	timer2_init();
+    pin_init();
+	timer1_init();
+	timer2_init();
 	
-		
+	tik();
 	
-	  
     while (1) 
     {
-
-		
-		//_delay_us(8750);
-		
     }
 }
 
