@@ -31,43 +31,46 @@ volatile int phasa_b=10;
 volatile int phasa_c=20;
 
 //int SinTable[36]={0,44,87,128,164,195,221,240,251,255,251,240,221,195,164,128,87,44,0,-44,-87,-128,-164,-195,-221,-240,-251,-255,-251,-240,-221,-195,-164,-128,-87,-44};
-int SinTable[30]={53,104,150,189,221,242,254,254,243,221,190,150,104,53,0,-53,-103,-149,-189,-221,-242,-254,-254,-243,-221,-190,-150,-104,-54,0};
+int SinTable[30]={0,104,150,189,221,242,254,254,243,221,190,150,104,53,0,0,103,149,189,221,242,254,254,243,221,190,150,104,54,0};
 //int SinTable[30]={53,104,150,189,221,242,254,254,243,221,190,150,104,53,0,-53,-103,-149,-189,-221,-242,-254,-254,-243,-221,-190,-150,-104,-54,0};
 //int SinTable[60]={0,27,53,79,104,127,150,171,189,206,221,233,242,249,254,255,254,249,243,233,221,206,190,171,150,128,104,79,53,27,0,-26,-53,-78,-103,-127,-149,-170,-189,-206,-221,-233,-242,-249,-254,-255,-254,-250,-243,-233,-221,-207,-190,-171,-150,-128,-104,-80,-54,-27};
 
 volatile int A_volume, B_volume, C_volume;
 
 
-void set_A_PWM(){
-	if (A_volume >= 0){
-		A_DerectPort |= (1<<A_Derect);
-		A_PWM = A_volume;
+void set_A_PWM(int phasa){
+	
+	A_PWM = SinTable[phasa];
+	
+	if (phasa >= 0 && phasa < 14){
+		A_DerectPort |= (1<<A_Derect);		
 	}
-	if (A_volume<0){
-		PORTB &= ~(1<<A_Derect);
-		A_PWM = -1 * A_volume;
+	if (phasa >= 14 && phasa < 30){
+		A_DerectPort &= ~(1<<A_Derect);
 	}
 }
 
-void set_B_PWM(){
-	if (B_volume >= 0){
+void set_B_PWM(int phasa){
+	
+	B_PWM = SinTable[phasa];
+	
+	if (phasa >= 0 && phasa < 14){
 		B_DerectPort |= (1<<B_Derect);
-		B_PWM = B_volume;
 	}
-	if (B_volume<0){
+	if (phasa >= 14 && phasa < 30){
 		B_DerectPort &= ~(1<<B_Derect);
-		B_PWM = -1 * B_volume;
 	}
 }
 
-void set_C_PWM(){
-	if (C_volume >= 0){
+void set_C_PWM(int phasa){
+
+	C_PWM = SinTable[phasa];
+	
+	if (phasa >= 0 && phasa < 14){
 		C_DerectPort |= (1<<C_Derect);
-		C_PWM = C_volume;
 	}
-	if (C_volume<0){
+	if (phasa >= 14 && phasa < 30){
 		C_DerectPort &= ~(1<<C_Derect);
-		C_PWM = -1 * C_volume;
 	}
 }
 
@@ -115,13 +118,9 @@ void tik(){
 	if (phasa_b>29){phasa_b=0;}
 	if (phasa_c>29){phasa_c=0;}
 	
-	A_volume = SinTable[phasa_a];
-	B_volume = SinTable[phasa_b];
-	C_volume = SinTable[phasa_c];
-	
-	set_A_PWM();
-	set_B_PWM();
-	set_C_PWM();
+	set_A_PWM(phasa_a);
+	set_B_PWM(phasa_b);
+	set_C_PWM(phasa_c);
 	
 	if (phasa_a==0){PORTD |= (1<<0);}
 	if (phasa_a==15){PORTD  &= ~(1<<0);}
