@@ -166,6 +166,9 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ADC.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Button.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -175,19 +178,37 @@
     <Compile Include="delay.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Display.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Input.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Input.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="LedControl.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ModeControll.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Output.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Output.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="PanelControl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Protect.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Protect.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ReserveCode.h">
@@ -197,6 +218,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Rotor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SPI.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

@@ -38,7 +38,7 @@
    <POPUP w="610" x="98" flags="00000000" y="189" h="466" pid="0" iid="59">
     <PROPERTIES/>
    </POPUP>
-   <POPUP w="695" x="118" flags="00000000" y="209" h="453" pid="0" iid="72">
+   <POPUP w="695" x="1103" flags="00008001" y="222" h="453" pid="0" iid="72">
     <PROPERTIES/>
    </POPUP>
    <POPUP w="226" x="138" flags="00000008" y="229" h="215" pid="3" iid="39">

@@ -10,5 +10,7 @@ main.cpp
 
 Output.cpp
 
+Protect.cpp
+
 Rotor.cpp
 

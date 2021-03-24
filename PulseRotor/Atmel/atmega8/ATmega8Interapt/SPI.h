@@ -96,60 +96,60 @@ void SPI_SendByte_SHD0032 (char byte)
 	
 	
 	PORTC |= (1<<CLK);
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	if ((byte & (1<<7)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	PORTC &= ~(1<<CLK);
-	_delay_us(timeCTR);
+	//_delay_us(timeCTR);
 	
 	PORTC |= (1<<CLK);
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	if ((byte & (1<<6)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	PORTC &= ~(1<<CLK);
-	_delay_us(timeCTR);
+	//_delay_us(timeCTR);
 	
 	PORTC |= (1<<CLK);
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	if ((byte & (1<<5)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	PORTC &= ~(1<<CLK);
-	_delay_us(timeCTR);
+	//_delay_us(timeCTR);
 	
 	PORTC |= (1<<CLK);
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	if ((byte & (1<<4)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	PORTC &= ~ (1<<CLK);
-	_delay_us(timeCTR);
+	//_delay_us(timeCTR);
 	
 	PORTC |= (1<<CLK);
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	if ((byte & (1<<3)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	PORTC &= ~(1<<CLK);
-	_delay_us(timeCTR);
+	//_delay_us(timeCTR);
 	
 	PORTC |= (1<<CLK);
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	if ((byte & (1<<2)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	PORTC &= ~(1<<CLK);
-	_delay_us(timeCTR);
+	//_delay_us(timeCTR);
 	
 	PORTC |= (1<<CLK);
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	if ((byte & (1<<1)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	PORTC &= ~(1<<CLK);
-	_delay_us(timeCTR);
+	//_delay_us(timeCTR);
 	
 	PORTC |= (1<<CLK);
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	if ((byte & (1<<0)) != 0 ){PORTC |= (1<<DataSPI);}else{PORTC &= ~(1<<DataSPI);}
-	_delay_us(timeCTRIN);
+	//_delay_us(timeCTRIN);
 	PORTC &= ~ (1<<CLK);
-	_delay_us(timeCTR);
+	//_delay_us(timeCTR);
 
 	PORTC &= ~(1<<CLK);
 	

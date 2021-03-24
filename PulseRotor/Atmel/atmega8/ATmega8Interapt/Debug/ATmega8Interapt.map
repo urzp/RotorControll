@@ -375,7 +375,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x1d6c
+.text           0x00000000     0x1cac
  *(.vectors)
  .vectors       0x00000000       0x26 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr4/crtatmega8.o
                 0x00000000                __vector_default
@@ -481,190 +481,190 @@ END GROUP
                 0x00000296        0xe main.o
                 0x00000296                _Z8SPI_initv
  .text._Z20SPI_SendByte_SHD0032c
-                0x000002a4      0x134 main.o
+                0x000002a4       0x74 main.o
                 0x000002a4                _Z20SPI_SendByte_SHD0032c
  .text._Z16Send_SPI_SHD0032cccc
-                0x000003d8       0x34 main.o
-                0x000003d8                _Z16Send_SPI_SHD0032cccc
+                0x00000318       0x34 main.o
+                0x00000318                _Z16Send_SPI_SHD0032cccc
  .text._Z8SHD0032Gl
-                0x0000040c       0x70 main.o
-                0x0000040c                _Z8SHD0032Gl
+                0x0000034c       0x70 main.o
+                0x0000034c                _Z8SHD0032Gl
  .text._Z15LED_DisplaySendlii
-                0x0000047c      0x1ba main.o
-                0x0000047c                _Z15LED_DisplaySendlii
+                0x000003bc      0x1ba main.o
+                0x000003bc                _Z15LED_DisplaySendlii
  .text._Z18LED_DisplayTime_msl
-                0x00000636       0x42 main.o
-                0x00000636                _Z18LED_DisplayTime_msl
+                0x00000576       0x42 main.o
+                0x00000576                _Z18LED_DisplayTime_msl
  .text._Z18LED_DisplayCurrentl
-                0x00000678       0x34 main.o
-                0x00000678                _Z18LED_DisplayCurrentl
+                0x000005b8       0x34 main.o
+                0x000005b8                _Z18LED_DisplayCurrentl
  .text._Z13DidplayFeqSetv
-                0x000006ac       0x2e main.o
-                0x000006ac                _Z13DidplayFeqSetv
+                0x000005ec       0x2e main.o
+                0x000005ec                _Z13DidplayFeqSetv
  .text._Z14SendInfDisplayv
-                0x000006da       0xb4 main.o
-                0x000006da                _Z14SendInfDisplayv
+                0x0000061a       0xb4 main.o
+                0x0000061a                _Z14SendInfDisplayv
  .text._Z9initTimerv
-                0x0000078e       0x16 main.o
-                0x0000078e                _Z9initTimerv
+                0x000006ce       0x16 main.o
+                0x000006ce                _Z9initTimerv
  .text.__vector_6
-                0x000007a4       0x5a main.o
-                0x000007a4                __vector_6
+                0x000006e4       0x5a main.o
+                0x000006e4                __vector_6
  .text._Z8PMW_initv
-                0x000007fe       0x10 main.o
-                0x000007fe                _Z8PMW_initv
+                0x0000073e       0x10 main.o
+                0x0000073e                _Z8PMW_initv
  .text._Z8ADC_Initv
-                0x0000080e       0x10 main.o
-                0x0000080e                _Z8ADC_Initv
+                0x0000074e       0x10 main.o
+                0x0000074e                _Z8ADC_Initv
  .text._Z8ADC_readv
-                0x0000081e       0xc0 main.o
-                0x0000081e                _Z8ADC_readv
+                0x0000075e       0xc0 main.o
+                0x0000075e                _Z8ADC_readv
  .text._Z4Initv
-                0x000008de       0xc2 main.o
-                0x000008de                _Z4Initv
+                0x0000081e       0xc2 main.o
+                0x0000081e                _Z4Initv
  .text._Z10ReadInputsv
-                0x000009a0       0x38 main.o
-                0x000009a0                _Z10ReadInputsv
+                0x000008e0       0x38 main.o
+                0x000008e0                _Z10ReadInputsv
  .text._Z13StartControllv
-                0x000009d8       0x24 main.o
-                0x000009d8                _Z13StartControllv
+                0x00000918       0x24 main.o
+                0x00000918                _Z13StartControllv
  .text._Z12StopControllv
-                0x000009fc       0x1c main.o
-                0x000009fc                _Z12StopControllv
+                0x0000093c       0x1c main.o
+                0x0000093c                _Z12StopControllv
  .text._Z15ReverseControllv
-                0x00000a18       0x12 main.o
-                0x00000a18                _Z15ReverseControllv
+                0x00000958       0x12 main.o
+                0x00000958                _Z15ReverseControllv
  .text._Z13SpeedControllv
-                0x00000a2a      0x1a6 main.o
-                0x00000a2a                _Z13SpeedControllv
+                0x0000096a      0x1a6 main.o
+                0x0000096a                _Z13SpeedControllv
  .text._Z7LedModev
-                0x00000bd0       0x14 main.o
-                0x00000bd0                _Z7LedModev
+                0x00000b10       0x14 main.o
+                0x00000b10                _Z7LedModev
  .text._Z7IfSetUpv
-                0x00000be4       0xec main.o
-                0x00000be4                _Z7IfSetUpv
+                0x00000b24       0xec main.o
+                0x00000b24                _Z7IfSetUpv
  .text._Z9IfSetDownv
-                0x00000cd0       0xec main.o
-                0x00000cd0                _Z9IfSetDownv
+                0x00000c10       0xec main.o
+                0x00000c10                _Z9IfSetDownv
  .text._Z13ModeStartTimev
-                0x00000dbc       0xc6 main.o
-                0x00000dbc                _Z13ModeStartTimev
+                0x00000cfc       0xc6 main.o
+                0x00000cfc                _Z13ModeStartTimev
  .text._Z12ModeStopTimev
-                0x00000e82       0xc6 main.o
-                0x00000e82                _Z12ModeStopTimev
+                0x00000dc2       0xc6 main.o
+                0x00000dc2                _Z12ModeStopTimev
  .text._Z14ModeSetCurrentv
-                0x00000f48       0xca main.o
-                0x00000f48                _Z14ModeSetCurrentv
+                0x00000e88       0xca main.o
+                0x00000e88                _Z14ModeSetCurrentv
  .text._Z15ModeAdjustRotorv
-                0x00001012       0x58 main.o
-                0x00001012                _Z15ModeAdjustRotorv
+                0x00000f52       0x58 main.o
+                0x00000f52                _Z15ModeAdjustRotorv
  .text._Z14ModeSettingPMWv
-                0x0000106a       0x48 main.o
-                0x0000106a                _Z14ModeSettingPMWv
+                0x00000faa       0x48 main.o
+                0x00000faa                _Z14ModeSettingPMWv
  .text._Z15ProtectControllv
-                0x000010b2       0x2e main.o
-                0x000010b2                _Z15ProtectControllv
+                0x00000ff2       0x2e main.o
+                0x00000ff2                _Z15ProtectControllv
  .text._Z11LedControllv
-                0x000010e0       0x6e main.o
-                0x000010e0                _Z11LedControllv
- .text.main     0x0000114e       0x24 main.o
-                0x0000114e                main
+                0x00001020       0x6e main.o
+                0x00001020                _Z11LedControllv
+ .text.main     0x0000108e       0x24 main.o
+                0x0000108e                main
  .text._GLOBAL__sub_I_dg
-                0x00001172       0x14 main.o
+                0x000010b2       0x14 main.o
  .text._ZN6Output4InitEcib
-                0x00001186       0xe2 Output.o
-                0x00001186                _ZN6Output4InitEcib
+                0x000010c6       0xe2 Output.o
+                0x000010c6                _ZN6Output4InitEcib
  .text._ZN6Output3OffEv
-                0x00001268       0xc2 Output.o
-                0x00001268                _ZN6Output3OffEv
+                0x000011a8       0xc2 Output.o
+                0x000011a8                _ZN6Output3OffEv
  .text._ZN6Output2OnEv
-                0x0000132a       0xc4 Output.o
-                0x0000132a                _ZN6Output2OnEv
+                0x0000126a       0xc4 Output.o
+                0x0000126a                _ZN6Output2OnEv
  .text._ZN5Rotor12SetFrequencyEi
-                0x000013ee       0x74 Rotor.o
-                0x000013ee                _ZN5Rotor12SetFrequencyEi
+                0x0000132e       0x74 Rotor.o
+                0x0000132e                _ZN5Rotor12SetFrequencyEi
  .text._ZN5Rotor4InitEv
-                0x00001462       0xa4 Rotor.o
-                0x00001462                _ZN5Rotor4InitEv
+                0x000013a2       0xa4 Rotor.o
+                0x000013a2                _ZN5Rotor4InitEv
  .text._ZN5Rotor10FrequncyUpEi
-                0x00001506       0x70 Rotor.o
-                0x00001506                _ZN5Rotor10FrequncyUpEi
+                0x00001446       0x70 Rotor.o
+                0x00001446                _ZN5Rotor10FrequncyUpEi
  .text._ZN5Rotor13FrequencyDownEi
-                0x00001576       0x76 Rotor.o
-                0x00001576                _ZN5Rotor13FrequencyDownEi
+                0x000014b6       0x76 Rotor.o
+                0x000014b6                _ZN5Rotor13FrequencyDownEi
  .text._ZN5Rotor5PMWUpEi
-                0x000015ec       0x54 Rotor.o
-                0x000015ec                _ZN5Rotor5PMWUpEi
+                0x0000152c       0x54 Rotor.o
+                0x0000152c                _ZN5Rotor5PMWUpEi
  .text._ZN5Rotor7PMWDownEi
-                0x00001640       0x52 Rotor.o
-                0x00001640                _ZN5Rotor7PMWDownEi
+                0x00001580       0x52 Rotor.o
+                0x00001580                _ZN5Rotor7PMWDownEi
  .text._ZN5Rotor10StartimeUpEi
-                0x00001692       0x46 Rotor.o
-                0x00001692                _ZN5Rotor10StartimeUpEi
+                0x000015d2       0x46 Rotor.o
+                0x000015d2                _ZN5Rotor10StartimeUpEi
  .text._ZN5Rotor12StartimeDownEi
-                0x000016d8       0x40 Rotor.o
-                0x000016d8                _ZN5Rotor12StartimeDownEi
+                0x00001618       0x40 Rotor.o
+                0x00001618                _ZN5Rotor12StartimeDownEi
  .text._ZN5Rotor10StoptimeUpEi
-                0x00001718       0x46 Rotor.o
-                0x00001718                _ZN5Rotor10StoptimeUpEi
+                0x00001658       0x46 Rotor.o
+                0x00001658                _ZN5Rotor10StoptimeUpEi
  .text._ZN5Rotor12StoptimeDownEi
-                0x0000175e       0x40 Rotor.o
-                0x0000175e                _ZN5Rotor12StoptimeDownEi
+                0x0000169e       0x40 Rotor.o
+                0x0000169e                _ZN5Rotor12StoptimeDownEi
  .text._ZN5Rotor13WorkCurrentUpEi
-                0x0000179e       0x26 Rotor.o
-                0x0000179e                _ZN5Rotor13WorkCurrentUpEi
+                0x000016de       0x26 Rotor.o
+                0x000016de                _ZN5Rotor13WorkCurrentUpEi
  .text._ZN5Rotor15WorkCurrentDownEi
-                0x000017c4       0x22 Rotor.o
-                0x000017c4                _ZN5Rotor15WorkCurrentDownEi
+                0x00001704       0x22 Rotor.o
+                0x00001704                _ZN5Rotor15WorkCurrentDownEi
  .text._ZN5Rotor12RotorStoppedEv
-                0x000017e6       0x1a Rotor.o
-                0x000017e6                _ZN5Rotor12RotorStoppedEv
+                0x00001726       0x1a Rotor.o
+                0x00001726                _ZN5Rotor12RotorStoppedEv
  .text._ZN5Rotor11StartAdjustEv
-                0x00001800       0x36 Rotor.o
-                0x00001800                _ZN5Rotor11StartAdjustEv
+                0x00001740       0x36 Rotor.o
+                0x00001740                _ZN5Rotor11StartAdjustEv
  .text._ZN5Rotor9AdjustingEv
-                0x00001836       0xbc Rotor.o
-                0x00001836                _ZN5Rotor9AdjustingEv
+                0x00001776       0xbc Rotor.o
+                0x00001776                _ZN5Rotor9AdjustingEv
  .text._ZN5Rotor8ActivityEv
-                0x000018f2      0x286 Rotor.o
-                0x000018f2                _ZN5Rotor8ActivityEv
+                0x00001832      0x286 Rotor.o
+                0x00001832                _ZN5Rotor8ActivityEv
  .text._ZN5Rotor8PortsOffEv
-                0x00001b78        0xe Rotor.o
-                0x00001b78                _ZN5Rotor8PortsOffEv
+                0x00001ab8        0xe Rotor.o
+                0x00001ab8                _ZN5Rotor8PortsOffEv
  .text._ZN5Rotor11MoveForvardEv
-                0x00001b86       0x6c Rotor.o
-                0x00001b86                _ZN5Rotor11MoveForvardEv
+                0x00001ac6       0x6c Rotor.o
+                0x00001ac6                _ZN5Rotor11MoveForvardEv
  .text._ZN5Rotor8MoveBackEv
-                0x00001bf2       0x6a Rotor.o
-                0x00001bf2                _ZN5Rotor8MoveBackEv
+                0x00001b32       0x6a Rotor.o
+                0x00001b32                _ZN5Rotor8MoveBackEv
  .text._ZN5Rotor4MoveEv
-                0x00001c5c       0x3a Rotor.o
-                0x00001c5c                _ZN5Rotor4MoveEv
+                0x00001b9c       0x3a Rotor.o
+                0x00001b9c                _ZN5Rotor4MoveEv
  .text.libgcc.mul
-                0x00001c96       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_mulsi3.o)
-                0x00001c96                __mulsi3
+                0x00001bd6       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_mulsi3.o)
+                0x00001bd6                __mulsi3
  .text.libgcc.div
-                0x00001cb4       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_udivmodsi4.o)
-                0x00001cb4                __udivmodsi4
+                0x00001bf4       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_udivmodsi4.o)
+                0x00001bf4                __udivmodsi4
  .text.libgcc.div
-                0x00001cf8       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_divmodsi4.o)
-                0x00001cf8                __divmodsi4
+                0x00001c38       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_divmodsi4.o)
+                0x00001c38                __divmodsi4
  .text.libgcc.div
-                0x00001d20       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_negsi2.o)
-                0x00001d20                __negsi2
+                0x00001c60       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_negsi2.o)
+                0x00001c60                __negsi2
  .text.libgcc.mul
-                0x00001d30       0x14 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_muluhisi3.o)
-                0x00001d30                __muluhisi3
- .text.libgcc   0x00001d44        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_tablejump2.o)
-                0x00001d44                __tablejump2__
+                0x00001c70       0x14 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_muluhisi3.o)
+                0x00001c70                __muluhisi3
+ .text.libgcc   0x00001c84        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_tablejump2.o)
+                0x00001c84                __tablejump2__
  .text.libgcc.mul
-                0x00001d50       0x18 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_umulhisi3.o)
-                0x00001d50                __umulhisi3
-                0x00001d68                . = ALIGN (0x2)
+                0x00001c90       0x18 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_umulhisi3.o)
+                0x00001c90                __umulhisi3
+                0x00001ca8                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00001d68        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_exit.o)
-                0x00001d68                _exit
-                0x00001d68                exit
+ .fini9         0x00001ca8        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_exit.o)
+                0x00001ca8                _exit
+                0x00001ca8                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -683,11 +683,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00001d68        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_exit.o)
+ .fini0         0x00001ca8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr4\libgcc.a(_exit.o)
  *(.fini0)
-                0x00001d6c                _etext = .
+                0x00001cac                _etext = .
 
-.data           0x00800060       0x66 load address 0x00001d6c
+.data           0x00800060       0x66 load address 0x00001cac
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -758,8 +758,8 @@ END GROUP
                 0x008001cd                Mode
  *(COMMON)
                 0x008001cf                PROVIDE (__bss_end, .)
-                0x00001d6c                __data_load_start = LOADADDR (.data)
-                0x00001dd2                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00001cac                __data_load_start = LOADADDR (.data)
+                0x00001d12                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x008001cf        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -850,32 +850,32 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x40aa
+.debug_info     0x00000000     0x3b54
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x48c c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr4/crtatmega8.o
  .debug_info    0x0000048c      0x255 Button.o
  .debug_info    0x000006e1      0x166 Input.o
- .debug_info    0x00000847     0x2b4a main.o
- .debug_info    0x00003391      0x233 Output.o
- .debug_info    0x000035c4      0xae6 Rotor.o
+ .debug_info    0x00000847     0x25f4 main.o
+ .debug_info    0x00002e3b      0x233 Output.o
+ .debug_info    0x0000306e      0xae6 Rotor.o
 
-.debug_abbrev   0x00000000      0xd37
+.debug_abbrev   0x00000000      0xd46
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x44e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr4/crtatmega8.o
  .debug_abbrev  0x0000044e      0x12f Button.o
  .debug_abbrev  0x0000057d       0xfe Input.o
- .debug_abbrev  0x0000067b      0x347 main.o
- .debug_abbrev  0x000009c2      0x136 Output.o
- .debug_abbrev  0x00000af8      0x23f Rotor.o
+ .debug_abbrev  0x0000067b      0x356 main.o
+ .debug_abbrev  0x000009d1      0x136 Output.o
+ .debug_abbrev  0x00000b07      0x23f Rotor.o
 
-.debug_line     0x00000000     0x1c30
+.debug_line     0x00000000     0x1b10
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr4/crtatmega8.o
  .debug_line    0x0000001a      0x133 Button.o
  .debug_line    0x0000014d       0xa5 Input.o
- .debug_line    0x000001f2     0x11e5 main.o
- .debug_line    0x000013d7      0x164 Output.o
- .debug_line    0x0000153b      0x6f5 Rotor.o
+ .debug_line    0x000001f2     0x10c5 main.o
+ .debug_line    0x000012b7      0x164 Output.o
+ .debug_line    0x0000141b      0x6f5 Rotor.o
 
 .debug_frame    0x00000000      0x770
  *(.debug_frame)
@@ -885,27 +885,27 @@ END GROUP
  .debug_frame   0x000004d8       0x54 Output.o
  .debug_frame   0x0000052c      0x244 Rotor.o
 
-.debug_str      0x00000000      0xed7
+.debug_str      0x00000000      0xf1c
  *(.debug_str)
  .debug_str     0x00000000      0x17a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr4/crtatmega8.o
  .debug_str     0x0000017a      0x206 Button.o
                                 0x256 (size before relaxing)
  .debug_str     0x00000380       0x38 Input.o
                                 0x1ea (size before relaxing)
- .debug_str     0x000003b8      0xae3 main.o
-                                0xdae (size before relaxing)
- .debug_str     0x00000e9b       0x10 Output.o
+ .debug_str     0x000003b8      0xb28 main.o
+                                0xdb6 (size before relaxing)
+ .debug_str     0x00000ee0       0x10 Output.o
                                 0x217 (size before relaxing)
- .debug_str     0x00000eab       0x2c Rotor.o
+ .debug_str     0x00000ef0       0x2c Rotor.o
                                 0x5da (size before relaxing)
 
-.debug_loc      0x00000000     0x24cd
+.debug_loc      0x00000000     0x1e4c
  *(.debug_loc)
  .debug_loc     0x00000000      0x1b3 Button.o
  .debug_loc     0x000001b3      0x128 Input.o
- .debug_loc     0x000002db     0x17d9 main.o
- .debug_loc     0x00001ab4      0x28a Output.o
- .debug_loc     0x00001d3e      0x78f Rotor.o
+ .debug_loc     0x000002db     0x1158 main.o
+ .debug_loc     0x00001433      0x28a Output.o
+ .debug_loc     0x000016bd      0x78f Rotor.o
 
 .debug_macinfo
  *(.debug_macinfo)
